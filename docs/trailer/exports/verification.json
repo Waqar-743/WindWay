@@ -1,0 +1,50 @@
+{
+  "full_trailer_complete": true,
+  "storyboard": "Adapted to authentic footage available; see edit-timeline.json for exact omissions.",
+  "video": {
+    "file": "WINDWAY-Reveal-Trailer-60s.mp4",
+    "width": 1920,
+    "height": 1080,
+    "fps": 30,
+    "frames": 1800,
+    "duration_seconds": 60,
+    "codec": "H.264",
+    "pixel_format": "yuv420p",
+    "full_decode": "passed"
+  },
+  "audio": {
+    "codec": "AAC",
+    "sample_rate": 48000,
+    "channels": 2,
+    "score_gain": 0.65,
+    "output_gain": 1.25,
+    "gameplay_speed": 1,
+    "end_card_score_duplicated": false,
+    "loudness": "Summary:\n\n  Integrated loudness:\n    I:         -16.7 LUFS\n    Threshold: -27.1 LUFS\n\n  Loudness range:\n    LRA:         7.6 LU\n    Threshold: -37.0 LUFS\n    LRA low:   -22.9 LUFS\n    LRA high:  -15.3 LUFS\n\n  True peak:\n    Peak:       -2.1 dBFS"
+  },
+  "continuous_drive": {
+    "output_in": 29,
+    "output_out": 43,
+    "source_in": 41.4,
+    "source_out": 55.4,
+    "speed": 1,
+    "internal_cuts": 0
+  },
+  "source": {
+    "file": "Record-video.mp4",
+    "bytes": 61052956,
+    "sha256": "e92d90a37d646a10391fed9addd599869f8c1451f7b0bca5624912b799260362",
+    "modified": false
+  },
+  "export": {
+    "bytes": 50727305,
+    "sha256": "50523958c6d912561054608009897378216d4a593924507dc3ba135a85cb0a08"
+  },
+  "adaptations": [
+    "Only Alpine and Canopy gameplay appears in the supplied recording. No snow footage is fabricated.",
+    "The garage shows the selected Mercedes-AMG W14 in Trail orange; car and paint changes were not recorded.",
+    "Map selection, starting, pausing and returning to the garage are shown. Starter, Settings and Continue interactions were not recorded.",
+    "Wide gameplay is fitted inside the 16:9 export to retain the complete recorded HUD without stretching.",
+    "The hook uses the real recorded acceleration sound; no unrecorded ignition is implied."
+  ]
+}
