@@ -1,0 +1,58 @@
+{
+  "method": "Built-in image generation; mechanical export sizing only",
+  "generated_source_size": [
+    1672,
+    941
+  ],
+  "youtube_guidance": "https://support.google.com/youtube/answer/72431?hl=en",
+  "files": [
+    {
+      "name": "windway-01-alpine-3840x2160.jpg",
+      "width": 3840,
+      "height": 2160,
+      "bytes": 1758371,
+      "quality": 95,
+      "sha256": "6a2aebc4aa55b89705181102854d51f0f79335bc94916503da299b4d59c1ca49"
+    },
+    {
+      "name": "windway-01-alpine-1280x720.jpg",
+      "width": 1280,
+      "height": 720,
+      "bytes": 362041,
+      "quality": 95,
+      "sha256": "e2ab90640ee7993bed176cae8ed38a8a8f948d1c9400f80da9b173adce44342a"
+    },
+    {
+      "name": "windway-02-jungle-3840x2160.jpg",
+      "width": 3840,
+      "height": 2160,
+      "bytes": 1834996,
+      "quality": 95,
+      "sha256": "802f874b0b4699cecc84c7da1ea21720773f7263c003c3937aa434fecb86505d"
+    },
+    {
+      "name": "windway-02-jungle-1280x720.jpg",
+      "width": 1280,
+      "height": 720,
+      "bytes": 385459,
+      "quality": 95,
+      "sha256": "6b68b6a1ac639d3225ae69a7952aa692a25f37a239e992820fd1bb797dfd20cf"
+    },
+    {
+      "name": "windway-03-reveal-poster-3840x2160.jpg",
+      "width": 3840,
+      "height": 2160,
+      "bytes": 1390674,
+      "quality": 95,
+      "sha256": "0d4dcb33b3e65a3edbb3dfdae7395354fe80b7578a9f70f241726b5ddc2a65af"
+    },
+    {
+      "name": "windway-03-reveal-poster-1280x720.jpg",
+      "width": 1280,
+      "height": 720,
+      "bytes": 283212,
+      "quality": 95,
+      "sha256": "46c4c83570c4115082866509372115461cac532125c6f7e0ff1bbb6dcc2cabb3"
+    }
+  ]
+}

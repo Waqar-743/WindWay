@@ -1,4 +1,5 @@
 import './landing-story.css';
+import F1Preview from './F1Preview';
 
 type MapId = 'alpine' | 'jungle' | 'snow';
 type Pack = 'cartoon-pack' | 'jungle-pack' | 'snow-pack';
@@ -6,6 +7,7 @@ type Pack = 'cartoon-pack' | 'jungle-pack' | 'snow-pack';
 export interface LandingStoryProps {
   selectedMap: string;
   selectedCarName: string;
+  reducedMotion?: boolean;
   onChooseMap: (id: string) => void;
   onExploreMap: (id: string) => void;
   onStartMap: (id: string) => void;
@@ -136,7 +138,7 @@ function RoadChapter({ story, selected, onStart }: { story: RoadStory; selected:
   </article>;
 }
 
-export default function LandingStory({ selectedMap, selectedCarName, onChooseMap, onExploreMap, onStartMap, onGarage }: LandingStoryProps) {
+export default function LandingStory({ selectedMap, selectedCarName, reducedMotion, onChooseMap, onExploreMap, onStartMap, onGarage }: LandingStoryProps) {
   const chosen = ROAD_STORIES.find((road) => road.id === selectedMap) ?? ROAD_STORIES[0];
   return <div className="windway-landing">
     <a className="wl-skip" href="#windway-main">Skip to the roads</a>
@@ -161,6 +163,16 @@ export default function LandingStory({ selectedMap, selectedCarName, onChooseMap
           </div>
           <p className="wl-browser-note">Play in your browser · Keyboard or touch controls</p>
         </div>
+      </section>
+
+      <section className="wl-motion-story" aria-labelledby="motion-title">
+        <div className="wl-motion-copy">
+          <p className="wl-kicker">A FEW SECONDS BEHIND THE WHEEL</p>
+          <h2 id="motion-title">Get close.<br />Go far<span className="wl-period">.</span></h2>
+          <p className="wl-body">From the garage to the open road. A little preview of the drive ahead.</p>
+          <button type="button" className="wl-text-link" onClick={onGarage}>Find your ride<Arrow diagonal /></button>
+        </div>
+        <F1Preview reducedMotion={reducedMotion} />
       </section>
 
       <section className="wl-route-picker" id="the-roads" aria-labelledby="roads-title">

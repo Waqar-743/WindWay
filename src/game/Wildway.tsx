@@ -59,6 +59,7 @@ function MapSelector({ compact = false }: { compact?: boolean }) {
 
 function Home() {
   const selectedMap = useGame((state) => state.selectedMap);
+  const reducedMotion = useGame((state) => state.settings.reducedMotion);
   const car = carById(useGame((state) => state.selectedCar));
   const startMap = (id: string) => {
     const game = useGame.getState();
@@ -67,7 +68,7 @@ function Home() {
     void gameAudio.unlock();
     useGame.getState().startRace();
   };
-  return <LandingStory selectedMap={selectedMap} selectedCarName={car.name}
+  return <LandingStory selectedMap={selectedMap} selectedCarName={car.name} reducedMotion={reducedMotion}
     onChooseMap={(id) => useGame.getState().selectMap(id)} onStartMap={startMap}
     onExploreMap={(id) => { const game = useGame.getState(); game.selectMap(id); game.navigate('map'); }}
     onGarage={() => useGame.getState().navigate('garage')} />;

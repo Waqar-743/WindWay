@@ -70,6 +70,39 @@
 .windway-landing .wl-text-link:hover { text-decoration: underline; }
 .windway-landing .wl-route-picker .wl-text-link { margin-top: 12px; }
 .windway-landing .wl-text-link .wl-arrow { width: 17px; height: 17px; }
+.windway-landing .wl-motion-story { display: grid; grid-template-columns: .7fr 1.3fr; gap: clamp(32px, 5vw, 76px); align-items: center; padding: clamp(44px, 6vw, 80px) 8px; }
+.wildway .windway-landing .wl-motion-copy h2 { margin-top: 16px; font-size: clamp(40px, 4.5vw, 64px); line-height: 1.02; letter-spacing: -.055em; text-wrap: balance; }
+.wildway .windway-landing .wl-motion-copy .wl-body { max-width: 31ch; margin-top: 20px; }
+.windway-landing .wl-motion-copy .wl-text-link { margin-top: 17px; padding-inline: 0; border: 0; background: transparent; cursor: pointer; }
+.windway-landing .wl-motion-copy .wl-text-link:hover .wl-arrow { transform: translate(2px, -2px); }
+.windway-landing .wl-motion-copy .wl-arrow { transition: transform .2s ease; }
+.windway-landing .wl-film { min-width: 0; }
+.windway-landing .wl-film-frame { position: relative; aspect-ratio: 16 / 9; overflow: hidden; border-radius: 9px; background: #dfe8d2; isolation: isolate; }
+.windway-landing .wl-film-frame::after { content: ''; position: absolute; z-index: 1; inset: 0; background: linear-gradient(180deg, #102d2359, transparent 25%, transparent 65%, #102d2366); pointer-events: none; }
+.windway-landing .wl-film-poster, .windway-landing .wl-film-video { position: absolute; inset: 0; display: block; width: 100%; height: 100%; object-fit: cover; }
+.windway-landing .wl-film-video { opacity: 0; transition: opacity .25s ease; }
+.windway-landing .wl-film-video.is-ready { opacity: 1; }
+.windway-landing .wl-film-label { position: absolute; z-index: 2; top: 18px; left: 20px; font-size: 8px; font-weight: 500; letter-spacing: 1.7px; color: #f7f3e7; }
+.windway-landing .wl-film-toggle { position: absolute; z-index: 2; bottom: 16px; right: 16px; display: inline-flex; align-items: center; gap: 9px; min-height: 44px; padding: 10px 15px; border: 1px solid #f7f3e766; border-radius: 5px; background: #17372def; color: #f7f3e7; font-size: 11px; font-weight: 500; cursor: pointer; transition: background-color .2s ease, transform .2s ease; }
+.wildway .windway-landing .wl-film-toggle { color: #f7f3e7; }
+.windway-landing .wl-film-toggle svg { width: 17px; height: 17px; }
+.windway-landing .wl-film-toggle:hover { background: #2f5747; transform: translateY(-1px); }
+.windway-landing .wl-film-toggle:active { transform: translateY(1px); }
+.wildway .windway-landing .wl-film-toggle:focus-visible { outline-color: #f4ca65; outline-offset: 3px; }
+.wildway .windway-landing .wl-film-status { position: absolute; z-index: 2; bottom: 19px; left: 20px; max-width: calc(100% - 155px); padding: 5px 9px; border-radius: 3px; background: #17372def; color: #f7f3e7; font-size: 10px; line-height: 1.5; }
+.windway-landing .wl-film > figcaption { display: flex; justify-content: space-between; flex-wrap: wrap; gap: 6px 16px; margin-top: 12px; color: var(--wl-muted); font-size: 10px; line-height: 1.5; }
+.windway-landing .wl-film > figcaption span:last-child { font-size: 8px; letter-spacing: 1.2px; }
+@media (max-width: 767px) {
+  .windway-landing .wl-motion-story { grid-template-columns: 1fr; gap: 27px; padding: 40px 0 38px; }
+  .wildway .windway-landing .wl-motion-copy h2 { font-size: 44px; }
+  .wildway .windway-landing .wl-motion-copy .wl-body { max-width: 36ch; margin-top: 16px; font-size: 14px; }
+  .windway-landing .wl-motion-copy .wl-text-link { margin-top: 10px; }
+  .windway-landing .wl-film-label { top: 13px; left: 14px; font-size: 7px; }
+  .windway-landing .wl-film-toggle { bottom: 11px; right: 11px; padding-inline: 11px; }
+  .wildway .windway-landing .wl-film-status { bottom: 14px; left: 12px; max-width: calc(100% - 137px); font-size: 9px; }
+  .windway-landing .wl-film > figcaption { font-size: 9px; }
+  .windway-landing .wl-film > figcaption span:last-child { font-size: 7px; }
+}
 .windway-landing .wl-route-picker fieldset { min-width: 0; border: 0; padding: 0; margin: 0; }
 .windway-landing .wl-route-picker legend { font-size: 11px; color: var(--wl-muted); margin-bottom: 12px; }
 .windway-landing .wl-route-picker fieldset button { display: grid; grid-template-columns: 23px 56px 1fr 24px; gap: 16px; align-items: center; text-align: left; width: 100%; padding: 13px 17px; border: 1px solid transparent; border-bottom-color: var(--wl-line); background: transparent; border-radius: 7px; min-height: 88px; }
