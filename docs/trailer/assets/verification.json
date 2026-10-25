@@ -1,0 +1,19 @@
+{
+  "ending_video": {
+    "resolution": "1920x1080",
+    "fps": 30,
+    "seconds": 6,
+    "full_decode": "passed"
+  },
+  "original_score": {
+    "seconds": 60,
+    "sample_rate": 48000,
+    "channels": 2
+  },
+  "timeline": {
+    "seconds": 60,
+    "contiguous": true
+  },
+  "full_trailer_complete": false,
+  "missing": "Genuine gameplay recordings"
+}
