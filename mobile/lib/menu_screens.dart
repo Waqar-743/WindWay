@@ -1031,7 +1031,7 @@ class HowToPlayScreen extends StatelessWidget {
             onPressed: () => showAboutDialog(
               context: context,
               applicationName: 'Windway',
-              applicationVersion: 'Android 1.1.0',
+              applicationVersion: 'Android 1.1.1',
               applicationLegalese:
                   'An independent, non-commercial learning project by Waqar Ahmed.',
               children: const [

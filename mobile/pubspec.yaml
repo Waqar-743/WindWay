@@ -1,7 +1,7 @@
 name: windway
 description: Windway's offline Android driving escape by Waqar Ahmed.
 publish_to: none
-version: 1.1.0+2
+version: 1.1.1+3
 environment:
   sdk: ">=3.10.0 <4.0.0"
   flutter: ">=3.38.0"

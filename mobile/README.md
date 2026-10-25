@@ -8,7 +8,7 @@ Made by [Waqar Ahmed](https://github.com/Waqar-743). Source: [WindWay](https://g
 
 Flutter provides a full-screen landscape game lobby, Start / Continue, characters, settings, and the driving guide. The actual 3D driving game is the existing **Three.js / Rapier game bundled into a local Android WebView**. Everything needed to drive is included in the APK.
 
-Android 1.1.0 replaces the pale panels with a dark scenic lobby and translucent controls. Tap **START DRIVE** to enter the selected road immediately. **Pause** opens Resume, Restart, and Stop drive. The **STOP** button at the top-left saves your last earned checkpoint and returns to the garage in one tap. Android Back also pauses the drive. Continue resumes at the saved gate; releasing a pedal or returning from the background never holds the accelerator for you.
+Android 1.1.1 includes the dark scenic lobby and smaller, box-free driving controls. Gameplay icons are one-third of their former size while invisible 44-pixel hit areas keep them usable. The timer and minimap are smaller too. Tap **START DRIVE** to enter the selected road immediately. **Pause** opens Resume, Restart, and Stop drive. The **STOP** button at the top-left saves your last earned checkpoint and returns to the garage in one tap. Android Back also pauses the drive. Continue resumes at the saved gate; releasing a pedal or returning from the background never holds the accelerator for you.
 
 - Alpine: the original winding valley loop, bridges, and boost ramp.
 - Canopy Run: a dense jungle circuit, two laps, and the familiar wildlife.
@@ -69,7 +69,9 @@ To make one installable APK covering both 32-bit and 64-bit Android firmware:
 flutter build apk --release --target-platform android-arm,android-arm64
 ```
 
-The installer appears at `mobile/build/app/outputs/flutter-apk/app-release.apk`. It includes ARMv7 and ARM64, so you do not need to guess which firmware your Infinix uses. Download the shared installer from the [Android 1.1.0 release](https://github.com/Waqar-743/WindWay/releases/tag/v1.1.0-android-demo.1). The GitHub **Build Windway Android demo** workflow also runs on this Android branch or on manual request and retains its build artifact for 14 days.
+The installer appears at `mobile/build/app/outputs/flutter-apk/app-release.apk`. It includes ARMv7 and ARM64, so you do not need to guess which firmware your Infinix uses. Download the shared installer and the ZIP package from the [Android 1.1.1 release](https://github.com/Waqar-743/WindWay/releases/tag/v1.1.1-android-demo.1). The ZIP includes the same APK, source archive, installation notes, checksums, and the prepared [trailer production assets](../docs/trailer/README.md). The full gameplay trailer still needs genuine gameplay recordings. The GitHub **Build Windway Android demo** workflow also runs on this Android branch or on manual request and retains its build artifact for 14 days.
+
+The published 1.1.1 APK uses the same development signing certificate as the published 1.1.0 APK, so it can update that version without clearing its saved runs. The older 1.0.0 demo used a different certificate and must be removed first. Uninstalling clears app preferences and saved runs.
 
 The automated checks cover checkpoint save and stop ordering, pause/resume during countdown and recovery, restart and retry, adaptive graphics limits, and landscape control clearance and contrast. Native widget tests cover immediate Start, preferences, and responsive menus. Visual checks use the bundled game in a landscape browser preview; they do not establish phone GPU performance.
 
