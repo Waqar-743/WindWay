@@ -80,28 +80,6 @@ function Arrow({ diagonal = false }: { diagonal?: boolean }) {
   return <svg className="wl-arrow" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d={diagonal ? 'M5 19 19 5M5 5h14v14' : 'M4 12h16m-6-6 6 6-6 6'} stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" /></svg>;
 }
 
-function HeroPostcard() {
-  return <figure className="wl-postcard" aria-label="A winding road connects Windway’s alpine valley, tropical jungle, and snowy summit, with an orange open-wheel car ready to go.">
-    <svg className="wl-postcard-road" viewBox="0 0 620 570" fill="none" aria-hidden="true">
-      <path d="M-30 440c120 80 284 36 273-43-11-83-142-44-139-127 2-61 146-43 222-36 126 12 189-33 165-110-15-49-73-58-123-62" stroke="#68786c" strokeWidth="67" strokeLinecap="round" />
-      <path d="M-30 440c120 80 284 36 273-43-11-83-142-44-139-127 2-61 146-43 222-36 126 12 189-33 165-110-15-49-73-58-123-62" stroke="#f7f3e7" strokeWidth="2" strokeDasharray="11 12" />
-      <path d="M295 570c-48-85 112-121 131-208" stroke="#a9c8c1" strokeWidth="35" />
-    </svg>
-    <Illustration pack="cartoon-pack" name="mountain-range" className="wl-pc-alpine" eager />
-    <Illustration pack="cartoon-pack" name="pine-tree" className="wl-pc-pine" eager />
-    <Illustration pack="jungle-pack" name="broadleaf-tree" className="wl-pc-jungle" eager />
-    <Illustration pack="jungle-pack" name="giraffe" className="wl-pc-giraffe" eager />
-    <Illustration pack="snow-pack" name="snowy-mountain" className="wl-pc-summit" eager />
-    <Illustration pack="snow-pack" name="snowy-tree" className="wl-pc-snowtree" eager />
-    <Illustration pack="snow-pack" name="snowman" className="wl-pc-snowman" eager />
-    <Illustration pack="cartoon-pack" name="formula-racer" className="wl-pc-car" eager />
-    <span className="wl-pc-note wl-pc-note-alpine">01 / Find your feet.</span>
-    <span className="wl-pc-note wl-pc-note-jungle">02 / Get a little lost.</span>
-    <span className="wl-pc-note wl-pc-note-snow">03 / Earn the view.</span>
-    <figcaption>THE LONG WAY IS THE WHOLE POINT.</figcaption>
-  </figure>;
-}
-
 function ChapterScene({ story }: { story: RoadStory }) {
   const alpine = story.id === 'alpine', snow = story.id === 'snow';
   return <figure className={`wl-chapter-scene wl-scene-${story.id}`} aria-label={alpine ? 'An alpine road, wooden bridge, pine trees, and a mountain goat.' : snow ? 'A winding snow-covered mountain ascent, snowman, icy road warning, and summit flag.' : 'A road among dense tropical trees, a lion, giraffe, and ranger station.'}>
@@ -169,8 +147,20 @@ export default function LandingStory({ selectedMap, selectedCarName, onChooseMap
     </header>
     <main id="windway-main">
       <section className="wl-hero" aria-labelledby="windway-title">
-        <div className="wl-hero-copy"><p className="wl-kicker">A SMALL BROWSER GAME. A VERY LONG WAY HOME.</p><h1 id="windway-title" data-page-title tabIndex={-1}>Three roads.<br />One very good<br /><span>bad idea.</span></h1><p className="wl-hero-intro">A fast car, a cartoon world, and a road that keeps asking, <q>what’s around the next bend?</q></p><p className="wl-hero-detail">Drive the valley. Get lost in the canopy. Earn the snowy summit. Windway is a little escape made for the joy of taking the long way.</p><button type="button" className="wl-drive wl-hero-drive" onClick={() => onExploreMap(chosen.id)}>Explore {chosen.name}<Arrow diagonal /></button><button type="button" className="wl-garage-link" onClick={onGarage}>Your ride: {selectedCarName}<span>Change car<Arrow /></span></button><p className="wl-browser-note">Plays in your browser · Keyboard or touch controls</p></div>
-        <HeroPostcard />
+        <picture className="wl-hero-backdrop" aria-hidden="true">
+          <source type="image/webp" srcSet={`${import.meta.env.BASE_URL}branding/windway-hero-jungle-640.webp 640w, ${import.meta.env.BASE_URL}branding/windway-hero-jungle-1024.webp 1024w, ${import.meta.env.BASE_URL}branding/windway-hero-jungle.webp 1672w`} sizes="100vw" />
+          <img src={`${import.meta.env.BASE_URL}branding/windway-hero-jungle.jpg`} width="1672" height="941" alt="" loading="eager" {...{ fetchpriority: 'high' }} decoding="async" draggable={false} />
+        </picture>
+        <div className="wl-hero-copy">
+          <h1 className="wl-sr-only" id="windway-title" data-page-title tabIndex={-1}>Windway. Your road. Your pace.</h1>
+          <p className="wl-kicker">THREE ROADS. TWO CARS. ONE WAY TO ESCAPE.</p>
+          <p className="wl-hero-intro">Mountain bends, jungle roads, and a snowy summit. Find your next favorite drive.</p>
+          <div className="wl-hero-actions">
+            <button type="button" className="wl-drive wl-hero-drive" onClick={() => onExploreMap(chosen.id)}>Explore {chosen.name}<Arrow diagonal /></button>
+            <button type="button" className="wl-garage-link" onClick={onGarage} aria-label={`Choose your car. Selected car: ${selectedCarName}`}>Choose your car<Arrow /></button>
+          </div>
+          <p className="wl-browser-note">Play in your browser · Keyboard or touch controls</p>
+        </div>
       </section>
 
       <section className="wl-route-picker" id="the-roads" aria-labelledby="roads-title">
