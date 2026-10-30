@@ -195,7 +195,7 @@ for (const selectedMap of ['alpine', 'jungle', 'snow']) {
       assert(active[0][1].toLowerCase().includes(selectedName.toLowerCase()), 'Wrong map is marked selected');
     }
   });
-  check(`${selectedMap} hero opens map details without starting a race`, () => {
+  check(`${selectedMap} hero starts the selected road`, () => {
     const calls = [];
     const tree = LandingStory({
       selectedMap, selectedCarName: 'McLaren MCL38', onChooseMap: noop, onGarage: noop,
@@ -213,14 +213,14 @@ for (const selectedMap of ['alpine', 'jungle', 'snow']) {
     }
     const hero = find(tree, (node) => node.type === 'button' && node.props.className?.split(' ').includes('wl-hero-drive'));
     assert(hero, 'Missing primary hero button');
-    assert(renderToStaticMarkup(hero).includes('Explore '), 'Hero must describe the map-details action');
+    assert(renderToStaticMarkup(hero).includes('Start your drive'), 'Hero must describe the direct-drive action');
     hero.props.onClick();
-    assert.deepEqual(calls, [['explore', selectedMap]], 'Hero must explore the selected map, not start driving');
+    assert.deepEqual(calls, [['start', selectedMap]], 'Hero must start the selected road');
     const drive = find(tree, (node) => node.type === 'section' && node.props.className === 'wl-last-call');
     const button = find(drive, (node) => node.type === 'button');
     assert(button, 'Missing direct-drive shortcut');
     button.props.onClick();
-    assert.deepEqual(calls, [['explore', selectedMap], ['start', selectedMap]], 'Explicit drive shortcuts should still start the selected road');
+    assert.deepEqual(calls, [['start', selectedMap], ['start', selectedMap]], 'Both drive shortcuts should start the selected road');
   });
 }
 

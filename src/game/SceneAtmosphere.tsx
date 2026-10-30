@@ -4,7 +4,7 @@ import * as THREE from 'three';
 import { seededRandom } from './track';
 
 const atmospheres = {
-  alpine: { zenith: '#286b98', horizon: '#9dbbb4', ground: '#334e3b', fog: '#9dbbb4', near: 210, far: 680 },
+  alpine: { zenith: '#4a97cc', horizon: '#d2e5e9', ground: '#728c65', fog: '#d2e5e9', near: 310, far: 1000 },
   jungle: { zenith: '#285d70', horizon: '#6e9988', ground: '#193d2d', fog: '#6e9988', near: 100, far: 430 },
   snow: { zenith: '#285e8e', horizon: '#a2bccb', ground: '#718a9b', fog: '#a2bccb', near: 380, far: 1900 },
 };

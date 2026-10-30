@@ -1,7 +1,7 @@
 import * as THREE from 'three';
 
 export let ROAD_WIDTH = 14;
-export let TRACK_SEGMENTS = 360;
+export let TRACK_SEGMENTS = 720;
 export let TRACK_CLOSED = true;
 export const ALPINE_POINTS = [
   new THREE.Vector3(0, 1.1, 119),
@@ -14,7 +14,7 @@ export const ALPINE_POINTS = [
   new THREE.Vector3(-140, 1.4, -20),
   new THREE.Vector3(-111, 1.2, 63),
   new THREE.Vector3(-61, 1.1, 105),
-];
+].map((point) => point.multiplyScalar(2));
 export let trackCurve = new THREE.CatmullRomCurve3(ALPINE_POINTS, true, 'catmullrom', 0.35);
 
 export function trackFrame(progress: number) {
@@ -78,8 +78,7 @@ export function ribbonGeometry(width: number, offset = 0, lift = 0, from = 0, to
   return geometry;
 }
 
-export let MAP_PATH = TRACK_POINTS.filter((_, index) => index % 3 === 0)
-  .map(({ point }, index) => `${index ? 'L' : 'M'}${(point.x * 0.57 + 100).toFixed(1)},${(point.z * 0.57 + 100).toFixed(1)}`).join(' ') + 'Z';
+export let MAP_PATH = '';
 
 export function seededRandom(seed: number) {
   let value = seed >>> 0;
@@ -87,8 +86,18 @@ export function seededRandom(seed: number) {
 }
 
 export let START = trackFrame(0);
-let mapProjection = { scale: 0.57, x: 100, z: 100 };
+let mapProjection = { scale: 0.285, x: 100, z: 100 };
 export function trackMapPoint(x: number, z: number) { return { x: x * mapProjection.scale + mapProjection.x, y: z * mapProjection.scale + mapProjection.z }; }
+
+function updateMapProjection() {
+  const xs = TRACK_POINTS.map(({ point }) => point.x), zs = TRACK_POINTS.map(({ point }) => point.z);
+  const minX = Math.min(...xs), maxX = Math.max(...xs), minZ = Math.min(...zs), maxZ = Math.max(...zs);
+  const scale = 172 / Math.max(maxX - minX, maxZ - minZ);
+  mapProjection = { scale, x: 100 - (minX + maxX) / 2 * scale, z: 100 - (minZ + maxZ) / 2 * scale };
+  MAP_PATH = TRACK_POINTS.filter((_, index) => index % 3 === 0)
+    .map(({ point }, index) => { const p = trackMapPoint(point.x, point.z); return `${index ? 'L' : 'M'}${p.x.toFixed(1)},${p.y.toFixed(1)}`; }).join(' ') + (TRACK_CLOSED ? 'Z' : '');
+}
+updateMapProjection();
 
 /** Switch all derived geometry together, before the selected scene remounts. */
 export function setTrackLayout(points: THREE.Vector3[], options: { closed?: boolean; width?: number; segments?: number; gates?: number } = {}) {
@@ -103,13 +112,5 @@ export function setTrackLayout(points: THREE.Vector3[], options: { closed?: bool
   CHECKPOINTS = CHECKPOINT_PROGRESS.map(trackFrame);
   TRACK_LENGTH = trackCurve.getLength();
   START = trackFrame(0);
-  if (TRACK_CLOSED) mapProjection = { scale: 0.57, x: 100, z: 100 };
-  else {
-    const xs = TRACK_POINTS.map(({ point }) => point.x), zs = TRACK_POINTS.map(({ point }) => point.z);
-    const minX = Math.min(...xs), maxX = Math.max(...xs), minZ = Math.min(...zs), maxZ = Math.max(...zs);
-    const scale = 172 / Math.max(maxX - minX, maxZ - minZ);
-    mapProjection = { scale, x: 100 - (minX + maxX) / 2 * scale, z: 100 - (minZ + maxZ) / 2 * scale };
-  }
-  MAP_PATH = TRACK_POINTS.filter((_, index) => index % 3 === 0)
-    .map(({ point }, index) => { const p = trackMapPoint(point.x, point.z); return `${index ? 'L' : 'M'}${p.x.toFixed(1)},${p.y.toFixed(1)}`; }).join(' ') + (TRACK_CLOSED ? 'Z' : '');
+  updateMapProjection();
 }

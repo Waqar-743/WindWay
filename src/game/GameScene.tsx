@@ -52,7 +52,7 @@ function Sunlight({ shadows, shadowMapSize }: { shadows: boolean; shadowMapSize:
     light.current?.position.set(p.x + 35, p.y + 65, p.z + 24);
   });
   return <>
-    <hemisphereLight args={['#afcce5', currentMap.id === 'snow' ? '#536d87' : currentMap.id === 'jungle' ? '#254733' : '#3f5b36', 0.8]} />
+    <hemisphereLight args={['#afcce5', currentMap.id === 'snow' ? '#536d87' : currentMap.id === 'jungle' ? '#254733' : '#82966f', currentMap.id === 'alpine' ? 1 : 0.8]} />
     <directionalLight position={[-30, 18, -50]} color="#87b3d5" intensity={0.35} />
     <directionalLight ref={light} target={target} color="#fff1d0" intensity={2.8} castShadow={shadows}
       shadow-mapSize={[shadowMapSize, shadowMapSize]} shadow-camera-left={-28} shadow-camera-right={28}
@@ -122,7 +122,7 @@ export default function GameScene({ attempt }: { attempt: number }) {
     <Canvas
       shadows={shadows} dpr={quality === 'low' ? 1 : [1, maximumDpr]}
       frameloop={['paused', 'recovering'].includes(status) || ['map', 'settings', 'howto', 'results'].includes(page) ? 'demand' : 'always'}
-      camera={{ fov: 42, near: 0.1, far: map.id === 'snow' ? 4500 : 900, position: [START.point.x + 12, START.point.y + 7, START.point.z + 17] }}
+      camera={{ fov: 42, near: 0.1, far: map.id === 'snow' ? 4500 : map.id === 'alpine' ? 1200 : 900, position: [START.point.x + 12, START.point.y + 7, START.point.z + 17] }}
       gl={{ antialias: quality === 'high' || device.antialias, powerPreference: 'high-performance', stencil: false, toneMapping: THREE.ACESFilmicToneMapping, toneMappingExposure: 0.95 }}
     >
       <SceneAtmosphere mapId={map.id} />

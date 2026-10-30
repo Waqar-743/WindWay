@@ -10,6 +10,8 @@ import { useGame } from './store';
 import { BRIDGE_DECK_SEGMENTS, BRIDGE_SUPPORTS, TRACK_BARRIERS } from './trackBarriers';
 import { currentMap } from './maps';
 import { surfaceTexture, worldSurfaceUV } from './surfaceDetail';
+import AlpineTown from './AlpineTown';
+import { buildAlpineTown, isTownLot, type TownSite } from './alpineVillage';
 
 const INK = '#30483d';
 export function Instances({ points, kind, color, colors }: { points: { position: [number, number, number]; scale: [number, number, number]; rotation?: number }[]; kind: 'cone' | 'box' | 'rock' | 'sphere'; color: string; colors?: string[] }) {
@@ -32,40 +34,40 @@ export function Instances({ points, kind, color, colors }: { points: { position:
   </instancedMesh>;
 }
 
-const Forest = memo(({ low }: { low: boolean }) => {
+const Forest = memo(({ low, sites }: { low: boolean; sites: TownSite[] }) => {
   const trees = useMemo(() => {
     const random = seededRandom(3219); const result = [];
-    for (let i = 0; i < (low ? 260 : 630); i++) {
-      const x = (random() - 0.5) * 590; const z = (random() - 0.5) * 520;
+    for (let i = 0; i < (low ? 380 : 850); i++) {
+      const x = (random() - 0.5) * 900; const z = (random() - 0.5) * 800;
       const size = 0.8 + random() * 1.3;
-      if (Math.abs(z) < 33 || nearestTrackPoint(x, z).distance < 15 || (x > -30 && x < 70 && z > 130 && z < 170)) continue;
+      if (Math.abs(z) < 33 || nearestTrackPoint(x, z).distance < 19 || isTownLot(x, z, sites)) continue;
       result.push({ x, z, size });
     }
     return result;
-  }, [low]);
+  }, [low, sites]);
   const trunks = useMemo(() => trees.map(({ x, z, size }) => ({ position: [x, size * 2, z] as [number, number, number], scale: [size * 0.7, size * 4, size * 0.7] as [number, number, number] })), [trees]);
   const tops = useMemo(() => trees.flatMap(({ x, z, size }) => [0, 1, 2].map((level) => ({ position: [x, size * (3.5 + level * 1.7), z] as [number, number, number], scale: [size * (3.1 - level * 0.65), size * 4.4, size * (3.1 - level * 0.65)] as [number, number, number] }))), [trees]);
-  return <><Instances points={trunks} kind="box" color="#6e5138" /><Instances points={tops} kind="cone" color="#31563d" colors={['#28533b', '#356348', '#47744b', '#567b4b']} /></>;
+  return <><Instances points={trunks} kind="box" color="#6e5138" /><Instances points={tops} kind="cone" color="#31563d" colors={['#47735b', '#5f8663', '#708f66', '#819e6c']} /></>;
 });
 
 const Mountains = memo(() => {
   const mountains = useMemo(() => {
     const random = seededRandom(892);
     return Array.from({ length: 24 }, (_, index) => {
-      const angle = index / 24 * Math.PI * 2; const radius = 340 + random() * 30; const height = 55 + random() * 80;
+      const angle = index / 24 * Math.PI * 2; const radius = 490 + random() * 55; const height = 55 + random() * 80;
       return { x: Math.sin(angle) * radius, z: Math.cos(angle) * radius, height, width: 45 + random() * 38 };
     });
   }, []);
   const bodies = useMemo(() => mountains.map((m) => ({ position: [m.x, m.height / 2 - 9, m.z] as [number, number, number], scale: [m.width, m.height, m.width] as [number, number, number] })), [mountains]);
   const peaks = useMemo(() => mountains.map((m) => ({ position: [m.x, m.height * 0.86 - 9, m.z] as [number, number, number], scale: [m.width * 0.29, m.height * 0.29, m.width * 0.29] as [number, number, number] })), [mountains]);
-  return <><Instances points={bodies} kind="cone" color="#5b7d7c" colors={['#496d70', '#628382', '#76918b']} /><Instances points={peaks} kind="cone" color="#cfddd9" /></>;
+  return <><Instances points={bodies} kind="cone" color="#5b7d7c" colors={['#78929b', '#8da3a6', '#9caeaa']} /><Instances points={peaks} kind="cone" color="#eee9dc" /></>;
 });
 
 function River() {
   const lines = useRef<THREE.Group>(null);
   useFrame(({ clock }) => { if (lines.current) lines.current.position.x = (clock.elapsedTime * 2) % 18; });
   return <group>
-    <mesh rotation={[-Math.PI / 2, 0, 0]} position={[0, -1.05, 0]} receiveShadow><planeGeometry args={[1000, 47]} /><meshStandardMaterial color="#297d8a" roughness={0.27} metalness={0.25} envMapIntensity={0.55} /></mesh>
+    <mesh rotation={[-Math.PI / 2, 0, 0]} position={[0, -1.05, 0]} receiveShadow><planeGeometry args={[1000, 47]} /><meshStandardMaterial color="#49a6b4" roughness={0.27} metalness={0.25} envMapIntensity={0.55} /></mesh>
     <group ref={lines}>
       {Array.from({ length: 45 }, (_, i) => <mesh key={i} rotation={[-Math.PI / 2, 0, 0]} position={[(i % 15) * 28 - 215, -1.025, Math.floor(i / 15) * 12 - 12]}><planeGeometry args={[7 + (i % 3) * 3, 0.25]} /><meshBasicMaterial color="#b7dfd3" transparent opacity={0.6} /></mesh>)}
     </group>
@@ -187,8 +189,8 @@ export const TrackSurface = memo(() => {
   useEffect(() => () => asphalt.dispose(), [asphalt]);
   useEffect(() => () => { road.dispose(); shoulder.dispose(); leftLine.dispose(); rightLine.dispose(); kerbs.forEach((geometry) => geometry.dispose()); }, [road, shoulder, leftLine, rightLine, kerbs]);
   return <>
-    <mesh geometry={shoulder} receiveShadow><meshLambertMaterial color={snow ? '#b9cbd7' : jungle ? '#5e6842' : '#a59065'} /></mesh>
-    <RigidBody type="fixed" colliders="trimesh" friction={0.8}><mesh geometry={road} receiveShadow><meshStandardMaterial color={snow ? '#526779' : jungle ? '#323f3c' : '#3b444b'} map={asphalt} bumpMap={asphalt} bumpScale={0.025} roughness={snow ? 0.62 : 0.91} metalness={0.02} envMapIntensity={0.16} side={THREE.DoubleSide} /></mesh></RigidBody>
+    <mesh geometry={shoulder} receiveShadow><meshLambertMaterial color={snow ? '#b9cbd7' : jungle ? '#5e6842' : '#bdaf8e'} /></mesh>
+    <RigidBody type="fixed" colliders="trimesh" friction={0.8}><mesh geometry={road} receiveShadow><meshStandardMaterial color={snow ? '#526779' : jungle ? '#323f3c' : '#48545e'} map={asphalt} bumpMap={asphalt} bumpScale={0.025} roughness={snow ? 0.62 : 0.91} metalness={0.02} envMapIntensity={0.16} side={THREE.DoubleSide} /></mesh></RigidBody>
     <mesh geometry={leftLine}><meshBasicMaterial color="#f7edcf" /></mesh><mesh geometry={rightLine}><meshBasicMaterial color="#f7edcf" /></mesh>
     {kerbs.map((geometry, index) => <mesh key={index} geometry={geometry} receiveShadow><meshLambertMaterial vertexColors /></mesh>)}
     <Instances points={marks} kind="box" color={snow ? '#e9f4f8' : jungle ? '#d6e8a7' : '#f4d477'} />
@@ -209,17 +211,6 @@ export const TrackSurface = memo(() => {
 });
 function START_MARK(index: number): [number, number, number] { const frame = TRACK_CLOSED ? trackFrame(0) : CHECKPOINTS[CHECKPOINTS.length - 1]; const p = frame.point.clone().addScaledVector(frame.right, (index - 7.5) * ROAD_WIDTH / 16); return [p.x, p.y + 0.045, p.z]; }
 
-function GarageBuilding() {
-  return <group position={[-24, 0, 146]} rotation={[0, Math.PI, 0]}>
-    <mesh position={[0, 3, 0]} castShadow receiveShadow><boxGeometry args={[15, 6, 10]} /><meshLambertMaterial color="#f0dcb7" /></mesh>
-    <mesh position={[0, 6.3, 0]} castShadow><boxGeometry args={[16.5, 0.8, 11]} /><meshLambertMaterial color="#e98254" /></mesh>
-    <mesh position={[0, 2.7, 5.04]}><planeGeometry args={[9, 5.4]} /><meshLambertMaterial color="#486959" /></mesh>
-    {Array.from({ length: 6 }, (_, i) => <mesh key={i} position={[0, 0.6 + i * 0.8, 5.09]}><boxGeometry args={[9, 0.08, 0.12]} /><meshLambertMaterial color="#6e8b75" /></mesh>)}
-    <mesh position={[5.8, 3.4, 5.1]}><planeGeometry args={[1.6, 1.8]} /><meshLambertMaterial color="#a7d2cd" /></mesh>
-    <mesh position={[0, 6.9, 0]}><boxGeometry args={[7, 0.6, 3]} /><meshLambertMaterial color="#f7d674" /></mesh>
-  </group>;
-}
-
 export function JumpRamp() {
   const geometry = useMemo(jumpRampGeometry, []);
   return <group>
@@ -229,23 +220,29 @@ export function JumpRamp() {
 }
 
 export default memo(function World({ low }: { low: boolean }) {
+  const sites = useMemo(buildAlpineTown, []);
   const ground = useMemo(() => { const texture = surfaceTexture('ground'); texture.repeat.set(85, 38); return texture; }, []);
   useEffect(() => () => ground.dispose(), [ground]);
   const rocks = useMemo(() => {
     const random = seededRandom(418); const points = [];
-    for (let i = 0; i < 100; i++) { const x = (random() - 0.5) * 570; const z = (random() - 0.5) * 490; const s = 1 + random() * 3; if (Math.abs(z) > 32 && nearestTrackPoint(x, z).distance > 16) points.push({ position: [x, s * 0.3, z] as [number, number, number], scale: [s, s * 0.65, s * 0.8] as [number, number, number], rotation: random() * Math.PI }); }
+    for (let i = 0; i < 100; i++) { const x = (random() - 0.5) * 900; const z = (random() - 0.5) * 800; const s = 1 + random() * 3; if (Math.abs(z) > 32 && nearestTrackPoint(x, z).distance > 23 && !isTownLot(x, z, sites)) points.push({ position: [x, s * 0.3, z] as [number, number, number], scale: [s, s * 0.65, s * 0.8] as [number, number, number], rotation: random() * Math.PI }); }
     return points;
-  }, []);
+  }, [sites]);
   return <>
     <RigidBody type="fixed" colliders={false}>
       <CuboidCollider position={[0, -1, -236]} args={[480, 1, 212]} friction={0.9} /><CuboidCollider position={[0, -1, 236]} args={[480, 1, 212]} friction={0.9} />
       <CuboidCollider position={[0, -6, 0]} args={[480, 1, 480]} />
     </RigidBody>
-    {[-1, 1].map((side) => <mesh key={side} position={[0, -0.035, side * 236]} rotation={[-Math.PI / 2, 0, 0]} receiveShadow><planeGeometry args={[960, 424]} /><meshLambertMaterial map={ground} color={side > 0 ? '#7b984f' : '#66864b'} /></mesh>)}
-    <Mountains /><Forest low={low} /><Instances points={rocks} kind="rock" color="#6d8176" colors={['#5b706b', '#839080', '#778578']} />
-    <River /><TrackSurface /><CheckpointGates /><GarageBuilding /><JumpRamp />
-    <Goat position={[72, 0, 147]} rotation={-1} /><Goat position={[-81, 0, -139]} rotation={1.8} />
+    {[-1, 1].map((side) => <mesh key={side} position={[0, -0.035, side * 236]} rotation={[-Math.PI / 2, 0, 0]} receiveShadow><planeGeometry args={[960, 424]} /><meshLambertMaterial map={ground} color={side > 0 ? '#92a972' : '#849f70'} /></mesh>)}
+    <Mountains /><Forest low={low} sites={sites} /><Instances points={rocks} kind="rock" color="#6d8176" colors={['#5b706b', '#839080', '#778578']} />
+    <River /><TrackSurface /><CheckpointGates /><AlpineTown sites={sites} /><JumpRamp />
+    <Goat position={[144, 0, 294]} rotation={-1} /><Goat position={[-162, 0, -278]} rotation={1.8} />
     <Eagle /><Eagle offset={2.5} />
-    <CharacterSign name="wild-haired-driver" position={[14, 0, 139]} /><CharacterSign name="crying-driver" position={[-150, 0, 48]} />
+    <CharacterSign name="wild-haired-driver" position={roadsidePosition(0.01, -12)} /><CharacterSign name="crying-driver" position={roadsidePosition(0.79, 12)} />
   </>;
 });
+
+function roadsidePosition(progress: number, offset: number): [number, number, number] {
+  const frame = trackFrame(progress), p = frame.point.clone().addScaledVector(frame.right, offset);
+  return [p.x, p.y, p.z];
+}

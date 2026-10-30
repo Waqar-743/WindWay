@@ -138,7 +138,7 @@ function RoadChapter({ story, selected, onStart }: { story: RoadStory; selected:
   </article>;
 }
 
-export default function LandingStory({ selectedMap, selectedCarName, reducedMotion, onChooseMap, onExploreMap, onStartMap, onGarage }: LandingStoryProps) {
+export default function LandingStory({ selectedMap, selectedCarName, reducedMotion, onChooseMap, onStartMap, onGarage }: LandingStoryProps) {
   const chosen = ROAD_STORIES.find((road) => road.id === selectedMap) ?? ROAD_STORIES[0];
   return <div className="windway-landing">
     <a className="wl-skip" href="#windway-main">Skip to the roads</a>
@@ -154,35 +154,42 @@ export default function LandingStory({ selectedMap, selectedCarName, reducedMoti
           <img src={`${import.meta.env.BASE_URL}branding/windway-hero-jungle.jpg`} width="1672" height="941" alt="" loading="eager" {...{ fetchpriority: 'high' }} decoding="async" draggable={false} />
         </picture>
         <div className="wl-hero-copy">
-          <h1 className="wl-sr-only" id="windway-title" data-page-title tabIndex={-1}>Windway. Your road. Your pace.</h1>
-          <p className="wl-kicker">THREE ROADS. TWO CARS. ONE WAY TO ESCAPE.</p>
-          <p className="wl-hero-intro">Mountain bends, jungle roads, and a snowy summit. Find your next favorite drive.</p>
+          <h1 id="windway-title" data-page-title tabIndex={-1}>The long way<br />is the good way<span>.</span></h1>
+          <p className="wl-kicker">AN ORIGINAL BROWSER DRIVING GAME</p>
+          <p className="wl-hero-intro">Find your line through mountain bends, jungle canopies, and a climb above the clouds.</p>
           <div className="wl-hero-actions">
-            <button type="button" className="wl-drive wl-hero-drive" onClick={() => onExploreMap(chosen.id)}>Explore {chosen.name}<Arrow diagonal /></button>
+            <button type="button" className="wl-drive wl-hero-drive" onClick={() => onStartMap(chosen.id)}>Start your drive<Arrow diagonal /></button>
             <button type="button" className="wl-garage-link" onClick={onGarage} aria-label={`Choose your car. Selected car: ${selectedCarName}`}>Choose your car<Arrow /></button>
           </div>
-          <p className="wl-browser-note">Play in your browser · Keyboard or touch controls</p>
+          <p className="wl-browser-note">Free to play · No download needed</p>
         </div>
       </section>
 
+      <div className="wl-journey-strip" aria-label="Windway at a glance">
+        <div><strong>03</strong><span>distinct roads</span></div>
+        <div><strong>02</strong><span>cars to drive</span></div>
+        <div><strong>∞</strong><span>ways to take the long way</span></div>
+        <a href="#the-roads">Discover the roads <Arrow /></a>
+      </div>
+
       <section className="wl-motion-story" aria-labelledby="motion-title">
         <div className="wl-motion-copy">
-          <p className="wl-kicker">A FEW SECONDS BEHIND THE WHEEL</p>
-          <h2 id="motion-title">Get close.<br />Go far<span className="wl-period">.</span></h2>
-          <p className="wl-body">From the garage to the open road. A little preview of the drive ahead.</p>
+          <p className="wl-kicker">A LITTLE LOOK AT THE DRIVE</p>
+          <h2 id="motion-title">Made for the<br />scenic route<span className="wl-period">.</span></h2>
+          <p className="wl-body">Pick a car, find a road, and enjoy the view. Windway is all about the joy of getting there.</p>
           <button type="button" className="wl-text-link" onClick={onGarage}>Find your ride<Arrow diagonal /></button>
         </div>
         <F1Preview reducedMotion={reducedMotion} />
       </section>
 
       <section className="wl-route-picker" id="the-roads" aria-labelledby="roads-title">
-        <div><p className="wl-kicker">PICK THE FEELING, THEN THE ROAD.</p><h2 id="roads-title">Same keys.<br />Different kind of trouble.</h2><p>All three worlds are right here. Choose your starting line, or keep scrolling to meet the locals.</p><a className="wl-text-link" href={`#road-${chosen.id}`}>Meet {chosen.name}<Arrow /></a></div>
+        <div><p className="wl-kicker">THREE PLACES TO GET LOST</p><h2 id="roads-title">Pick a road.<br />Make it yours.</h2><p>From a gentle valley loop to an icy mountain climb, every route has its own rhythm. Where will you start?</p><a className="wl-text-link" href={`#road-${chosen.id}`}>Meet {chosen.name}<Arrow /></a></div>
         <fieldset><legend>Choose your road</legend>{ROAD_STORIES.map((road) => <button type="button" key={road.id} aria-pressed={chosen.id === road.id} onClick={() => onChooseMap(road.id)}><span className="wl-route-number">{road.number}</span><Illustration pack={road.pack} name={road.badge} /><span className="wl-route-label"><strong>{road.name}</strong><small>{road.id === 'snow' ? 'Expert · One-way summit climb' : `${road.region} · ${road.id === 'jungle' ? 'Two laps' : 'One lap'}`}</small></span><span className="wl-route-mark" aria-hidden="true">{chosen.id === road.id ? <svg viewBox="0 0 24 24" fill="none"><path d="m5 12 4 4L19 6" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" /></svg> : <Arrow />}</span></button>)}</fieldset>
       </section>
 
       {ROAD_STORIES.map((story) => <RoadChapter key={story.id} story={story} selected={chosen.id === story.id} onStart={() => onStartMap(story.id)} />)}
 
-      <section className="wl-garage-story" aria-labelledby="garage-title"><div className="wl-garage-art" aria-hidden="true"><Illustration pack="cartoon-pack" name="garage" /><Illustration pack="cartoon-pack" name="racing-wheel" className="wl-garage-wheel" /></div><div><p className="wl-kicker">THE GARAGE / TWO DIFFERENT ATTITUDES</p><h2 id="garage-title">Pick your partner<br />in the nonsense.</h2><p className="wl-body">The road is half the story. The other half is how you choose to drive it.</p><dl className="wl-car-stories"><div><dt><span>01</span>McLaren MCL38</dt><dd>The firecracker. Lively off the line, quick to respond, and happy to make a little mischief.</dd></div><div><dt><span>02</span>Mercedes-AMG W14</dt><dd>The mountain arrow. Higher grip, stronger braking, and a planted feel through the bends.</dd></div></dl><button type="button" className="wl-drive" onClick={onGarage}>Meet the cars & choose a paint<Arrow /></button></div></section>
+      <section className="wl-garage-story" aria-labelledby="garage-title"><div className="wl-garage-art" aria-hidden="true"><Illustration pack="cartoon-pack" name="garage" /><Illustration pack="cartoon-pack" name="racing-wheel" className="wl-garage-wheel" /></div><div><p className="wl-kicker">THE GARAGE / TWO DIFFERENT ATTITUDES</p><h2 id="garage-title">A car for every<br />kind of corner.</h2><p className="wl-body">Choose your car and paint, then see how it feels on the road.</p><dl className="wl-car-stories"><div><dt><span>01</span>McLaren MCL38</dt><dd>The firecracker. Lively off the line, quick to respond, and happy to make a little mischief.</dd></div><div><dt><span>02</span>Mercedes-AMG W14</dt><dd>The mountain arrow. Higher grip, stronger braking, and a planted feel through the bends.</dd></div></dl><button type="button" className="wl-drive" onClick={onGarage}>Meet the cars & choose a paint<Arrow /></button></div></section>
 
       <section className="wl-first-drive" id="first-drive" aria-labelledby="first-drive-title"><div className="wl-first-heading"><p className="wl-kicker">A QUICK WORD BEFORE YOU GO</p><h2 id="first-drive-title">Less reading.<br />More driving.</h2><Illustration pack="cartoon-pack" name="steering-wheel" /></div><div className="wl-driving-notes"><article><span>01 / GET MOVING</span><h3>Your hands know what to do.</h3><p>On a keyboard, use <kbd>W</kbd><kbd>A</kbd><kbd>S</kbd><kbd>D</kbd> or the arrow keys to accelerate, steer, and brake. Touch controls appear on phones and tablets.</p></article><article><span>02 / MAKE IT COUNT</span><h3>Follow the gates, not just the scenery.</h3><p>Pass checkpoints in order. Complete the lap target in the valley and jungle, or reach the final summit gate on Frostbite Ascent.</p></article><article><span>03 / TAKE ANOTHER SHOT</span><h3>A mistake is not the end of the drive.</h3><p>Fall off the road and checkpoint recovery gets you back into the run. You can also reset the car with <kbd>R</kbd>, and pause with <kbd>Esc</kbd>.</p></article></div></section>
 

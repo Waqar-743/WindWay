@@ -372,3 +372,76 @@
   .wildway.page-home { scroll-behavior: auto; }
   .windway-landing *, .windway-landing *::before, .windway-landing *::after { animation: none !important; transition: none !important; scroll-behavior: auto !important; }
 }
+
+/* Landing refresh: give the artwork space, then make the next step unmistakable. */
+.windway-landing .wl-header { min-height: 82px; }
+.windway-landing .wl-header nav { gap: clamp(22px, 3vw, 42px); }
+.windway-landing .wl-source { font-weight: 600; }
+.windway-landing .wl-hero { display: block; aspect-ratio: auto; background: #17392e; }
+.windway-landing .wl-hero-backdrop { position: relative; inset: auto; height: clamp(390px, 47vw, 660px); }
+.windway-landing .wl-hero-backdrop img { object-position: center 48%; }
+.windway-landing .wl-hero::after { display: none; }
+.windway-landing .wl-hero-copy {
+  display: grid; grid-template-columns: 1.1fr .85fr auto; grid-template-rows: auto auto;
+  column-gap: clamp(30px, 5vw, 80px); align-items: center;
+  width: min(1300px, calc(100% - 88px)); max-width: none; margin: 0 auto;
+  padding: 34px 0 39px;
+}
+.wildway .windway-landing .wl-hero-copy h1 { grid-column: 1; grid-row: 2; font-size: clamp(35px, 3.5vw, 52px); line-height: 1.03; letter-spacing: -.055em; color: #f7f3e7; }
+.windway-landing .wl-hero-copy h1 span { color: #efb96c; }
+.windway-landing .wl-hero .wl-kicker { grid-column: 1 / -1; grid-row: 1; margin-bottom: 12px; font-size: 10px; letter-spacing: 1.7px; }
+.wildway .windway-landing .wl-hero-intro { grid-column: 2; grid-row: 2; margin: 0; max-width: 30ch; font-size: 15px; line-height: 1.7; color: #dce7dc; }
+.windway-landing .wl-hero-actions { grid-column: 3; grid-row: 2; display: grid; gap: 4px; margin: 0; }
+.wildway .windway-landing .wl-hero-drive { min-width: 220px; }
+.windway-landing .wl-garage-link { justify-content: center; }
+.wildway .windway-landing .wl-browser-note { grid-column: 2; grid-row: 3; margin-top: -3px; color: #b8cbbd; }
+.windway-landing .wl-journey-strip { display: grid; grid-template-columns: repeat(3, 1fr) auto; align-items: center; gap: 30px; padding: 30px 8px; border-bottom: 1px solid var(--wl-line); }
+.windway-landing .wl-journey-strip > div { display: flex; align-items: baseline; gap: 10px; }
+.windway-landing .wl-journey-strip strong { font-size: 25px; line-height: 1; font-weight: 600; font-variant-numeric: tabular-nums; letter-spacing: -.04em; }
+.windway-landing .wl-journey-strip span { color: var(--wl-muted); font-size: 12px; }
+.windway-landing .wl-journey-strip > a { display: inline-flex; align-items: center; gap: 12px; font-size: 12px; font-weight: 600; text-decoration: none; }
+.windway-landing .wl-journey-strip .wl-arrow { width: 17px; height: 17px; transition: transform .2s ease; }
+.windway-landing .wl-journey-strip a:hover .wl-arrow { transform: translateX(4px); }
+.windway-landing .wl-motion-story { padding-block: clamp(70px, 8vw, 110px); }
+.windway-landing .wl-route-picker { padding-block: 75px 90px; }
+.wildway .windway-landing .wl-route-picker h2 { font-size: clamp(42px, 4.5vw, 64px); }
+.windway-landing .wl-route-picker fieldset button { cursor: pointer; transition: background-color .2s ease, border-color .2s ease, transform .2s ease; }
+.windway-landing .wl-route-picker fieldset button:hover { transform: translateX(4px); }
+.windway-landing .wl-chapter { padding-top: 38px; }
+.windway-landing .wl-chapter-layout { padding-block: 58px 48px; }
+.windway-landing .wl-chapter-scene, .windway-landing .wl-film-frame { border-radius: 4px; }
+.windway-landing .wl-chapter-copy h2, .windway-landing .wl-route-picker h2, .windway-landing .wl-motion-copy h2 { text-wrap: balance; }
+@media (max-width: 1100px) {
+  .windway-landing .wl-hero-backdrop { height: clamp(340px, 52vw, 560px); aspect-ratio: auto; }
+  .windway-landing .wl-hero-copy { width: calc(100% - 64px); grid-template-columns: 1fr 1fr; gap: 12px 32px; padding: 30px 0 34px; }
+  .wildway .windway-landing .wl-hero-copy h1 { grid-column: 1; grid-row: 2 / span 2; }
+  .windway-landing .wl-hero .wl-kicker { grid-column: 1 / -1; grid-row: 1; margin: 0; }
+  .wildway .windway-landing .wl-hero-intro { grid-column: 2; grid-row: 2; }
+  .windway-landing .wl-hero-actions { grid-column: 2; grid-row: 3; display: flex; margin: 0; }
+  .wildway .windway-landing .wl-browser-note { grid-column: 2; grid-row: 4; margin: 0; }
+}
+@media (max-width: 767px) {
+  .windway-landing .wl-header { min-height: 112px; padding-top: 14px; }
+  .windway-landing .wl-header nav { margin-top: 5px; }
+  .windway-landing .wl-hero-backdrop { height: auto; aspect-ratio: 1672 / 941; }
+  .windway-landing .wl-hero-copy { display: flex; flex-direction: column; align-items: flex-start; width: calc(100% - 40px); padding: 29px 0 34px; gap: 0; }
+  .windway-landing .wl-hero .wl-kicker { order: 0; font-size: 9px; }
+  .wildway .windway-landing .wl-hero-copy h1 { order: 1; margin-top: 12px; font-size: clamp(37px, 10vw, 52px); }
+  .wildway .windway-landing .wl-hero-intro { order: 2; margin-top: 14px; font-size: 15px; max-width: 38ch; }
+  .windway-landing .wl-hero-actions { order: 3; display: flex; width: 100%; margin-top: 20px; gap: 9px 22px; }
+  .wildway .windway-landing .wl-hero-drive { min-width: min(100%, 245px); }
+  .wildway .windway-landing .wl-browser-note { order: 4; margin-top: 12px; font-size: 11px; }
+  .windway-landing .wl-journey-strip { grid-template-columns: repeat(3, 1fr); gap: 16px; padding: 25px 0; }
+  .windway-landing .wl-journey-strip > div { display: grid; gap: 7px; }
+  .windway-landing .wl-journey-strip strong { font-size: 23px; }
+  .windway-landing .wl-journey-strip span { font-size: 10px; line-height: 1.4; }
+  .windway-landing .wl-journey-strip > a { grid-column: 1 / -1; padding-top: 11px; border-top: 1px solid var(--wl-line); min-height: 40px; }
+  .windway-landing .wl-motion-story { padding-block: 58px; }
+  .windway-landing .wl-route-picker { padding-block: 48px 60px; }
+  .wildway .windway-landing .wl-route-picker h2 { font-size: 38px; }
+  .windway-landing .wl-chapter-layout { padding-block: 30px 34px; }
+}
+@media (max-width: 390px) {
+  .windway-landing .wl-hero-copy { width: calc(100% - 32px); }
+  .wildway .windway-landing .wl-hero-copy h1 { font-size: 36px; }
+}
