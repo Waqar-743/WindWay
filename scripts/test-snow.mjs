@@ -27,7 +27,7 @@ state().selectMap('snow');
 check('expert snow route is a long, narrow, one-way climb with a summit finish', () => {
   assert.equal(game.currentMap.id, 'snow'); assert.equal(game.currentMap.mode, 'ascent');
   assert.equal(game.TRACK_CLOSED, false); assert.equal(game.ROAD_WIDTH, 10);
-  assert(game.TRACK_LENGTH > alpineLength * 5);
+  assert(game.TRACK_LENGTH > 6000 && game.TRACK_LENGTH > alpineLength * 3.5);
   assert.equal(game.CHECKPOINTS.length, 17);
   assert(game.trackFrame(1).point.distanceTo(game.START.point) > 1000);
   const top = Math.max(...game.TRACK_POINTS.map(({ point }) => point.y));

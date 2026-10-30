@@ -132,6 +132,26 @@ check('System and explicit reduced-motion settings stop the moving car', () => {
 });
 
 const noop = () => {};
+check('Homepage preview starts with a lazy poster and no video transfer', () => {
+  const html = render(LandingStory, {
+    selectedMap: 'alpine', selectedCarName: 'McLaren MCL38', reducedMotion: true,
+    onChooseMap: noop, onExploreMap: noop, onStartMap: noop, onGarage: noop,
+  });
+  const video = html.match(/<video\b[^>]*>/)?.[0];
+  assert(video, 'Missing driving preview');
+  assert.doesNotMatch(video, /\bsrc=|\bautoPlay\b/i, 'Video must wait for visibility and motion/data preferences');
+  assert.match(video, /preload="none"/);
+  assert.match(video, /\bmuted=""/);
+  assert.match(video, /\bplaysinline=""/i);
+  assert.match(html, /<img\b[^>]*f1-drive-poster\.webp[^>]*loading="lazy"/);
+  assert.match(html, /<button\b[^>]*aria-label="Play driving preview"/);
+});
+check('Homepage video and poster stay within their transfer budgets', () => {
+  for (const [file, budget] of [['f1-drive.mp4', 1_000_000], ['f1-drive-mobile.mp4', 500_000], ['f1-drive-poster.webp', 65_000]]) {
+    const bytes = statSync(resolve('public/media', file)).size;
+    assert(bytes > 0 && bytes <= budget, `${file}: ${bytes} bytes exceeds its ${budget}-byte budget`);
+  }
+});
 const mapNames = ['The alpine loop', 'Canopy Run', 'Frostbite Ascent'];
 for (const selectedMap of ['alpine', 'jungle', 'snow']) {
   const html = render(LandingStory, {
@@ -175,7 +195,7 @@ for (const selectedMap of ['alpine', 'jungle', 'snow']) {
       assert(active[0][1].toLowerCase().includes(selectedName.toLowerCase()), 'Wrong map is marked selected');
     }
   });
-  check(`${selectedMap} hero opens map details without starting a race`, () => {
+  check(`${selectedMap} hero starts the selected road`, () => {
     const calls = [];
     const tree = LandingStory({
       selectedMap, selectedCarName: 'McLaren MCL38', onChooseMap: noop, onGarage: noop,
@@ -193,14 +213,14 @@ for (const selectedMap of ['alpine', 'jungle', 'snow']) {
     }
     const hero = find(tree, (node) => node.type === 'button' && node.props.className?.split(' ').includes('wl-hero-drive'));
     assert(hero, 'Missing primary hero button');
-    assert(renderToStaticMarkup(hero).includes('Explore '), 'Hero must describe the map-details action');
+    assert(renderToStaticMarkup(hero).includes('Start your drive'), 'Hero must describe the direct-drive action');
     hero.props.onClick();
-    assert.deepEqual(calls, [['explore', selectedMap]], 'Hero must explore the selected map, not start driving');
+    assert.deepEqual(calls, [['start', selectedMap]], 'Hero must start the selected road');
     const drive = find(tree, (node) => node.type === 'section' && node.props.className === 'wl-last-call');
     const button = find(drive, (node) => node.type === 'button');
     assert(button, 'Missing direct-drive shortcut');
     button.props.onClick();
-    assert.deepEqual(calls, [['explore', selectedMap], ['start', selectedMap]], 'Explicit drive shortcuts should still start the selected road');
+    assert.deepEqual(calls, [['start', selectedMap], ['start', selectedMap]], 'Both drive shortcuts should start the selected road');
   });
 }
 

@@ -47,7 +47,7 @@ check('checkpoint crossing rejects reverse and out-of-gate shortcuts', () => {
   assert(!crossedGate({ x: 0, z: 2 }, { x: 0, z: 3 }, gate));
 });
 check('closed road mesh is finite, upward facing and matches all gates', () => {
-  assert(TRACK_LENGTH > 700 && TRACK_LENGTH < 1200);
+  assert(TRACK_LENGTH > 1400 && TRACK_LENGTH < 2400);
   assert(trackFrame(0).point.distanceTo(trackFrame(1).point) < 0.001);
   const geometry = ribbonGeometry(14);
   assert([...geometry.attributes.position.array].every(Number.isFinite));

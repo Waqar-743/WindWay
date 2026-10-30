@@ -17,7 +17,7 @@ globalThis.localStorage = {
   setItem: (key, value) => storage.set(key, value),
 };
 const bundle = await build({
-  stdin: { contents: "export * from './src/game/track'; export * from './src/game/maps'; export * from './src/game/driving'; export * from './src/game/config'; export * from './src/game/store'; export * from './src/game/input'; export * from './src/game/vehiclePhysics'; export * from './src/game/trackFeatures'; export * from './src/game/trackBarriers';", resolveDir: process.cwd(), loader: 'ts' },
+  stdin: { contents: "export * from './src/game/track'; export * from './src/game/maps'; export * from './src/game/driving'; export * from './src/game/config'; export * from './src/game/store'; export * from './src/game/input'; export * from './src/game/vehiclePhysics'; export * from './src/game/trackFeatures'; export * from './src/game/trackBarriers'; export * from './src/game/alpineVillage';", resolveDir: process.cwd(), loader: 'ts' },
   bundle: true, write: false, platform: 'node', format: 'cjs', packages: 'external',
   define: { 'import.meta.env.BASE_URL': '"/3D-Car-Design/"', 'import.meta.env.DEV': 'false' },
 });
@@ -51,6 +51,38 @@ check('three maps have distinct themes, routes, asset packs and race targets', (
   for (const field of ['ink', 'paper', 'accent', 'leaf', 'sky', 'road', 'water']) assert.notEqual(alpine.theme[field], jungle.theme[field]);
   assert.notDeepEqual(alpine.points.map((p) => p.toArray()), jungle.points.map((p) => p.toArray()));
   assert.equal(game.mapById('missing-map').id, 'alpine');
+});
+
+check('alpine route is exactly twice as long and its minimap stays inside the view', () => {
+  game.activateMap('alpine');
+  const original = new THREE.CatmullRomCurve3(game.ALPINE_POINTS.map((point) => point.clone().multiplyScalar(0.5)), true, 'catmullrom', 0.35);
+  assert(Math.abs(game.TRACK_LENGTH - original.getLength() * 2) < 0.001);
+  assert.equal(game.ROAD_WIDTH, 14, 'The longer circuit keeps its drivable road width');
+  for (const { point } of game.TRACK_POINTS) {
+    const projected = game.trackMapPoint(point.x, point.z);
+    assert(projected.x >= 13.9 && projected.x <= 186.1 && projected.y >= 13.9 && projected.y <= 186.1);
+  }
+  assert(!game.MAP_PATH.includes('NaN'));
+});
+
+check('alpine neighborhoods include both stations and leave the road and river clear', () => {
+  game.activateMap('alpine');
+  const sites = game.buildAlpineTown(), parts = game.buildTownParts(sites);
+  for (const kind of ['house', 'shop', 'apartment', 'station', 'fuel']) assert(sites.some((site) => site.kind === kind), 'Missing ' + kind);
+  assert(sites.filter((site) => site.side === -1).length >= 10);
+  assert(sites.filter((site) => site.side === 1).length >= 10);
+  assert.deepEqual(game.buildAlpineTown(), sites, 'Lots must stay stable across scene remounts');
+  for (const part of parts.boxes) {
+    assert(part.position.every(Number.isFinite) && part.scale.every((n) => Number.isFinite(n) && n > 0));
+    for (const x of [-part.scale[0] / 2, part.scale[0] / 2]) for (const z of [-part.scale[2] / 2, part.scale[2] / 2]) {
+      const c = Math.cos(part.rotation), s = Math.sin(part.rotation);
+      const px = part.position[0] + x * c + z * s, pz = part.position[2] - x * s + z * c;
+      assert(game.nearestTrackPoint(px, pz).distance > game.ROAD_WIDTH / 2 + 0.5, 'Village scenery intrudes onto the driving line');
+      assert(Math.abs(pz) > 34, 'Village scenery intrudes into a river crossing');
+    }
+  }
+  assert(parts.signs.some((sign) => sign.label === 'VALLEY STATION'));
+  assert(parts.signs.some((sign) => sign.label === 'VALLEY FUEL'));
 });
 
 check('legacy alpine records remain readable and invalid record keys are filtered', () => {

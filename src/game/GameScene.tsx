@@ -15,6 +15,7 @@ import { vehicleFrame } from './runtime';
 import { getRenderQuality } from '../utils/renderQuality';
 import ViewerErrorBoundary from '../components/PanoramicViewer/ViewerErrorBoundary';
 import TrackLoader from './TrackLoader';
+import SceneAtmosphere from './SceneAtmosphere';
 
 function Sunlight({ shadows }: { shadows: boolean }) {
   const light = useRef<THREE.DirectionalLight>(null);
@@ -26,8 +27,9 @@ function Sunlight({ shadows }: { shadows: boolean }) {
     light.current?.position.set(p.x + 35, p.y + 65, p.z + 24);
   });
   return <>
-    <hemisphereLight args={[currentMap.id === 'snow' ? '#f3f8fb' : '#fff9e5', currentMap.id === 'snow' ? '#829db0' : currentMap.id === 'jungle' ? '#4e825e' : '#84a57a', 1.8]} />
-    <directionalLight ref={light} target={target} intensity={2.4} castShadow={shadows}
+    <hemisphereLight args={[currentMap.id === 'alpine' ? '#afcce5' : currentMap.id === 'snow' ? '#f3f8fb' : '#fff9e5', currentMap.id === 'alpine' ? '#82966f' : currentMap.id === 'snow' ? '#829db0' : '#4e825e', currentMap.id === 'alpine' ? 1 : 1.8]} />
+    {currentMap.id === 'alpine' && <directionalLight position={[-30, 18, -50]} color="#87b3d5" intensity={0.35} />}
+    <directionalLight ref={light} target={target} color={currentMap.id === 'alpine' ? '#fff1d0' : '#ffffff'} intensity={currentMap.id === 'alpine' ? 2.8 : 2.4} castShadow={shadows}
       shadow-mapSize={[1024, 1024]} shadow-camera-left={-28} shadow-camera-right={28}
       shadow-camera-top={28} shadow-camera-bottom={-28} shadow-camera-near={1} shadow-camera-far={150}
       shadow-bias={-0.0002} shadow-normalBias={0.04} />
@@ -92,10 +94,12 @@ export default function GameScene({ attempt }: { attempt: number }) {
     <Canvas
       shadows={!low} dpr={low ? 1 : [1, 1.5]}
       frameloop={['paused', 'recovering'].includes(status) || ['map', 'settings', 'howto', 'results'].includes(page) ? 'demand' : 'always'}
-      camera={{ fov: 42, near: 0.1, far: map.id === 'snow' ? 4500 : 900, position: [START.point.x + 12, START.point.y + 7, START.point.z + 17] }}
-      gl={{ antialias: !low, powerPreference: 'high-performance', stencil: false }}
+      camera={{ fov: 42, near: 0.1, far: map.id === 'snow' ? 4500 : map.id === 'alpine' ? 1200 : 900, position: [START.point.x + 12, START.point.y + 7, START.point.z + 17] }}
+      gl={{ antialias: !low, powerPreference: 'high-performance', stencil: false, toneMapping: THREE.ACESFilmicToneMapping, toneMappingExposure: map.id === 'alpine' ? 0.95 : 1 }}
     >
-      <color attach="background" args={[map.theme.sky]} /><fog attach="fog" args={[map.theme.sky, map.id === 'snow' ? 300 : map.id === 'jungle' ? 110 : 230, map.id === 'snow' ? 1700 : map.id === 'jungle' ? 410 : 650]} />
+      <>
+        {map.id === 'alpine' ? <SceneAtmosphere mapId="alpine" /> : <><color attach="background" args={[map.theme.sky]} /><fog attach="fog" args={[map.theme.sky, map.id === 'snow' ? 300 : 110, map.id === 'snow' ? 1700 : 410]} /></>}
+      </>
       <ContextMonitor /><Sunlight shadows={!low} />
       <Suspense fallback={null}>
         <Physics gravity={[0, -18, 0]} timeStep={1 / 60} paused={status !== 'running'} interpolate>

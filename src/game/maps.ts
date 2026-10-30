@@ -14,9 +14,9 @@ export interface GameMap {
 
 export const GAME_MAPS: GameMap[] = [
   { id: 'alpine', name: 'The alpine loop', region: 'Windway Valley',
-    description: 'Open mountain roads, wooden river crossings and a golden boost jump. The original Windway escape.',
+    description: 'A longer alpine escape through colorful village streets, hillside homes and a town station. Cross the river on timber bridges, pass the roadside fuel stop and take the golden boost jump.',
     laps: 1, pack: 'cartoon-pack', character: 'wild-haired-driver',
-    theme: { ink: '#30483d', paper: '#f7f3e7', accent: '#e98254', leaf: '#9aba97', sky: '#d5e5cb', road: '#67776e', water: '#71b8c5' },
+    theme: { ink: '#304c53', paper: '#faf3e5', accent: '#d87958', leaf: '#92af75', sky: '#b9daec', road: '#48545e', water: '#53abb7' },
     points: ALPINE_POINTS },
   { id: 'jungle', name: 'Canopy Run', region: 'Jungle Reserve',
     description: 'Two laps beneath a dense tropical canopy. Find the wildlife, cross jade rivers and launch from the marigold jump.',
@@ -45,7 +45,7 @@ export const gameRecordKey = (mapId: string, carId: string) => mapId === 'alpine
 export let currentMap: GameMap = GAME_MAPS[0];
 export function activateMap(id: string) {
   currentMap = mapById(id);
-  setTrackLayout(currentMap.points, currentMap.mode === 'ascent' ? { closed: false, width: 10, segments: 1200, gates: 17 } : {});
+  setTrackLayout(currentMap.points, currentMap.mode === 'ascent' ? { closed: false, width: 10, segments: 1200, gates: 17 } : currentMap.id === 'alpine' ? { segments: 720 } : {});
   rebuildTrackFeatures();
   rebuildTrackBarriers();
   rebuildSnowCourse();
