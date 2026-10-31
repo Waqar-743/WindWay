@@ -1,3 +1,5 @@
+import type { ReactNode } from 'react';
+import { levelFacts } from './levels';
 import './landing-story.css';
 import F1Preview from './F1Preview';
 
@@ -6,6 +8,8 @@ type Pack = 'cartoon-pack' | 'jungle-pack' | 'snow-pack';
 
 export interface LandingStoryProps {
   selectedMap: string;
+  selectedLevel?: number;
+  levelSelector?: ReactNode;
   selectedCarName: string;
   reducedMotion?: boolean;
   onChooseMap: (id: string) => void;
@@ -48,7 +52,7 @@ const ROAD_STORIES: RoadStory[] = [
     id: 'jungle', number: '02', name: 'Canopy Run', region: 'Jungle Reserve',
     pack: 'jungle-pack', badge: 'jungle-badge', caption: 'Less open land. More wild company.',
     title: 'Take a breath. The jungle has plenty to say.',
-    description: 'Trade the open valley for a close green canopy. Jade water runs beside the bends, trees crowd the horizon, and the wildlife has the best seats in the reserve. Two laps give you time to learn the road. The marigold ramp gives you a reason to come back.',
+    description: 'Drive between raised timber homes, bamboo longhouses and shaded verandas beneath the tropical canopy. Cross jade rivers, follow the wildlife and choose from six levels of narrow roads and slalom challenges. Two laps make every checkpoint count.',
     invitation: 'Keep the roar on the road. Leave the wildlife to its day.',
     facts: [{ value: '02', label: 'full laps' }, { value: '08', label: 'gates each lap' }, { value: 'Dense', label: 'tropical canopy' }],
     details: [
@@ -118,7 +122,7 @@ function ChapterScene({ story }: { story: RoadStory }) {
   </figure>;
 }
 
-function RoadChapter({ story, selected, onStart }: { story: RoadStory; selected: boolean; onStart: () => void }) {
+function RoadChapter({ story, selected, onStart, level = 0 }: { story: RoadStory; selected: boolean; onStart: () => void; level?: number }) {
   return <article className={`wl-chapter wl-chapter-${story.id}`} id={`road-${story.id}`} aria-labelledby={`title-${story.id}`}>
     <div className="wl-chapter-topline"><span>CHAPTER {story.number}</span><span>{story.caption}</span></div>
     <div className="wl-chapter-layout">
@@ -128,7 +132,7 @@ function RoadChapter({ story, selected, onStart }: { story: RoadStory; selected:
         <h2 id={`title-${story.id}`}>{story.name}<span className="wl-period">.</span></h2>
         <h3>{story.title}</h3>
         <p className="wl-body">{story.description}</p>
-        <dl className="wl-road-facts">{story.facts.map((fact) => <div key={fact.label}><dt>{fact.label}</dt><dd>{fact.value}</dd></div>)}</dl>
+        <dl className="wl-road-facts">{story.facts.map((fact) => <div key={fact.label}><dt>{fact.label}</dt><dd>{fact.label.includes('gates') ? String(levelFacts(story.id, level).gates).padStart(2, '0') : fact.value}</dd></div>)}</dl>
         <div className="wl-road-details">{story.details.map((detail) => <div key={detail.title}><Illustration pack={story.pack} name={detail.icon} /><div><h4>{detail.title}</h4><p>{detail.description}</p></div></div>)}</div>
         <button type="button" className="wl-drive" onClick={onStart}>Drive {story.name}<Arrow diagonal /></button>
         {selected && <span className="wl-selected-caption">Your currently selected road</span>}
@@ -138,7 +142,7 @@ function RoadChapter({ story, selected, onStart }: { story: RoadStory; selected:
   </article>;
 }
 
-export default function LandingStory({ selectedMap, selectedCarName, reducedMotion, onChooseMap, onStartMap, onGarage }: LandingStoryProps) {
+export default function LandingStory({ selectedMap, selectedLevel = 0, levelSelector, selectedCarName, reducedMotion, onChooseMap, onStartMap, onGarage }: LandingStoryProps) {
   const chosen = ROAD_STORIES.find((road) => road.id === selectedMap) ?? ROAD_STORIES[0];
   return <div className="windway-landing">
     <a className="wl-skip" href="#windway-main">Skip to the roads</a>
@@ -165,6 +169,7 @@ export default function LandingStory({ selectedMap, selectedCarName, reducedMoti
         </div>
       </section>
 
+      {levelSelector}
       <div className="wl-journey-strip" aria-label="Windway at a glance">
         <div><strong>03</strong><span>distinct roads</span></div>
         <div><strong>02</strong><span>cars to drive</span></div>
@@ -187,7 +192,7 @@ export default function LandingStory({ selectedMap, selectedCarName, reducedMoti
         <fieldset><legend>Choose your road</legend>{ROAD_STORIES.map((road) => <button type="button" key={road.id} aria-pressed={chosen.id === road.id} onClick={() => onChooseMap(road.id)}><span className="wl-route-number">{road.number}</span><Illustration pack={road.pack} name={road.badge} /><span className="wl-route-label"><strong>{road.name}</strong><small>{road.id === 'snow' ? 'Expert · One-way summit climb' : `${road.region} · ${road.id === 'jungle' ? 'Two laps' : 'One lap'}`}</small></span><span className="wl-route-mark" aria-hidden="true">{chosen.id === road.id ? <svg viewBox="0 0 24 24" fill="none"><path d="m5 12 4 4L19 6" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" /></svg> : <Arrow />}</span></button>)}</fieldset>
       </section>
 
-      {ROAD_STORIES.map((story) => <RoadChapter key={story.id} story={story} selected={chosen.id === story.id} onStart={() => onStartMap(story.id)} />)}
+      {ROAD_STORIES.map((story) => <RoadChapter level={selectedLevel} key={story.id} story={story} selected={chosen.id === story.id} onStart={() => onStartMap(story.id)} />)}
 
       <section className="wl-garage-story" aria-labelledby="garage-title"><div className="wl-garage-art" aria-hidden="true"><Illustration pack="cartoon-pack" name="garage" /><Illustration pack="cartoon-pack" name="racing-wheel" className="wl-garage-wheel" /></div><div><p className="wl-kicker">THE GARAGE / TWO DIFFERENT ATTITUDES</p><h2 id="garage-title">A car for every<br />kind of corner.</h2><p className="wl-body">Choose your car and paint, then see how it feels on the road.</p><dl className="wl-car-stories"><div><dt><span>01</span>McLaren MCL38</dt><dd>The firecracker. Lively off the line, quick to respond, and happy to make a little mischief.</dd></div><div><dt><span>02</span>Mercedes-AMG W14</dt><dd>The mountain arrow. Higher grip, stronger braking, and a planted feel through the bends.</dd></div></dl><button type="button" className="wl-drive" onClick={onGarage}>Meet the cars & choose a paint<Arrow /></button></div></section>
 

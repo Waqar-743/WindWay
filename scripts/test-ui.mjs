@@ -323,4 +323,19 @@ check('preferences use isolated in-memory browser storage', () => {
   assert(['alpine','jungle','snow'].includes(saved.selectedMap));
   assert.equal(saved.telemetry, undefined);
 });
+for (const map of GAME_MAPS) for (let level = 0; level <= 5; level++) check(map.id + ' level ' + level + ': selectable level UI, correct gate count and separate race record', () => {
+  useGame.getState().navigate('home'); useGame.getState().selectLevel(level); prepare(map, 'home');
+  let html = withoutReactComments(render());
+  const picker = elementWithClass(html, 'level-picker'); assert(picker, 'Missing level picker');
+  assert.equal((picker.match(/aria-pressed="true"/g) ?? []).length, 1);
+  assert(picker.includes('Level ' + level));
+  for (let option = 0; option <= 5; option++) assert(picker.includes('aria-label="Level ' + option + ':'));
+  const gates = (map.id === 'snow' ? 16 : 8) + level * 2; assert(picker.includes(gates + ' gates'));
+  const key = gameRecordKey(map.id, GAME_CARS[0].id, level);
+  prepare(map, 'race', { bestTimes: { [key]: 78.9 } }); html = withoutReactComments(render());
+  assert(html.includes('LEVEL ' + level)); assert(html.includes('BEST ' + formatTime(78.9)));
+  assert(html.includes(' / ' + gates));
+});
+useGame.getState().navigate('home'); useGame.getState().selectLevel(0);
+
 console.log(`\n${checks} headless UI checks passed. These do not replace browser layout or driving tests.`);
