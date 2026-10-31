@@ -17,7 +17,7 @@ globalThis.localStorage = {
   setItem: (key, value) => storage.set(key, value),
 };
 const bundle = await build({
-  stdin: { contents: "export * from './src/game/track'; export * from './src/game/maps'; export * from './src/game/driving'; export * from './src/game/config'; export * from './src/game/store'; export * from './src/game/input'; export * from './src/game/vehiclePhysics'; export * from './src/game/trackFeatures'; export * from './src/game/trackBarriers'; export * from './src/game/alpineVillage';", resolveDir: process.cwd(), loader: 'ts' },
+  stdin: { contents: "export * from './src/game/track'; export * from './src/game/maps'; export * from './src/game/driving'; export * from './src/game/config'; export * from './src/game/store'; export * from './src/game/input'; export * from './src/game/vehiclePhysics'; export * from './src/game/trackFeatures'; export * from './src/game/trackBarriers'; export * from './src/game/alpineVillage'; export * from './src/game/jungleSettlement';", resolveDir: process.cwd(), loader: 'ts' },
   bundle: true, write: false, platform: 'node', format: 'cjs', packages: 'external',
   define: { 'import.meta.env.BASE_URL': '"/3D-Car-Design/"', 'import.meta.env.DEV': 'false' },
 });
@@ -83,6 +83,21 @@ check('alpine neighborhoods include both stations and leave the road and river c
   }
   assert(parts.signs.some((sign) => sign.label === 'VALLEY STATION'));
   assert(parts.signs.some((sign) => sign.label === 'VALLEY FUEL'));
+});
+
+check('Canopy Run has distinct tropical homes with clear roads and river crossings', () => {
+  game.activateMap('jungle');
+  const sites = game.buildJungleVillage(), parts = game.buildJungleHouseParts(sites);
+  assert(sites.length >= 12); assert(new Set(sites.map(s => s.color)).size === 3);
+  assert(sites.some(s => s.side < 0) && sites.some(s => s.side > 0));
+  assert.deepEqual(game.buildJungleVillage(), sites);
+  for (const part of parts.boxes) for (const x of [-part.scale[0] / 2, part.scale[0] / 2]) for (const z of [-part.scale[2] / 2, part.scale[2] / 2]) {
+    const c = Math.cos(part.rotation), s = Math.sin(part.rotation);
+    const px = part.position[0] + x * c + z * s, pz = part.position[2] - x * s + z * c;
+    assert(game.nearestTrackPoint(px, pz).distance > game.ROAD_WIDTH / 2 + 1);
+    assert(Math.abs(pz) > 34);
+  }
+  game.activateMap('alpine');
 });
 
 check('legacy alpine records remain readable and invalid record keys are filtered', () => {

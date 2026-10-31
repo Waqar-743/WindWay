@@ -5,6 +5,9 @@ import { CuboidCollider, RigidBody } from '@react-three/rapier';
 import * as THREE from 'three';
 import { nearestTrackPoint, seededRandom, trackFrame } from './track';
 import { CheckpointGates, JumpRamp, TrackSurface } from './World';
+import JungleVillage from './JungleVillage';
+import { buildJungleVillage } from './jungleSettlement';
+import { isTownLot, type TownSite } from './alpineVillage';
 
 type Point = {
   position: [number, number, number];
@@ -86,7 +89,7 @@ function VegetationInstances({ points, kind, color, colors, low = false }: {
   </instancedMesh>;
 }
 
-const DenseJungle = memo(function DenseJungle({ low }: { low: boolean }) {
+const DenseJungle = memo(function DenseJungle({ low, sites }: { low: boolean; sites: TownSite[] }) {
   const foliage = useMemo(() => {
     const random = seededRandom(817420);
     const trunks: Point[] = [], crowns: Point[] = [], fronds: Point[] = [];
@@ -94,7 +97,7 @@ const DenseJungle = memo(function DenseJungle({ low }: { low: boolean }) {
     const station = stationFrame();
     const clearings = wildlife.map((animal) => wildlifePosition(animal.progress, animal.side, animal.width));
     const available = (x: number, z: number, margin: number) => Math.abs(z) > 29
-      && nearestTrackPoint(x, z).distance > margin
+      && nearestTrackPoint(x, z).distance > margin && !isTownLot(x, z, sites, 6)
       && Math.hypot(x - station.x, z - station.z) > 17
       && clearings.every((point) => Math.hypot(x - point.x, z - point.z) > 5.5);
     const treeTarget = low ? 820 : 1470;
@@ -123,7 +126,7 @@ const DenseJungle = memo(function DenseJungle({ low }: { low: boolean }) {
       if (attempt % 13 === 0) rocks.push({ position: [x, size * 0.33, z], scale: [size * 1.4, size * 0.6, size], rotation: [0, angle, 0] });
     }
     return { trunks, crowns, fronds, ferns, vines, rocks };
-  }, [low]);
+  }, [low, sites]);
   return <>
     <VegetationInstances points={foliage.trunks} kind="trunk" color="#775e3d" low={low} />
     <VegetationInstances points={foliage.crowns} kind="canopy" color={LEAF} colors={['#1e6247', '#287451', '#3f8350', '#397747', '#5b9257']} low={low} />
@@ -223,6 +226,7 @@ function FlyingToucans() {
 export default memo(function JungleWorld({ low }: { low: boolean }) {
   // Batch only this selected map's small, actually visible SVG textures. This
   // avoids serial suspense requests without loading either car or the other map.
+  const sites = useMemo(buildJungleVillage, []);
   const textures = useTexture(sceneArtwork);
   useEffect(() => {
     textures.forEach((texture) => {
@@ -236,7 +240,7 @@ export default memo(function JungleWorld({ low }: { low: boolean }) {
       <CuboidCollider position={[0, -6, 0]} args={[480, 1, 480]} restitution={0} />
     </RigidBody>
     {[-1, 1].map((side) => <mesh key={side} position={[0, -0.035, side * 236]} rotation={[-Math.PI / 2, 0, 0]} receiveShadow><planeGeometry args={[960, 424]} /><meshLambertMaterial color={side > 0 ? '#547a42' : '#436d3d'} /></mesh>)}
-    <DenseJungle low={low} /><JungleRiver low={low} />
+    <DenseJungle low={low} sites={sites} /><JungleVillage sites={sites} /><JungleRiver low={low} />
     <TrackSurface /><CheckpointGates /><JumpRamp /><StopStation />
     {wildlife.map((animal) => <JungleBillboard key={animal.name} {...animal} />)}
     <JungleBillboard name="finish-flag" progress={0.99} side={1} width={5.5} height={5.5} lift={0.8} />

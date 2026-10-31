@@ -19,7 +19,7 @@ export const GAME_MAPS: GameMap[] = [
     theme: { ink: '#304c53', paper: '#faf3e5', accent: '#d87958', leaf: '#92af75', sky: '#b9daec', road: '#48545e', water: '#53abb7' },
     points: ALPINE_POINTS },
   { id: 'jungle', name: 'Canopy Run', region: 'Jungle Reserve',
-    description: 'Two laps beneath a dense tropical canopy. Find the wildlife, cross jade rivers and launch from the marigold jump.',
+    description: 'Two laps through a tropical village of stilt houses, bamboo longhouses and shaded verandas. Find the wildlife, cross jade rivers and launch from the marigold jump.',
     laps: 2, pack: 'jungle-pack', character: 'waqar',
     theme: { ink: '#153c35', paper: '#e9efda', accent: '#eac35a', leaf: '#287451', sky: '#b7d1b7', road: '#465e50', water: '#3b9a8e' },
     points: [[0, 1.2, 119], [90, 2.4, 120], [154, 3.5, 62], [123, 5, -10],
