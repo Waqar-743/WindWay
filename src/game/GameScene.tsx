@@ -86,11 +86,12 @@ export default function GameScene({ attempt }: { attempt: number }) {
   const returnPage = useGame((state) => state.returnPage); const runId = useGame((state) => state.runId);
   const quality = useGame((state) => state.settings.quality);
   const selectedMap = useGame((state) => state.selectedMap); const map = mapById(selectedMap);
+  const selectedLevel = useGame((state) => state.selectedLevel);
   const device = useMemo(getRenderQuality, []);
   const low = quality === 'low' || (quality === 'auto' && device.dpr[1] === 1);
   const racing = page === 'race' || page === 'results' || (['settings', 'howto'].includes(page) && returnPage === 'race' && status === 'paused');
   const error = useCallback((issue: Error) => useGame.getState().setError(issue.message || 'The valley could not load. Please try again.'), []);
-  return <><ViewerErrorBoundary key={`${attempt}-${selectedMap}`} resetKey={`${attempt}-${selectedMap}`} onError={error}>
+  return <><ViewerErrorBoundary key={`${attempt}-${selectedMap}-${selectedLevel}`} resetKey={`${attempt}-${selectedMap}`} onError={error}>
     <Canvas
       shadows={!low} dpr={low ? 1 : [1, 1.5]}
       frameloop={['paused', 'recovering'].includes(status) || ['map', 'settings', 'howto', 'results'].includes(page) ? 'demand' : 'always'}

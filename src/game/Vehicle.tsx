@@ -4,7 +4,7 @@ import { CuboidCollider, RigidBody, useBeforePhysicsStep, useRapier, type Rapier
 import * as THREE from 'three';
 import CarVisual, { type CarMotion } from './CarVisual';
 import { carById } from './config';
-import { CHECKPOINTS, ROAD_WIDTH, TRACK_CLOSED, TRACK_LENGTH, nearestTrackPoint, trackFrame } from './track';
+import { CHECKPOINTS, CHECKPOINT_PROGRESS, roadHalfWidthAt, ROAD_WIDTH, TRACK_CLOSED, TRACK_LENGTH, nearestTrackPoint, trackFrame } from './track';
 import { snowDrivingOffset, surfaceAt } from './snowCourse';
 import { advanceRaceGate, crossedGate } from './driving';
 import { currentMap } from './maps';
@@ -93,7 +93,7 @@ export default function Vehicle() {
     }
     state.wasGrounded = grounded;
     const gateIndex = TRACK_CLOSED ? (state.checkpoint + 1) % CHECKPOINTS.length : Math.min(CHECKPOINTS.length - 1, state.checkpoint + 1);
-    if (crossedGate(state.previous, position, CHECKPOINTS[gateIndex], ROAD_WIDTH / 2 + 1) && Math.abs(position.y - CHECKPOINTS[gateIndex].point.y) < 3) {
+    if (crossedGate(state.previous, position, CHECKPOINTS[gateIndex], roadHalfWidthAt(CHECKPOINT_PROGRESS[gateIndex]) + 0.5) && Math.abs(position.y - CHECKPOINTS[gateIndex].point.y) < 3) {
       const next = advanceRaceGate(state.checkpoint, state.lap, currentMap.laps, TRACK_CLOSED, CHECKPOINTS.length);
       const newLap = next.lap !== state.lap;
       state.checkpoint = next.checkpoint; state.lap = next.lap;

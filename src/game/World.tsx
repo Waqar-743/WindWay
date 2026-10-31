@@ -3,7 +3,7 @@ import { useFrame, useThree } from '@react-three/fiber';
 import { Billboard, useTexture } from '@react-three/drei';
 import { CuboidCollider, RigidBody } from '@react-three/rapier';
 import * as THREE from 'three';
-import { CHECKPOINTS, ROAD_WIDTH, TRACK_CLOSED, TRACK_POINTS, nearestTrackPoint, ribbonGeometry, seededRandom, trackFrame } from './track';
+import { CHECKPOINTS, CHECKPOINT_PROGRESS, roadHalfWidthAt, ROAD_WIDTH, TRACK_CLOSED, TRACK_POINTS, nearestTrackPoint, ribbonGeometry, seededRandom, trackFrame } from './track';
 import { BOOST_JUMP, JUMP_STRIPES, jumpRampGeometry } from './trackFeatures';
 import { art } from './config';
 import { useGame } from './store';
@@ -141,6 +141,7 @@ export function CheckpointGates() {
     }
   });
   return <group>{CHECKPOINTS.map(({ point, yaw }, index) => {
+    const gateWidth = roadHalfWidthAt(CHECKPOINT_PROGRESS[index]) * 2 + 2.2;
     const active = index === (TRACK_CLOSED ? (checkpoint + 1) % CHECKPOINTS.length : Math.min(CHECKPOINTS.length - 1, checkpoint + 1));
     const finish = TRACK_CLOSED ? index === 0 : index === CHECKPOINTS.length - 1;
     return <group key={index} position={point} rotation={[0, yaw, 0]}>
@@ -184,6 +185,8 @@ export const TrackSurface = memo(() => {
   const bridgePlanks = useMemo(() => BRIDGE_DECK_SEGMENTS.map(({ position, yaw, halfExtents }) => ({ position, rotation: yaw, scale: halfExtents.map((value) => value * 2) as [number, number, number] })), []);
   const bridgeWalls = useMemo(() => TRACK_BARRIERS.filter(({ kind }) => kind === 'bridge').map(({ position, yaw, halfExtents }) => ({ position, rotation: yaw, scale: halfExtents.map((value) => value * 2) as [number, number, number] })), []);
   const bridgeCaps = useMemo(() => TRACK_BARRIERS.filter(({ kind }) => kind === 'bridge').map(({ position, yaw, halfExtents }) => ({ position: [position[0], position[1] + halfExtents[1] + 0.06, position[2]] as [number, number, number], rotation: yaw, scale: [0.72, 0.12, halfExtents[2] * 2] as [number, number, number] })), []);
+  const challengeWalls = useMemo(() => TRACK_BARRIERS.filter(({ kind }) => kind === 'challenge').map(({ position, yaw, halfExtents }) => ({ position, rotation: yaw, scale: halfExtents.map(value => value * 2) as [number, number, number] })), []);
+  const challengeStripes = useMemo(() => TRACK_BARRIERS.filter(({ kind }) => kind === 'challenge').flatMap(({ position, yaw, halfExtents }) => Array.from({ length: 5 }, (_, i) => { const x = (i - 2) * halfExtents[0] * 0.38; return { position: [position[0] + Math.cos(yaw) * x, position[1] + 0.1, position[2] - Math.sin(yaw) * x] as [number, number, number], rotation: yaw, scale: [halfExtents[0] * 0.15, 1.05, 1.64] as [number, number, number] }; })), []);
   const roadsideWalls = useMemo(() => TRACK_BARRIERS.filter(({ kind }) => kind === 'roadside').map(({ position, yaw, halfExtents }) => ({ position, rotation: yaw, scale: halfExtents.map((value) => value * 2) as [number, number, number] })), []);
   const roadsideStripes = useMemo(() => TRACK_BARRIERS.filter(({ kind }) => kind === 'roadside').map(({ position, yaw, halfExtents }) => ({ position: [position[0], position[1] + 0.1, position[2]] as [number, number, number], rotation: yaw, scale: [0.72, 0.28, halfExtents[2] * 2 + 0.05] as [number, number, number] })), []);
   useEffect(() => () => asphalt.dispose(), [asphalt]);
@@ -193,6 +196,7 @@ export const TrackSurface = memo(() => {
     <RigidBody type="fixed" colliders="trimesh" friction={0.8}><mesh geometry={road} receiveShadow><meshStandardMaterial color={snow ? '#526779' : jungle ? '#323f3c' : '#48545e'} map={asphalt} bumpMap={asphalt} bumpScale={0.025} roughness={snow ? 0.62 : 0.91} metalness={0.02} envMapIntensity={0.16} side={THREE.DoubleSide} /></mesh></RigidBody>
     <mesh geometry={leftLine}><meshBasicMaterial color="#f7edcf" /></mesh><mesh geometry={rightLine}><meshBasicMaterial color="#f7edcf" /></mesh>
     {kerbs.map((geometry, index) => <mesh key={index} geometry={geometry} receiveShadow><meshLambertMaterial vertexColors /></mesh>)}
+    <Instances points={challengeWalls} kind="box" color="#d77d50" /><Instances points={challengeStripes} kind="box" color="#fff0ce" />
     <Instances points={marks} kind="box" color={snow ? '#e9f4f8' : jungle ? '#d6e8a7' : '#f4d477'} />
     <Instances points={bridgePlanks} kind="box" color={jungle ? '#8b9564' : '#b98e60'} />
     <Instances points={bridgeWalls} kind="box" color={jungle ? '#287451' : '#a67d53'} />

@@ -8,7 +8,7 @@
     "build": "tsc && vite build",
     "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
     "preview": "vite preview",
-    "test:game": "node --max-semi-space-size=4 scripts/test-game.mjs && node --max-semi-space-size=4 scripts/test-barriers.mjs && node --max-semi-space-size=4 scripts/test-barriers.mjs --map=jungle && node --max-semi-space-size=4 scripts/test-maps.mjs && node --max-semi-space-size=4 scripts/test-snow.mjs && node --max-semi-space-size=4 scripts/test-ui.mjs && node --max-semi-space-size=4 scripts/test-hud-layout.mjs",
+    "test:game": "node --max-semi-space-size=4 scripts/test-game.mjs && node --max-semi-space-size=4 scripts/test-barriers.mjs && node --max-semi-space-size=4 scripts/test-barriers.mjs --map=jungle && node --max-semi-space-size=4 scripts/test-maps.mjs && node --max-semi-space-size=4 scripts/test-snow.mjs && node --max-semi-space-size=4 scripts/test-ui.mjs && node --max-semi-space-size=4 scripts/test-hud-layout.mjs && npm run test:levels",
     "test:barriers": "node --max-semi-space-size=4 scripts/test-barriers.mjs",
     "test:maps": "node --max-semi-space-size=4 scripts/test-maps.mjs",
     "test:ui": "node --max-semi-space-size=4 scripts/test-ui.mjs",
@@ -16,7 +16,8 @@
     "test:hud": "node --max-semi-space-size=4 scripts/test-hud-layout.mjs",
     "test:site": "node --max-semi-space-size=4 scripts/test-site.mjs",
     "test:build": "node --max-semi-space-size=4 scripts/test-build.mjs",
-    "optimize:models": "node scripts/optimize-models.mjs"
+    "optimize:models": "node scripts/optimize-models.mjs",
+    "test:levels": "node --max-semi-space-size=4 scripts/test-levels.mjs"
   },
   "dependencies": {
     "@react-three/drei": "^9.92.7",

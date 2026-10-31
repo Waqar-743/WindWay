@@ -3,8 +3,8 @@ import type { RapierContext, RapierRigidBody } from '@react-three/rapier';
 import { driveVelocity, type DrivingInput } from './driving';
 import type { GameCar } from './config';
 import { CHECKPOINT_PROGRESS, nearestTrackPoint, ROAD_WIDTH, TRACK_CLOSED, TRACK_LENGTH, trackFrame } from './track';
-import { surfaceAt } from './snowCourse';
-import { getDriveableHalfWidth } from './trackBarriers';
+import { surfaceAt, SNOW_HURDLES } from './snowCourse';
+import { getDriveableHalfWidth, TRACK_BARRIERS } from './trackBarriers';
 import { BOOST_JUMP, jumpSample } from './trackFeatures';
 
 export const PHYSICS_STEP = 1 / 60;
@@ -19,7 +19,19 @@ export function getRespawnPose(checkpoint: number, initial = false) {
   const earned = Math.max(0, Math.min(CHECKPOINT_PROGRESS.length - 1, Math.floor(checkpoint)));
   // Start seven metres behind the line; recover four metres after an earned
   // gate so the player cannot accidentally earn that gate twice.
-  const progress = initial || earned === 0 ? (TRACK_CLOSED ? -7 : 8) / TRACK_LENGTH : CHECKPOINT_PROGRESS[earned] + 4 / TRACK_LENGTH;
+  let progress = initial || earned === 0 ? (TRACK_CLOSED ? -7 : 8) / TRACK_LENGTH : CHECKPOINT_PROGRESS[earned] + 4 / TRACK_LENGTH;
+  // Avoid spawning inside a new slalom block when checkpoint positions change.
+  const nextGate = CHECKPOINT_PROGRESS[earned + 1] ?? 1;
+  for (let attempt = 0; !initial && earned > 0 && attempt < 8; attempt++) {
+    const p = trackFrame(progress).point;
+    const blocked = [...TRACK_BARRIERS, ...SNOW_HURDLES].some(wall => {
+      const dx = p.x - wall.position[0], dz = p.z - wall.position[2], c = Math.cos(wall.yaw), s = Math.sin(wall.yaw);
+      return Math.abs(dx * c - dz * s) < wall.halfExtents[0] + BODY_HALF_EXTENTS[0] + 0.3
+        && Math.abs(dx * s + dz * c) < wall.halfExtents[2] + BODY_HALF_EXTENTS[2] + 0.5;
+    });
+    if (!blocked) break;
+    progress = Math.min(progress + 6 / TRACK_LENGTH, nextGate - 4 / TRACK_LENGTH);
+  }
   const frame = trackFrame(progress);
   return { ...frame, progress: TRACK_CLOSED ? ((progress % 1) + 1) % 1 : Math.min(1, progress), position: { x: frame.point.x, y: frame.point.y + RIDE_HEIGHT, z: frame.point.z } };
 }

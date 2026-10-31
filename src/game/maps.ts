@@ -3,6 +3,7 @@ import { ALPINE_POINTS, setTrackLayout } from './track';
 import { rebuildTrackBarriers } from './trackBarriers';
 import { rebuildTrackFeatures } from './trackFeatures';
 import { rebuildSnowCourse } from './snowCourse';
+import { activateLevel, checkpointCount } from './levels';
 
 export interface GameMap {
   id: 'alpine' | 'jungle' | 'snow'; name: string; region: string; description: string;
@@ -41,11 +42,12 @@ export const GAME_MAPS: GameMap[] = [
 
 export const mapById = (id: string): GameMap => GAME_MAPS.find((map) => map.id === id) ?? GAME_MAPS[0];
 // Keep pre-existing alpine records readable, with a separate namespace for new maps.
-export const gameRecordKey = (mapId: string, carId: string) => mapId === 'alpine' ? carId : `${mapId}:${carId}`;
+export const gameRecordKey = (mapId: string, carId: string, level = 0) => level > 0 ? `${mapId}:level-${level}:${carId}` : mapId === 'alpine' ? carId : `${mapId}:${carId}`;
 export let currentMap: GameMap = GAME_MAPS[0];
-export function activateMap(id: string) {
+export function activateMap(id: string, level = 0) {
+  activateLevel(level);
   currentMap = mapById(id);
-  setTrackLayout(currentMap.points, currentMap.mode === 'ascent' ? { closed: false, width: 10, segments: 1200, gates: 17 } : currentMap.id === 'alpine' ? { segments: 720 } : {});
+  setTrackLayout(currentMap.points, currentMap.mode === 'ascent' ? { closed: false, width: 10, segments: 1200, gates: checkpointCount(true) } : { segments: currentMap.id === 'alpine' ? 720 : 360, gates: checkpointCount() });
   rebuildTrackFeatures();
   rebuildTrackBarriers();
   rebuildSnowCourse();
