@@ -2,15 +2,21 @@
 .wildway.page-home.calm-motion { scroll-behavior: auto; }
 .wildway.calm-motion .windway-landing * { animation: none !important; transition: none !important; }
 .wildway .windway-landing {
-  --wl-ink: #30483d;
-  --wl-muted: #607064;
-  --wl-paper: #f7f3e7;
-  --wl-line: #d3d9ca;
-  --wl-accent: #bd6848;
+  --wl-ink: #1f362c;
+  --wl-muted: #55685b;
+  --wl-paper: #f8f4e8;
+  --wl-line: #d4dccb;
+  --wl-accent: #d4653b;
+  --wl-card: #f1ede0;
+  --wl-glow: rgba(233, 130, 84, 0.14);
   position: relative;
   width: 100%;
   min-width: 0;
-  background: var(--wl-paper);
+  background-color: var(--wl-paper);
+  background-image:
+    radial-gradient(ellipse 80% 50% at 15% 0%, rgba(255, 250, 235, 0.9), transparent 70%),
+    radial-gradient(ellipse 65% 45% at 88% 35%, rgba(215, 228, 200, 0.45), transparent 70%),
+    radial-gradient(ellipse 75% 50% at 50% 95%, rgba(236, 210, 178, 0.28), transparent 70%);
   color: var(--wl-ink);
   font-family: Outfit, 'Trebuchet MS', sans-serif;
   font-size: 16px;
@@ -51,12 +57,14 @@
 .windway-landing .wl-hero .wl-kicker { color: #f4ce72; font-size: clamp(8px, .72vw, 11px); letter-spacing: 1.5px; }
 .wildway .windway-landing .wl-hero-intro { max-width: 34ch; margin-top: 12px; font-size: clamp(15px, 1.25vw, 20px); line-height: 1.6; color: #f7f3e7; text-wrap: pretty; }
 .windway-landing q::before, .windway-landing q::after { content: none; }
-.windway-landing .wl-drive { display: inline-flex; align-items: center; justify-content: space-between; gap: 28px; min-height: 54px; padding: 15px 21px; background: #e9a178; border: 1.5px solid var(--wl-ink); border-radius: 7px; box-shadow: 0 3px 0 var(--wl-ink); font-size: 14px; font-weight: 600; text-align: left; cursor: pointer; transition: transform .2s ease, background-color .2s ease, box-shadow .2s ease; }
-.windway-landing .wl-drive:hover { background: #efb795; transform: translateY(-2px); box-shadow: 0 5px 0 var(--wl-ink); }
-.windway-landing .wl-drive:active { transform: translateY(2px); box-shadow: 0 1px 0 var(--wl-ink); }
-.windway-landing .wl-hero-actions { display: flex; flex-wrap: wrap; align-items: center; gap: 6px 24px; margin-top: 19px; }
-.wildway .windway-landing .wl-hero-drive { min-width: 260px; max-width: 100%; background: #f4ca65; border-color: #f4ca65; color: #163b2d; box-shadow: none; }
-.windway-landing .wl-hero-drive:hover { background: #ffe099; box-shadow: none; }
+.windway-landing .wl-drive { display: inline-flex; align-items: center; justify-content: space-between; gap: 28px; min-height: 54px; padding: 15px 22px; background: linear-gradient(180deg, #ee9e72 0%, #e18456 100%); color: #1c3128; border: 1.5px solid var(--wl-ink); border-radius: 999px; box-shadow: inset 0 1px 0 rgba(255,255,255,0.45), 0 4px 0 var(--wl-ink), 0 10px 20px -6px rgba(31,54,44,0.22); font-size: 14px; font-weight: 600; text-align: left; cursor: pointer; transition: transform .28s cubic-bezier(0.22, 1, 0.36, 1), background .28s ease, box-shadow .28s cubic-bezier(0.22, 1, 0.36, 1); }
+.windway-landing .wl-drive .wl-arrow { transition: transform .28s cubic-bezier(0.22, 1, 0.36, 1); }
+.windway-landing .wl-drive:hover { background: linear-gradient(180deg, #f5b088 0%, #ea9568 100%); transform: translateY(-2px); box-shadow: inset 0 1px 0 rgba(255,255,255,0.6), 0 6px 0 var(--wl-ink), 0 14px 26px -6px rgba(31,54,44,0.28); }
+.windway-landing .wl-drive:hover .wl-arrow { transform: translate(3px, -2px); }
+.windway-landing .wl-drive:active { transform: translateY(2px); box-shadow: inset 0 1px 0 rgba(255,255,255,0.3), 0 1px 0 var(--wl-ink); }
+.windway-landing .wl-hero-actions { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 24px; margin-top: 19px; }
+.wildway .windway-landing .wl-hero-drive { min-width: 260px; max-width: 100%; background: linear-gradient(180deg, #fae08e 0%, #efc254 100%); border-color: #fae08e; color: #122d22; box-shadow: inset 0 1px 0 rgba(255,255,255,0.7), 0 10px 28px -6px rgba(0, 0, 0, 0.38); }
+.windway-landing .wl-hero-drive:hover { background: linear-gradient(180deg, #ffea9f 0%, #f6ce67 100%); box-shadow: inset 0 1px 0 rgba(255,255,255,0.85), 0 14px 32px -6px rgba(244, 202, 101, 0.35); }
 .windway-landing .wl-hero-drive:active { box-shadow: none; }
 .windway-landing .wl-garage-link { display: inline-flex; align-items: center; gap: 14px; padding: 9px 0; border: 0; background: none; text-align: left; font-size: 13px; line-height: 1.5; color: #f7f3e7; min-height: 44px; cursor: pointer; text-decoration: underline; text-decoration-color: #f7f3e780; text-underline-offset: 5px; transition: color .2s ease; }
 .windway-landing .wl-garage-link:hover { color: #f4ca65; }
@@ -103,17 +111,18 @@
   .windway-landing .wl-film > figcaption { font-size: 9px; }
   .windway-landing .wl-film > figcaption span:last-child { font-size: 7px; }
 }
-.windway-landing .wl-route-picker fieldset { min-width: 0; border: 0; padding: 0; margin: 0; }
-.windway-landing .wl-route-picker legend { font-size: 11px; color: var(--wl-muted); margin-bottom: 12px; }
-.windway-landing .wl-route-picker fieldset button { display: grid; grid-template-columns: 23px 56px 1fr 24px; gap: 16px; align-items: center; text-align: left; width: 100%; padding: 13px 17px; border: 1px solid transparent; border-bottom-color: var(--wl-line); background: transparent; border-radius: 7px; min-height: 88px; }
-.windway-landing .wl-route-picker fieldset button:hover { background: #e9ecde; }
-.windway-landing .wl-route-picker fieldset button[aria-pressed=true] { border-color: var(--wl-ink); background: #e8ebdc; box-shadow: 0 2px 0 #30483d24; }
-.windway-landing .wl-route-number { font-size: 11px; color: #67796a; font-variant-numeric: tabular-nums; }
-.windway-landing .wl-route-picker fieldset img { width: 56px; height: 56px; }
+.windway-landing .wl-route-picker fieldset { min-width: 0; border: 0; padding: 0; margin: 0; display: grid; gap: 10px; }
+.windway-landing .wl-route-picker legend { font-size: 11px; font-weight: 600; letter-spacing: 1px; text-transform: uppercase; color: var(--wl-muted); margin-bottom: 14px; }
+.windway-landing .wl-route-picker fieldset button { display: grid; grid-template-columns: 26px 58px 1fr 28px; gap: 16px; align-items: center; text-align: left; width: 100%; padding: 15px 20px; border: 1.5px solid rgba(31, 54, 44, 0.12); background: rgba(255, 255, 255, 0.45); border-radius: 16px; min-height: 92px; box-shadow: inset 0 1px 0 rgba(255,255,255,0.75), 0 4px 14px -6px rgba(31,54,44,0.08); }
+.windway-landing .wl-route-picker fieldset button:hover { background: rgba(255, 255, 255, 0.78); border-color: rgba(31, 54, 44, 0.28); }
+.windway-landing .wl-route-picker fieldset button[aria-pressed=true] { border-color: var(--wl-ink); background: linear-gradient(135deg, #eef3e3 0%, #e3ebd3 100%); box-shadow: inset 0 1px 0 rgba(255,255,255,0.85), 0 4px 0 var(--wl-ink), 0 12px 24px -8px rgba(31,54,44,0.18); }
+.windway-landing .wl-route-number { font-family: 'JetBrains Mono', ui-monospace, monospace; font-size: 11px; font-weight: 600; color: #5c7161; font-variant-numeric: tabular-nums; }
+.windway-landing .wl-route-picker fieldset img { width: 56px; height: 56px; filter: drop-shadow(0 4px 6px rgba(31,54,44,0.1)); }
 .windway-landing .wl-route-label { min-width: 0; }
-.windway-landing .wl-route-label strong { font-size: 16px; display: block; font-weight: 600; line-height: 1.4; }
-.windway-landing .wl-route-label small { display: block; margin-top: 4px; font-size: 10px; color: var(--wl-muted); }
-.windway-landing .wl-route-mark { display: grid; place-items: center; }
+.windway-landing .wl-route-label strong { font-size: 16px; display: block; font-weight: 700; line-height: 1.35; letter-spacing: -0.02em; }
+.windway-landing .wl-route-label small { display: block; margin-top: 4px; font-size: 11px; color: var(--wl-muted); }
+.windway-landing .wl-route-mark { display: grid; place-items: center; width: 28px; height: 28px; border-radius: 50%; background: rgba(31,54,44,0.06); }
+.windway-landing .wl-route-picker fieldset button[aria-pressed=true] .wl-route-mark { background: var(--wl-ink); color: var(--wl-paper); }
 .windway-landing .wl-route-mark > svg { width: 20px; height: 20px; }
 .windway-landing .wl-chapter { padding: 33px 0 0; border-top: 1px solid var(--wl-line); }
 .windway-landing .wl-chapter-topline { display: flex; justify-content: space-between; align-items: center; gap: 24px; font-size: 10px; letter-spacing: 1.5px; color: var(--wl-muted); padding: 0 8px; }
@@ -134,19 +143,19 @@
 .wildway .windway-landing .wl-road-details h4 { font-size: 14px; font-weight: 600; line-height: 1.5; margin-bottom: 4px; }
 .windway-landing .wl-road-details p { font-size: 13px; line-height: 1.7; color: var(--wl-muted); max-width: 49ch; }
 .windway-landing .wl-selected-caption { display: block; font-size: 10px; color: var(--wl-muted); margin-top: 12px; }
-.windway-landing .wl-chapter-scene { --scene-road: #67776e; --scene-water: #91c6c4; position: relative; aspect-ratio: 1.05; border-radius: 9px; background: #dfe8d2; overflow: hidden; border: 1px solid #becdb2; min-width: 0; isolation: isolate; }
-.windway-landing .wl-scene-location { position: absolute; left: 22px; top: 20px; font-size: 16px; letter-spacing: -.3px; font-weight: 600; z-index: 1; line-height: 1.3; }
-.windway-landing .wl-scene-location > span { display: block; margin-top: 4px; font-size: 7px; letter-spacing: 1.3px; font-weight: 500; }
+.windway-landing .wl-chapter-scene { --scene-road: #5d6f66; --scene-water: #78bdbe; position: relative; aspect-ratio: 1.05; border-radius: 20px; background: radial-gradient(circle at 75% 22%, #f4f7ea 0%, #dde8cf 58%, #cadbc0 100%); overflow: hidden; border: 1.5px solid #b5c6a8; box-shadow: inset 0 1px 0 rgba(255,255,255,0.7), 0 22px 44px -18px rgba(31, 54, 44, 0.2); min-width: 0; isolation: isolate; }
+.windway-landing .wl-scene-location { position: absolute; left: 20px; top: 18px; padding: 8px 14px; border-radius: 12px; background: rgba(248, 244, 232, 0.86); backdrop-filter: blur(8px); border: 1px solid rgba(31, 54, 44, 0.12); font-size: 15px; letter-spacing: -.3px; font-weight: 700; z-index: 2; line-height: 1.25; box-shadow: 0 4px 12px rgba(31,54,44,0.08); }
+.windway-landing .wl-scene-location > span { display: block; margin-top: 3px; font-size: 7px; letter-spacing: 1.4px; font-weight: 600; color: var(--wl-muted); }
 .windway-landing .wl-scene-road { width: 100%; height: 100%; position: absolute; inset: 0; }
-.windway-landing .wl-chapter-scene > img { position: absolute; }
+.windway-landing .wl-chapter-scene > img { position: absolute; filter: drop-shadow(0 8px 14px rgba(24, 42, 34, 0.14)); }
 .windway-landing .wl-scene-backdrop { width: 54%; right: 1%; top: 1%; }
 .windway-landing .wl-scene-tree-one { width: 26%; left: -3%; top: 20%; }
 .windway-landing .wl-scene-tree-two { width: 29%; left: 12%; bottom: 12%; }
 .windway-landing .wl-scene-bridge { width: 23%; top: 35%; right: 17%; transform: rotate(8deg); }
 .windway-landing .wl-scene-animal { width: 27%; right: 5%; bottom: 9%; }
 .windway-landing .wl-scene-bird { width: 22%; left: 10%; top: 4%; transform: rotate(-8deg); }
-.windway-landing .wl-chapter-scene > figcaption { position: absolute; bottom: 0; inset-inline: 0; padding: 13px 17px; font-size: 9px; color: var(--wl-ink); background: #f7f3e7e8; border-top: 1px solid #30483d20; line-height: 1.5; }
-.windway-landing .wl-scene-jungle { --scene-road: #496454; --scene-water: #68aaa0; background: #c8d9b5; border-color: #aec4a0; }
+.windway-landing .wl-chapter-scene > figcaption { position: absolute; bottom: 0; inset-inline: 0; padding: 13px 18px; font-size: 10px; font-weight: 500; color: var(--wl-ink); background: rgba(248, 244, 232, 0.92); backdrop-filter: blur(6px); border-top: 1px solid rgba(31, 54, 44, 0.12); line-height: 1.5; }
+.windway-landing .wl-scene-jungle { --scene-road: #3e594a; --scene-water: #4fa196; background: radial-gradient(circle at 70% 25%, #e2eed0 0%, #c4d8b0 58%, #adc69b 100%); border-color: #9bb88d; }
 .windway-landing .wl-scene-jungle .wl-scene-backdrop { width: 53%; top: -3%; right: -1%; }
 .windway-landing .wl-scene-jungle .wl-scene-tree-one { width: 31%; left: -5%; top: 17%; }
 .windway-landing .wl-scene-jungle .wl-scene-tree-two { width: 40%; left: -2%; bottom: 3%; }
@@ -155,17 +164,17 @@
 .windway-landing .wl-scene-station { width: 25%; left: 33%; bottom: 14%; }
 .windway-landing .wl-scene-jungle .wl-scene-bird { width: 19%; left: 29%; top: 8%; }
 .windway-landing .wl-chapter-jungle .wl-chapter-scene { order: 2; }
-.windway-landing .wl-chapter-jungle .wl-drive { background: #e5c676; }
-.windway-landing .wl-chapter-jungle .wl-drive:hover { background: #edd79e; }
-.windway-landing .wl-scene-snow { --scene-road: #7b98a3; background: #e0edf0; border-color: #bcced3; }
+.windway-landing .wl-chapter-jungle .wl-drive { background: linear-gradient(180deg, #f2d57e 0%, #e2bc58 100%); }
+.windway-landing .wl-chapter-jungle .wl-drive:hover { background: linear-gradient(180deg, #f8e094 0%, #eac86b 100%); }
+.windway-landing .wl-scene-snow { --scene-road: #688795; background: radial-gradient(circle at 75% 20%, #f5fafd 0%, #dcebf2 58%, #c7dce7 100%); border-color: #acc4d0; }
 .windway-landing .wl-scene-snow .wl-scene-backdrop { width: 54%; right: -3%; top: 0; }
 .windway-landing .wl-scene-snow .wl-scene-tree-one { width: 22%; left: 0; top: 14%; }
 .windway-landing .wl-scene-snow .wl-scene-tree-two { width: 27%; left: 1%; bottom: 13%; }
 .windway-landing .wl-scene-snow .wl-scene-animal { width: 23%; right: 5%; bottom: 11%; }
 .windway-landing .wl-scene-flag { width: 17%; top: 2%; right: 27%; }
 .windway-landing .wl-scene-warning { width: 17%; left: 31%; top: 38%; transform: rotate(-7deg); }
-.windway-landing .wl-chapter-snow .wl-drive { background: #e7aa95; }
-.windway-landing .wl-chapter-snow .wl-drive:hover { background: #edc0af; }
+.windway-landing .wl-chapter-snow .wl-drive { background: linear-gradient(180deg, #f0b39e 0%, #e1957d 100%); }
+.windway-landing .wl-chapter-snow .wl-drive:hover { background: linear-gradient(180deg, #f6c3b1 0%, #eaa690 100%); }
 .windway-landing .wl-local-line { display: grid; grid-template-columns: .8fr 1.5fr 1fr; gap: 24px; align-items: center; padding: 0 8px 42px; }
 .windway-landing .wl-local-line > span { font-size: 8px; letter-spacing: 1.2px; color: var(--wl-muted); max-width: 17ch; line-height: 1.7; }
 .windway-landing .wl-local-line > div { display: flex; align-items: end; justify-content: center; gap: 26px; }
@@ -175,7 +184,7 @@
 .windway-landing .wl-local-line > a { display: inline-flex; align-items: center; justify-self: end; gap: 13px; min-height: 44px; font-size: 10px; text-decoration: none; }
 .windway-landing .wl-local-line > a:hover { text-decoration: underline; }
 .windway-landing .wl-local-line > a .wl-arrow { width: 17px; height: 17px; }
-.windway-landing .wl-garage-story { display: grid; grid-template-columns: .8fr 1.2fr; gap: 75px; padding: 82px 48px 90px; border-block: 1px solid var(--wl-line); align-items: center; background: #eeefdf; border-radius: 8px; margin-top: 25px; }
+.windway-landing .wl-garage-story { display: grid; grid-template-columns: .8fr 1.2fr; gap: 75px; padding: 82px 54px 90px; border: 1.5px solid #cbd5be; align-items: center; background: linear-gradient(135deg, #f2f4e6 0%, #e5ebd6 100%); border-radius: 24px; box-shadow: inset 0 1px 0 rgba(255,255,255,0.8), 0 20px 44px -18px rgba(31,54,44,0.14); margin-top: 25px; }
 .windway-landing .wl-garage-art { position: relative; width: 100%; max-width: 320px; justify-self: center; }
 .windway-landing .wl-garage-art > img:first-child { width: 100%; }
 .windway-landing .wl-garage-art .wl-garage-wheel { position: absolute; width: 32%; right: -8%; bottom: 3%; transform: rotate(14deg); }
@@ -213,7 +222,7 @@
 .windway-landing .wl-good-to-know p { font-size: 12px; color: var(--wl-muted); line-height: 1.9; max-width: 56ch; }
 .windway-landing .wl-good-to-know article a { display: inline-flex; align-items: center; gap: 10px; font-size: 11px; min-height: 44px; }
 .windway-landing .wl-good-to-know article .wl-arrow { width: 14px; height: 14px; }
-.windway-landing .wl-last-call { display: grid; grid-template-columns: 80px 1fr auto; gap: 30px; align-items: center; padding: 40px; border: 1px solid #cbd4bc; border-radius: 9px; background: #e6ead8; }
+.windway-landing .wl-last-call { display: grid; grid-template-columns: 80px 1fr auto; gap: 30px; align-items: center; padding: 44px 48px; border: 1.5px solid #c3cfb2; border-radius: 22px; background: linear-gradient(135deg, #ecf1df 0%, #dfe7cf 100%); box-shadow: inset 0 1px 0 rgba(255,255,255,0.8), 0 18px 40px -16px rgba(31,54,44,0.16); }
 .windway-landing .wl-last-call > img { width: 80px; height: 80px; }
 .wildway .windway-landing .wl-last-call h2 { font-size: 38px; letter-spacing: -.05em; line-height: 1.15; margin-top: 8px; }
 .wildway .windway-landing .wl-last-call p:last-child { color: var(--wl-muted); font-size: 11px; margin-top: 7px; }
@@ -377,39 +386,41 @@
 .windway-landing .wl-header { min-height: 82px; }
 .windway-landing .wl-header nav { gap: clamp(22px, 3vw, 42px); }
 .windway-landing .wl-source { font-weight: 600; }
-.windway-landing .wl-hero { display: block; aspect-ratio: auto; background: #17392e; }
-.windway-landing .wl-hero-backdrop { position: relative; inset: auto; height: clamp(390px, 47vw, 660px); }
+.windway-landing .wl-hero { display: block; aspect-ratio: auto; background: linear-gradient(180deg, #0f2920 0%, #16382c 60%, #1c4234 100%); border-bottom: 1px solid rgba(255,255,255,0.08); }
+.windway-landing .wl-hero-backdrop { position: relative; inset: auto; height: clamp(390px, 47vw, 660px); overflow: hidden; }
+.windway-landing .wl-hero-backdrop::after { content: ''; position: absolute; inset: auto 0 0 0; height: 38%; background: linear-gradient(180deg, rgba(22, 56, 44, 0) 0%, rgba(22, 56, 44, 0.92) 88%, #16382c 100%); pointer-events: none; }
 .windway-landing .wl-hero-backdrop img { object-position: center 48%; }
 .windway-landing .wl-hero::after { display: none; }
 .windway-landing .wl-hero-copy {
   display: grid; grid-template-columns: 1.1fr .85fr auto; grid-template-rows: auto auto;
   column-gap: clamp(30px, 5vw, 80px); align-items: center;
   width: min(1300px, calc(100% - 88px)); max-width: none; margin: 0 auto;
-  padding: 34px 0 39px;
+  padding: 34px 0 42px;
 }
-.wildway .windway-landing .wl-hero-copy h1 { grid-column: 1; grid-row: 2; font-size: clamp(35px, 3.5vw, 52px); line-height: 1.03; letter-spacing: -.055em; color: #f7f3e7; }
-.windway-landing .wl-hero-copy h1 span { color: #efb96c; }
-.windway-landing .wl-hero .wl-kicker { grid-column: 1 / -1; grid-row: 1; margin-bottom: 12px; font-size: 10px; letter-spacing: 1.7px; }
-.wildway .windway-landing .wl-hero-intro { grid-column: 2; grid-row: 2; margin: 0; max-width: 30ch; font-size: 15px; line-height: 1.7; color: #dce7dc; }
-.windway-landing .wl-hero-actions { grid-column: 3; grid-row: 2; display: grid; gap: 4px; margin: 0; }
+.wildway .windway-landing .wl-hero-copy h1 { grid-column: 1; grid-row: 2; font-size: clamp(36px, 3.65vw, 54px); line-height: 1.03; letter-spacing: -.055em; color: #faf6eb; text-shadow: 0 2px 18px rgba(0,0,0,0.22); }
+.windway-landing .wl-hero-copy h1 span { color: #f4c868; }
+.windway-landing .wl-hero .wl-kicker { grid-column: 1 / -1; grid-row: 1; margin-bottom: 12px; font-size: 10px; letter-spacing: 2px; color: #f6cf77; }
+.wildway .windway-landing .wl-hero-intro { grid-column: 2; grid-row: 2; margin: 0; max-width: 30ch; font-size: 15px; line-height: 1.7; color: #e2ede2; }
+.windway-landing .wl-hero-actions { grid-column: 3; grid-row: 2; display: grid; gap: 6px; margin: 0; }
 .wildway .windway-landing .wl-hero-drive { min-width: 220px; }
 .windway-landing .wl-garage-link { justify-content: center; }
-.wildway .windway-landing .wl-browser-note { grid-column: 2; grid-row: 3; margin-top: -3px; color: #b8cbbd; }
-.windway-landing .wl-journey-strip { display: grid; grid-template-columns: repeat(3, 1fr) auto; align-items: center; gap: 30px; padding: 30px 8px; border-bottom: 1px solid var(--wl-line); }
-.windway-landing .wl-journey-strip > div { display: flex; align-items: baseline; gap: 10px; }
-.windway-landing .wl-journey-strip strong { font-size: 25px; line-height: 1; font-weight: 600; font-variant-numeric: tabular-nums; letter-spacing: -.04em; }
-.windway-landing .wl-journey-strip span { color: var(--wl-muted); font-size: 12px; }
-.windway-landing .wl-journey-strip > a { display: inline-flex; align-items: center; gap: 12px; font-size: 12px; font-weight: 600; text-decoration: none; }
+.wildway .windway-landing .wl-browser-note { grid-column: 2; grid-row: 3; margin-top: -3px; color: #bed0c2; }
+.windway-landing .wl-journey-strip { display: grid; grid-template-columns: repeat(3, 1fr) auto; align-items: center; gap: 30px; padding: 32px 16px; border-bottom: 1px solid var(--wl-line); background: linear-gradient(90deg, rgba(255,255,255,0.35), rgba(235,241,222,0.45), rgba(255,255,255,0.35)); }
+.windway-landing .wl-journey-strip > div { display: flex; align-items: baseline; gap: 12px; }
+.windway-landing .wl-journey-strip strong { font-family: 'Playfair Display', Georgia, serif; font-style: italic; font-size: 30px; line-height: 1; font-weight: 700; font-variant-numeric: tabular-nums; letter-spacing: -.03em; color: var(--wl-ink); }
+.windway-landing .wl-journey-strip span { color: var(--wl-muted); font-size: 12px; font-weight: 500; }
+.windway-landing .wl-journey-strip > a { display: inline-flex; align-items: center; gap: 12px; font-size: 12px; font-weight: 600; text-decoration: none; padding: 8px 16px; border-radius: 999px; background: rgba(31,54,44,0.06); transition: background-color .2s ease; }
+.windway-landing .wl-journey-strip > a:hover { background: rgba(31,54,44,0.12); }
 .windway-landing .wl-journey-strip .wl-arrow { width: 17px; height: 17px; transition: transform .2s ease; }
 .windway-landing .wl-journey-strip a:hover .wl-arrow { transform: translateX(4px); }
 .windway-landing .wl-motion-story { padding-block: clamp(70px, 8vw, 110px); }
 .windway-landing .wl-route-picker { padding-block: 75px 90px; }
 .wildway .windway-landing .wl-route-picker h2 { font-size: clamp(42px, 4.5vw, 64px); }
-.windway-landing .wl-route-picker fieldset button { cursor: pointer; transition: background-color .2s ease, border-color .2s ease, transform .2s ease; }
-.windway-landing .wl-route-picker fieldset button:hover { transform: translateX(4px); }
+.windway-landing .wl-route-picker fieldset button { cursor: pointer; transition: background-color .25s ease, border-color .25s ease, transform .25s cubic-bezier(0.22, 1, 0.36, 1), box-shadow .25s ease; }
+.windway-landing .wl-route-picker fieldset button:hover { transform: translateX(5px); }
 .windway-landing .wl-chapter { padding-top: 38px; }
 .windway-landing .wl-chapter-layout { padding-block: 58px 48px; }
-.windway-landing .wl-chapter-scene, .windway-landing .wl-film-frame { border-radius: 4px; }
+.windway-landing .wl-chapter-scene, .windway-landing .wl-film-frame { border-radius: 18px; box-shadow: inset 0 1px 0 rgba(255,255,255,0.6), 0 22px 46px -18px rgba(24, 45, 36, 0.22); }
 .windway-landing .wl-chapter-copy h2, .windway-landing .wl-route-picker h2, .windway-landing .wl-motion-copy h2 { text-wrap: balance; }
 @media (max-width: 1100px) {
   .windway-landing .wl-hero-backdrop { height: clamp(340px, 52vw, 560px); aspect-ratio: auto; }
