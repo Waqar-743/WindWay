@@ -63,14 +63,14 @@ const SnowForest = memo(function SnowForest({ low }: { low: boolean }) {
       return { position: [x, 80 + height / 2, z] as [number, number, number], scale: [160 + random() * 120, height, 190] as [number, number, number], rotation: random() };
     });
   }, []);
-  return <><Instances points={peaks} kind="cone" color="#8ca7bd" colors={['#7995ac', '#9bb2c4', '#6f8ba3']} /><Instances points={trunks} kind="box" color="#4c5b64" /><Instances points={branches} kind="cone" color="#294b60" /><Instances points={caps} kind="cone" color="#cddfe9" /></>;
+  return <><Instances points={peaks} kind="cone" color="#84a2ba" colors={['#6f8ea6', '#94aec2', '#64839c']} /><Instances points={trunks} kind="box" color="#465660" /><Instances points={branches} kind="cone" color="#234559" /><Instances points={caps} kind="cone" color="#dcebf3" /></>;
 });
 
 function IceAndHurdles() {
   const ice = useMemo(() => SNOW_ICE_ZONES.map(([from, to]) => ribbonGeometry(ROAD_WIDTH - 0.8, 0, 0.035, from, to)), []);
   useEffect(() => () => ice.forEach((g) => g.dispose()), [ice]);
   return <>
-    {ice.map((geometry, i) => <mesh key={i} geometry={geometry} receiveShadow><meshStandardMaterial color="#80b9d1" roughness={0.18} metalness={0.18} envMapIntensity={0.6} transparent opacity={0.78} depthWrite={false} /></mesh>)}
+    {ice.map((geometry, i) => <mesh key={i} geometry={geometry} receiveShadow><meshStandardMaterial color="#76b8d6" roughness={0.12} metalness={0.28} envMapIntensity={0.85} transparent opacity={0.82} depthWrite={false} /></mesh>)}
     <RigidBody type="fixed" colliders={false} name="barriers">
       {SNOW_HURDLES.map((hurdle) => <group key={hurdle.id}>
         <CuboidCollider position={hurdle.position} rotation={[0, hurdle.yaw, 0]} args={hurdle.halfExtents} friction={0} restitution={0} />
