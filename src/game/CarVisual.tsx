@@ -31,11 +31,16 @@ export default function CarVisual({ carId, paint, motion, onReady }: { carId: st
           // Replacing these with toon materials made the actual game visibly
           // flatter than the car assets already included in the APK.
           const material = source.clone();
-          material.envMapIntensity = paintable ? 0.85 : 0.65;
+          material.envMapIntensity = paintable ? 1.18 : 0.82;
           if (paintable) {
-            material.metalness = Math.max(0.28, Math.min(0.65, source.metalness));
-            material.roughness = Math.max(0.24, Math.min(0.42, source.roughness));
+            material.metalness = Math.max(0.38, Math.min(0.72, source.metalness));
+            material.roughness = Math.max(0.16, Math.min(0.32, source.roughness));
             paints.push(material);
+          } else if (/glass|visor|wind|lens/i.test(source.name)) {
+            material.roughness = Math.min(0.12, source.roughness);
+            material.envMapIntensity = 1.35;
+          } else if (/tyre|tire|rubber/i.test(source.name)) {
+            material.roughness = Math.max(0.72, source.roughness);
           }
           materials.set(source, material);
         }
