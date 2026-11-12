@@ -53,11 +53,11 @@
 .windway-native .wildway .race-ui .ramp-status-label > img { width: calc(20px * var(--mobile-control-scale)); height: calc(20px * var(--mobile-control-scale)); }
 .windway-native .wildway .race-ui .ramp-status-label strong { font-size: 6px; }
 .windway-native .wildway .race-ui .ramp-status-label small { display: none; }
-.windway-native .wildway .race-ui .race-minimap { grid-template-rows: minmax(0, 1fr); padding: 0; background: transparent; border: 0; border-radius: 0; overflow: visible; }
+.windway-native .wildway .race-ui .race-minimap { grid-template-rows: minmax(0, 1fr); padding: 0; background: transparent; border: 0; border-radius: 0; box-shadow: none; overflow: visible; }
 .windway-native .wildway .race-ui .race-minimap .track-map { filter: drop-shadow(0 1px 1px #07131dcc); }
 .windway-native .wildway .race-ui .race-minimap .track-map > path:nth-of-type(2) { stroke: #ffffff; }
 .windway-native .wildway .race-ui .race-minimap .track-map > path:nth-of-type(3) { stroke: #f2c57c; }
-.windway-native .wildway .race-ui .speed-gauge { width: 34px; padding: 0; background: transparent; border: 0; border-radius: 0; }
+.windway-native .wildway .race-ui .speed-gauge { width: 34px; padding: 0; background: transparent; border: 0; border-radius: 0; box-shadow: none; }
 .windway-native .wildway .race-ui .speed-gauge > strong { font-size: 12px; letter-spacing: -.3px; line-height: 1.05; }
 .windway-native .wildway .race-ui .speed-gauge > small { display: none; }
 .windway-native .wildway .race-ui .speed-gauge > span { font-size: 6px; letter-spacing: .5px; }
