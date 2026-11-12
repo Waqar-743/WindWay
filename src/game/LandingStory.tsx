@@ -6,6 +6,8 @@ type Pack = 'cartoon-pack' | 'jungle-pack' | 'snow-pack';
 
 export interface LandingStoryProps {
   selectedMap: string;
+  selectedLevel?: number;
+  levelSelector?: React.ReactNode;
   selectedCarName: string;
   reducedMotion?: boolean;
   onChooseMap: (id: string) => void;
@@ -138,7 +140,7 @@ function RoadChapter({ story, selected, onStart }: { story: RoadStory; selected:
   </article>;
 }
 
-export default function LandingStory({ selectedMap, selectedCarName, reducedMotion, onChooseMap, onStartMap, onGarage }: LandingStoryProps) {
+export default function LandingStory({ selectedMap, levelSelector, selectedCarName, reducedMotion, onChooseMap, onStartMap, onGarage }: LandingStoryProps) {
   const chosen = ROAD_STORIES.find((road) => road.id === selectedMap) ?? ROAD_STORIES[0];
   return <div className="windway-landing">
     <a className="wl-skip" href="#windway-main">Skip to the roads</a>
@@ -165,6 +167,7 @@ export default function LandingStory({ selectedMap, selectedCarName, reducedMoti
         </div>
       </section>
 
+      {levelSelector}
       <div className="wl-journey-strip" aria-label="Windway at a glance">
         <div><strong>03</strong><span>distinct roads</span></div>
         <div><strong>02</strong><span>cars to drive</span></div>

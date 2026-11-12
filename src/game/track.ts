@@ -1,4 +1,5 @@
 import * as THREE from 'three';
+import { currentLevel, NARROW_CENTERS } from './levels';
 
 export let ROAD_WIDTH = 14;
 export let TRACK_SEGMENTS = 720;
@@ -56,6 +57,19 @@ export function nearestTrackPoint(x: number, z: number) {
   return { point, tangent, right, yaw: Math.atan2(tangent.x, tangent.z), index: segment, progress: TRACK_CLOSED ? progress % 1 : progress, distance: Math.sqrt(distanceSquared) };
 }
 
+/** Width is shared by the road mesh, physical edges, checkpoint gates and recovery. */
+export function roadHalfWidthAt(progress: number) {
+  const t = TRACK_CLOSED ? ((progress % 1) + 1) % 1 : THREE.MathUtils.clamp(progress, 0, 1);
+  let blend = 0;
+  for (const center of NARROW_CENTERS.slice(0, currentLevel.narrows)) {
+    const distance = Math.abs(t - center);
+    if (distance < 0.045) blend = Math.max(blend, (1 + Math.cos(distance / 0.045 * Math.PI)) / 2);
+  }
+  if (!blend || (TRACK_CLOSED && Math.abs(trackCurve.getPointAt(t).z) < 45)) return ROAD_WIDTH / 2;
+  const ratio = TRACK_CLOSED ? currentLevel.circuitWidth : currentLevel.snowWidth;
+  return ROAD_WIDTH / 2 * (1 - (1 - ratio) * blend);
+}
+
 export function ribbonGeometry(width: number, offset = 0, lift = 0, from = 0, to = 1) {
   const positions: number[] = [];
   const indices: number[] = [];
@@ -63,7 +77,10 @@ export function ribbonGeometry(width: number, offset = 0, lift = 0, from = 0, to
   for (let i = 0; i <= segments; i++) {
     const { point, right } = trackFrame(from + (to - from) * i / segments);
     for (const side of [-1, 1]) {
-      const edge = point.clone().addScaledVector(right, offset + side * width / 2);
+      const difference = roadHalfWidthAt(from + (to - from) * i / segments) - ROAD_WIDTH / 2;
+      const localWidth = width >= ROAD_WIDTH - 1.5 ? width + difference * 2 : width;
+      const localOffset = Math.abs(offset) >= ROAD_WIDTH / 2 - 1.5 ? offset + Math.sign(offset) * difference : offset;
+      const edge = point.clone().addScaledVector(right, localOffset + side * localWidth / 2);
       positions.push(edge.x, edge.y + lift, edge.z);
     }
     if (i < segments) {

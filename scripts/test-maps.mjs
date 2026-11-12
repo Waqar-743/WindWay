@@ -17,7 +17,7 @@ globalThis.localStorage = {
   setItem: (key, value) => storage.set(key, value),
 };
 const bundle = await build({
-  stdin: { contents: "export * from './src/game/track'; export * from './src/game/maps'; export * from './src/game/driving'; export * from './src/game/config'; export * from './src/game/store'; export * from './src/game/input'; export * from './src/game/vehiclePhysics'; export * from './src/game/trackFeatures'; export * from './src/game/trackBarriers'; export * from './src/game/alpineVillage';", resolveDir: process.cwd(), loader: 'ts' },
+  stdin: { contents: "export * from './src/game/track'; export * from './src/game/maps'; export * from './src/game/driving'; export * from './src/game/config'; export * from './src/game/store'; export * from './src/game/input'; export * from './src/game/vehiclePhysics'; export * from './src/game/trackFeatures'; export * from './src/game/trackBarriers'; export * from './src/game/alpineVillage'; export * from './src/game/jungleSettlement';", resolveDir: process.cwd(), loader: 'ts' },
   bundle: true, write: false, platform: 'node', format: 'cjs', packages: 'external',
   define: { 'import.meta.env.BASE_URL': '"/3D-Car-Design/"', 'import.meta.env.DEV': 'false' },
 });

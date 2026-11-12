@@ -4,7 +4,7 @@ import { mergeGeometries } from 'three/examples/jsm/utils/BufferGeometryUtils.js
 import { ROAD_WIDTH, TRACK_LENGTH, TRACK_POINTS, ribbonGeometry } from './track';
 import { buildTownParts, type TownPart, type TownSite } from './alpineVillage';
 
-function TownBatch({ parts, kind }: { parts: TownPart[]; kind: 'box' | 'roof' | 'tree' }) {
+export function TownBatch({ parts, kind }: { parts: TownPart[]; kind: 'box' | 'roof' | 'tree' }) {
   const mesh = useRef<THREE.InstancedMesh>(null);
   const geometry = useMemo(() => {
     if (kind === 'box') return new THREE.BoxGeometry(1, 1, 1);

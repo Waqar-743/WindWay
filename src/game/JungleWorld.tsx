@@ -6,6 +6,8 @@ import * as THREE from 'three';
 import { nearestTrackPoint, seededRandom, trackFrame } from './track';
 import { CheckpointGates, JumpRamp, TrackSurface } from './World';
 import { surfaceTexture } from './surfaceDetail';
+import JungleVillage from './JungleVillage';
+import { buildJungleVillage } from './jungleSettlement';
 
 type Point = {
   position: [number, number, number];
@@ -222,6 +224,7 @@ function FlyingToucans() {
 }
 
 export default memo(function JungleWorld({ low }: { low: boolean }) {
+  const sites = useMemo(() => buildJungleVillage(), []);
   const ground = useMemo(() => { const texture = surfaceTexture('ground'); texture.repeat.set(90, 40); return texture; }, []);
   useEffect(() => () => ground.dispose(), [ground]);
   // Batch only this selected map's small, actually visible SVG textures. This
@@ -239,7 +242,7 @@ export default memo(function JungleWorld({ low }: { low: boolean }) {
       <CuboidCollider position={[0, -6, 0]} args={[480, 1, 480]} restitution={0} />
     </RigidBody>
     {[-1, 1].map((side) => <mesh key={side} position={[0, -0.035, side * 236]} rotation={[-Math.PI / 2, 0, 0]} receiveShadow><planeGeometry args={[960, 424]} /><meshLambertMaterial map={ground} color={side > 0 ? '#496d35' : '#365c31'} /></mesh>)}
-    <DenseJungle low={low} /><JungleRiver low={low} />
+    <DenseJungle low={low} /><JungleVillage sites={sites} /><JungleRiver low={low} />
     <TrackSurface /><CheckpointGates /><JumpRamp /><StopStation />
     {wildlife.map((animal) => <JungleBillboard key={animal.name} {...animal} />)}
     <JungleBillboard name="finish-flag" progress={0.99} side={1} width={5.5} height={5.5} lift={0.8} />

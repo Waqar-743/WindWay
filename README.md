@@ -16,7 +16,7 @@
 
 ## From the showroom to the open road
 
-I'm [Waqar Ahmed](https://github.com/Waqar-743). Windway started as a 3D car viewer: you could look around a car, change its paint, and admire it. But I kept coming back to one question: **where would I drive it?**
+Windway started as a 3D car viewer: you could look around a car, change its paint, and admire it. But I kept coming back to one question: **where would I drive it?**
 
 So I gave it a road. Then a jungle. Then a snowy mountain that makes you earn the view.
 
@@ -82,6 +82,6 @@ Windway is an independent learning/demo project, not affiliated with Formula 1, 
 
 ---
 
-Made by [Waqar Ahmed](https://github.com/Waqar-743). Still finding out what's around the next bend.
+Made with curiosity. Still finding out what's around the next bend.
 
 [Follow Windway on GitHub](https://github.com/Waqar-743/WindWay).
