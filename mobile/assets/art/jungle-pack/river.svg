@@ -1,0 +1,18 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256" fill="none" role="img" aria-labelledby="river-title river-desc">
+<title id="river-title">Jade river bend</title>
+<desc id="river-desc">A winding turquoise river through leafy jungle banks, with soft ripples and rounded mossy rocks.</desc>
+<g stroke="#153c35" stroke-width="5" stroke-linecap="round" stroke-linejoin="round">
+<path d="M27 67 130 23l99 48v116l-104 46-98-48z" fill="#86b960"/>
+<path d="M130 23q-8 29 23 49t-6 48q-36 21-11 44t-11 69l-49-24q40-31 7-52t5-52q42-25 3-47z" fill="#5ba79c"/>
+<path d="M144 36q-11 27 16 42t-10 37q-42 25-17 50t-7 52" stroke="#d6e8a7" stroke-width="3"/>
+<path d="m111 81 20 9m-23 26 19 8m-21 49 21 9m-22 13 11 5m5-146 10 5" stroke="#e9efda" stroke-width="4"/>
+<path d="m165 150 28-13 22 12-28 15z" fill="#6b8067"/>
+<path d="m165 150 6-17 19-7 3 11m0 0 22 12-4-18-21-5" fill="#9eb18a"/>
+<path d="m35 100 23-10 19 10-24 13z" fill="#6b8067"/>
+<path d="m35 100 7-15 14-7 2 12m0 0 19 10-4-16-17-6" fill="#9eb18a"/>
+<path d="M53 154q-15-16-26-6 9 15 26 6zm3-1q-4-23 11-24 9 16-11 24zm-3 1q15-17 26-6-9 15-26 6zM196 100q-13-15-24-6 8 15 24 6zm3-1q-1-21 13-21 8 15-13 21zm-3 1q15-17 26-6-9 15-26 6z" fill="#287451" stroke-width="3"/>
+<path d="m51 157 1 12m146-66 1 11" stroke-width="3"/>
+<path d="m47 190 16 7m111-143 14 7m2 123 14-6" stroke="#d6e8a7" stroke-width="4"/>
+<path d="m27 185 98 48 104-46" stroke="#287451" stroke-width="7"/>
+</g>
+</svg>

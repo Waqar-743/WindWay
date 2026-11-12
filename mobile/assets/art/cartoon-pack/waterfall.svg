@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256" fill="none" role="img" aria-labelledby="title desc">
+<title id="title">Waterfall</title>
+<desc id="desc">A small waterfall pouring over stepped rock into a foamy pool.</desc>
+<g stroke="#253b39" stroke-width="5" stroke-linecap="round" stroke-linejoin="round">
+<path d="m32 147 10-94 54-23 79 13 41 111-23 41H47z" fill="#91a69c"/>
+<path d="m43 82 42-11 11-41m79 13-14 39 36 13m-161 39 45-9m96-9 28 12" fill="none" stroke="#6b847a" stroke-width="4"/>
+<path d="m50 49 45-21 82 12 15 22-47-4-58 4-38 8z" fill="#99bd83"/>
+<path d="M99 40h51l-4 54 12 75H86l12-74z" fill="#7ec1cc"/>
+<path d="m111 53-3 67m25-62-2 87m-25-10-2 24" stroke="#d7f2e8" stroke-width="5"/>
+<ellipse cx="128" cy="191" rx="99" ry="33" fill="#70b9c7" stroke="#417e85" stroke-width="4"/>
+<path d="M77 181q-15-19 6-20 3-24 25-14 17-16 31 0 23-9 30 15 20 1 11 20" fill="#e4f5e8" stroke="#6babad" stroke-width="3"/>
+<path d="M64 196q19 11 38 1m15 11q36 8 61-5m-34-17 21 1" stroke="#d7f2e8" stroke-width="4"/>
+<path d="m32 166-9-14m202 13 8-13" stroke="#87bfc1" stroke-width="4"/>
+</g>
+</svg>

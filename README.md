@@ -53,6 +53,12 @@ Open [the local game](http://127.0.0.1:4175/WindWay/).
 
 ## A peek under the bonnet
 
+### Windway for Android
+
+The Android edition is being built on [codex/flutter-android](https://github.com/Waqar-743/WindWay/tree/codex/flutter-android), separate from the live website. It uses Flutter menus and bundles the existing 3D game for offline driving, with arrow, steering-wheel and phone-tilt controls. See the [Android app guide](mobile/README.md) for builds, device testing and installation notes.
+
+### The browser game
+
 Built with React, TypeScript, Three.js, React Three Fiber, Rapier and Zustand. The game loads the selected car on demand, and lighter graphics reduce scenery and shadows.
 
 The characters and roadside details are editable SVGs: [alpine gallery](https://waqar-743.github.io/WindWay/cartoon-pack/), [jungle gallery](https://waqar-743.github.io/WindWay/jungle-pack/), [snow gallery](https://waqar-743.github.io/WindWay/snow-pack/).

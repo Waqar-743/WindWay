@@ -1,0 +1,4 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256" fill="none" role="img" aria-labelledby="ice-patch-title ice-patch-desc">
+<title id="ice-patch-title">Black ice</title><desc id="ice-patch-desc">A pale blue road patch with white cracks and a slippery wheel trail.</desc>
+<g stroke="#263d52" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"><path d="m27 158 43-98 132 11 30 109-55 43-121-13z" fill="#b9e1ed"/><path d="m72 63 25 47-19 26 32 27-7 46m94-134-33 45 23 25-31 35 21 40" stroke="#f3f8fb" stroke-width="7"/><path d="M37 180q43-29 84 0t91-11" stroke="#688795" stroke-width="5" stroke-dasharray="8 10"/><path d="m119 65 9-24 10 24m-10-24v-17m-26 34-14-9m53 8 15-10" stroke="#7aa7bf"/></g>
+</svg>

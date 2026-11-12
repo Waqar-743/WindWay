@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256" fill="none" role="img" aria-labelledby="title desc">
+<title id="title">Elephant</title><desc id="desc">A gentle moss-grey elephant with enormous leafy ears, a curled trunk and a little ivory tusk.</desc>
+<g stroke="#153c35" stroke-width="5" stroke-linecap="round" stroke-linejoin="round">
+<path d="M184 142q35-13 34 14"/><path d="m213 149 12 12-15 4" fill="#287451"/><path d="m90 167-4 47h26l9-42m33-4 5 46h28l-2-52" fill="#89a99b"/><path d="M70 114q54-28 111 0 25 17 11 59-51 23-108 3z" fill="#89a99b"/>
+<path d="M69 76q-20-30-40-3-20 39 20 64l26-12" fill="#89a99b"/><path d="M67 82q-14-15-22 1-9 23 16 35" fill="#d97d73" stroke="none"/><path d="M89 72q28-37 53-8 27 38-10 73l-42-14" fill="#89a99b"/><path d="M101 80q20-22 30-2 15 23-9 40" fill="#d97d73" stroke="none"/>
+<path d="M64 65q25-19 46 7 13 25-7 49l-6 46q-3 25-28 23-22-3-20-23 12 10 16-4l1-43q-16-27-2-55z" fill="#89a99b"/><path d="M99 120q18 21 25-2-1 29-25 16" fill="#e9efda"/><circle cx="79" cy="96" r="4" fill="#153c35" stroke="none"/><path d="m70 141 11 2m-11 12 10 2" stroke="#5b8170" stroke-width="3"/><path d="m87 208 25 1m47 0h27" stroke="#e9efda" stroke-width="7"/><path d="M162 127q17 2 12 22" stroke="#5b8170" stroke-width="4"/>
+</g></svg>

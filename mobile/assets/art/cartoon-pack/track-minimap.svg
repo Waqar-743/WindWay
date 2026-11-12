@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256" fill="none" role="img" aria-labelledby="title desc">
+<title id="title">Track minimap</title>
+<desc id="desc">A compact circuit map with a checkered start marker and a small orange car pointer.</desc>
+<g stroke="#253b39" stroke-width="5" stroke-linecap="round" stroke-linejoin="round">
+<rect x="25" y="25" width="206" height="206" rx="40" fill="#f4e8cb"/>
+<path d="M60 89q-4-33 29-33h75q34 1 33 29-1 21-27 26l-35 9q-23 5-21 24 1 17 27 18h18q30 0 32 21 0 18-27 18H93q-36-1-35-36z" fill="none" stroke="#354d43" stroke-width="27"/>
+<path d="M60 89q-4-33 29-33h75q34 1 33 29-1 21-27 26l-35 9q-23 5-21 24 1 17 27 18h18q30 0 32 21 0 18-27 18H93q-36-1-35-36z" fill="none" stroke="#fff7e8" stroke-width="3" stroke-dasharray="9 10"/>
+<path d="m55 118 31 19-32 19z" fill="#e98254" stroke-width="4"/>
+<path d="M117 39v33" stroke="#fff7e8" stroke-width="7"/><path d="M117 39v7m0 7v7m0 7v5" stroke="#354d43" stroke-width="7"/>
+</g>
+</svg>

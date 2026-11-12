@@ -1,0 +1,4 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256" fill="none" role="img" aria-labelledby="wind-gust-title wind-gust-desc">
+<title id="wind-gust-title">Mountain wind</title><desc id="wind-gust-desc">Three rounded cold gusts carry a pair of snowflakes.</desc>
+<g stroke="#263d52" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"><path d="M22 92h143q37 0 37-29 0-28-27-28-24 0-24 21M38 121h176q25 0 25 21 0 22-23 22M21 150h107q32 0 32 28 0 23-25 23-19 0-19-16" stroke="#7aa7bf" stroke-width="10"/><path d="M58 29v32m-14-24 28 16m-28 0 28-16M60 185v36m-16-27 32 18m-32 0 32-18" stroke="#b9e1ed" stroke-width="5"/></g>
+</svg>

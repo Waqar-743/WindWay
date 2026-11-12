@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256" fill="none" role="img" aria-labelledby="title desc">
+<title id="title">Round oak</title>
+<desc id="desc">A broad-canopied cartoon oak with soft clustered leaves and a forked trunk.</desc>
+<g stroke="#253b39" stroke-width="5" stroke-linecap="round" stroke-linejoin="round">
+<ellipse cx="128" cy="235" rx="76" ry="9" fill="#253b39" opacity=".12"/>
+<path d="M111 231q7-52 0-91l-29-24 15-14 27 25 21-35 17 11-21 43 9 85z" fill="#b98b5f"/>
+<path d="m125 184 2 31m14-70-16 17" fill="none" stroke="#886448" stroke-width="4"/>
+<path d="M62 158q-39 0-39-33 0-23 23-32-13-31 19-47 25-14 44 4 14-38 51-26 27 9 26 35 37-5 47 28 6 22-14 36 12 29-16 42-26 13-43-7-24 25-48 2-30 24-50-2z" fill="#91b77d"/>
+<path d="M46 93q12-4 27 2m36-45q9 12 10 25m67-16q-5 15-20 20m53 44q-14-8-28-4m-81 41q1-13-6-22" fill="none" stroke="#649367" stroke-width="4"/>
+<path d="m60 69 10-4m69-20 10 3m40 44 9 4m-61 32 10-3m-72-9 9 4" stroke="#c7d79d" stroke-width="5"/>
+</g>
+</svg>

@@ -1,0 +1,26 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 240 100" fill="none" role="img" aria-labelledby="title desc">
+  <title id="title">Windway loading racer</title>
+  <desc id="desc">A papaya-orange, open-wheel Formula-style racing car in side profile, facing right.</desc>
+  <g stroke="#253b39" stroke-width="4" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M26 65V29h25v36" fill="#f2ce78"/>
+    <path d="M19 29h40v10H19z" fill="#d47762"/>
+    <path d="m38 64 29-3 18-20 32 2 22 15 51 8 30 5v10H37z" fill="#e98254"/>
+    <path d="m86 43 7-15h17l13 19" fill="#f8f3e8"/>
+    <path d="M110 45v-9q0-12 12-12h17q10 0 10 10v14" fill="none"/>
+    <path d="m116 52 3-11h22l7 16z" fill="#354d43"/>
+    <path d="M122 38q0-10 9-10t9 10v6h-18z" fill="#a7d0c9"/>
+    <path d="M130 35h10" stroke="#253b39" stroke-width="3"/>
+    <path d="m81 59 25 4-8 12H76" fill="#f2ce78"/>
+    <path d="m152 67 29 4m23 7h31v7h-43" fill="#d47762"/>
+    <path d="M36 80h174" stroke-width="6"/>
+    <g fill="#354d43">
+      <circle cx="60" cy="76" r="19"/>
+      <circle cx="190" cy="78" r="17"/>
+    </g>
+    <g fill="#f8f3e8" stroke-width="3">
+      <circle cx="60" cy="76" r="8"/>
+      <circle cx="190" cy="78" r="7"/>
+    </g>
+    <path d="M10 60h15M4 71h19" stroke="#7e9a85" stroke-width="3"/>
+  </g>
+</svg>

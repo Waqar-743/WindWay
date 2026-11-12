@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256" fill="none" role="img" aria-labelledby="title desc">
+<title id="title">Winner trophy</title>
+<desc id="desc">A golden cup with generous handles, a star and a wooden podium base.</desc>
+<g stroke="#253b39" stroke-width="5" stroke-linecap="round" stroke-linejoin="round">
+<path d="M80 67H36q-4 60 58 61m81-61h45q3 60-58 61" fill="none" stroke="#ad7f45" stroke-width="13"/>
+<path d="M83 66H40q1 47 49 55m83-55h43q-1 47-49 55" fill="none" stroke="#edbc59" stroke-width="7"/>
+<path d="M71 41h113l-12 87q-8 26-44 33-33-7-44-33z" fill="#f7d674"/>
+<path d="M116 160v28l-20 14h64l-20-14v-28" fill="#dba952"/>
+<path d="m128 66 10 19 21 3-15 15 4 22-20-10-20 10 4-22-15-15 21-3z" fill="#fff2c4" stroke="#bf934d" stroke-width="3"/>
+<rect x="77" y="204" width="103" height="27" rx="7" fill="#9f7955"/>
+<path d="m39 37-9-10m187 10 9-10M128 18v-8" stroke="#e5b35a" stroke-width="5"/>
+</g>
+</svg>

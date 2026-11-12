@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256" fill="none" role="img" aria-labelledby="title desc">
+<title id="title">Change camera</title>
+<desc id="desc">A chunky camera control with a turquoise lens and an orange shutter.</desc>
+<g stroke="#253b39" stroke-width="5" stroke-linecap="round" stroke-linejoin="round">
+<rect x="24" y="72" width="208" height="142" rx="31" fill="#f4e8cb"/>
+<path d="m74 72 12-30h70l15 30" fill="#e98254"/>
+<circle cx="128" cy="140" r="51" fill="#89b6a8"/>
+<circle cx="128" cy="140" r="34" fill="#4f7c74"/>
+<path d="M107 133q4-14 18-17" fill="none" stroke="#c9e5d5" stroke-width="6"/>
+<circle cx="202" cy="99" r="9" fill="#e98254"/>
+<path d="M43 106v43m0 17v9" stroke="#d7c8a5" stroke-width="4"/>
+</g>
+</svg>

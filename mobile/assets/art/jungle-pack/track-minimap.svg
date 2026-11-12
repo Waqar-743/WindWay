@@ -1,0 +1,20 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256" fill="none" role="img" aria-labelledby="minimap-title minimap-desc">
+<title id="minimap-title">Canopy Run track minimap</title>
+<desc id="minimap-desc">The actual winding outline of the jungle circuit, crossing a jade river twice, with a coral player arrow and checkered start line.</desc>
+<g stroke="#153c35" stroke-width="5" stroke-linecap="round" stroke-linejoin="round">
+<rect x="16" y="15" width="224" height="226" rx="34" fill="#e9efda"/>
+<path d="M19 115q54-15 109 0t109-1v26q-52 15-109 0T19 141z" fill="#8abdad" stroke="none"/>
+<path d="M25 126q50-12 101 0t105-1" stroke="#d6e8a7" stroke-width="3"/>
+<path d="M128 193c20 0 32 9 50 1s39-13 35-32-21-27-17-39 27-23 17-44-22-36-44-31-32 23-49 18-31-29-50-19-27 40-28 48 27 27 23 45-26 31-18 39 34 30 51 24 14-9 30-10z" stroke="#153c35" stroke-width="18"/>
+<path d="M128 193c20 0 32 9 50 1s39-13 35-32-21-27-17-39 27-23 17-44-22-36-44-31-32 23-49 18-31-29-50-19-27 40-28 48 27 27 23 45-26 31-18 39 34 30 51 24 14-9 30-10z" stroke="#eac35a" stroke-width="10"/>
+<path d="m194 112 7 3m-7 12 8 3m-12-10 13 4m-147 9 12-2m-14-5 13-2" stroke="#e9efda" stroke-width="3"/>
+<path d="m126 185 1 17m6-17 1 17" stroke="#e9efda" stroke-width="4"/>
+<path d="m126 189 8-1m-7 9 7-1" stroke-width="4"/>
+<path d="m174 180 18 12-22 6 4-8z" fill="#d97d73" stroke-width="3"/>
+<circle cx="75" cy="57" r="5" fill="#d97d73" stroke-width="3"/><circle cx="205" cy="86" r="5" fill="#d97d73" stroke-width="3"/><circle cx="53" cy="177" r="5" fill="#d97d73" stroke-width="3"/>
+<path d="M107 120q-18-1-19-18 17-4 19 18zm3 0q1-20 19-20 4 17-19 20z" fill="#287451" stroke-width="3"/>
+<path d="m109 119-1 16" stroke-width="3"/>
+<rect x="162" y="211" width="63" height="23" rx="8" fill="#287451" stroke-width="3"/>
+<text x="193" y="227" fill="#e9efda" stroke="none" text-anchor="middle" font-family="Arial,sans-serif" font-size="13" font-weight="900" letter-spacing="1">2 LAPS</text>
+</g>
+</svg>

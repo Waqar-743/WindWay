@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256" fill="none" role="img" aria-labelledby="title desc">
+<title id="title">Pause</title>
+<desc id="desc">A soft square pause control with two cream bars.</desc>
+<g stroke="#253b39" stroke-width="5" stroke-linecap="round" stroke-linejoin="round">
+<rect x="31" y="36" width="194" height="194" rx="48" fill="#b86b4a" stroke="none"/>
+<rect x="31" y="26" width="194" height="194" rx="48" fill="#e98254"/>
+<rect x="84" y="76" width="31" height="94" rx="9" fill="#fff7e8"/>
+<rect x="143" y="76" width="31" height="94" rx="9" fill="#fff7e8"/>
+<path d="M57 63q8-12 21-14" stroke="#f6ba86" stroke-width="6"/>
+</g>
+</svg>

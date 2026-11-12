@@ -1,0 +1,20 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256" fill="none" role="img" aria-labelledby="trophy-title trophy-desc">
+<title id="trophy-title">Canopy champion trophy</title>
+<desc id="trophy-desc">A marigold racing cup with jungle-leaf handles, a green leaf medallion and a coral winner ribbon on a jade pedestal.</desc>
+<g stroke="#153c35" stroke-width="5" stroke-linecap="round" stroke-linejoin="round">
+<path d="M84 65H35q-6 53 47 66m90-66h49q6 53-47 66" fill="none" stroke="#153c35" stroke-width="15"/>
+<path d="M84 65H35q-6 53 47 66m90-66h49q6 53-47 66" fill="none" stroke="#86b960" stroke-width="8"/>
+<path d="M73 40h110l-9 82q-6 30-46 43-40-13-46-43z" fill="#eac35a"/>
+<path d="m87 53 7 61q4 18 15 25" stroke="#f6df91" stroke-width="8"/>
+<path d="M115 162v26l-20 15h66l-20-15v-26" fill="#cba64b"/>
+<circle cx="128" cy="94" r="27" fill="#287451" stroke-width="3"/>
+<path d="M116 107q-14-28 21-30 10 30-21 30z" fill="#d6e8a7" stroke-width="3"/>
+<path d="m114 111 17-24" stroke-width="3"/>
+<path d="M24 105q-18-9-10-26 20 1 19 20m197 6q18-9 10-26-20 1-19 20" fill="#86b960" stroke-width="3"/>
+<rect x="75" y="203" width="106" height="30" rx="7" fill="#287451"/>
+<path d="m62 159-8 27 24-7 9 15 14-27m93-8 8 27-24-7-9 15-14-27" fill="#b96862" stroke-width="4"/>
+<path d="M64 151q64 19 128 0v27q-64 18-128 0z" fill="#d97d73" stroke-width="4"/>
+<text x="128" y="172" fill="#153c35" stroke="none" text-anchor="middle" font-family="Arial,sans-serif" font-size="15" font-weight="900" letter-spacing="2">WINNER</text>
+<path d="m35 37-9-10m194 10 9-10M128 22V12" stroke="#eac35a"/>
+</g>
+</svg>

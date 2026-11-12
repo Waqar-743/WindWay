@@ -1,0 +1,36 @@
+{
+  "title": "WINDWAY — reveal trailer",
+  "width": 1920,
+  "height": 1080,
+  "fps": 30,
+  "duration": 60,
+  "source": "Record-video.mp4",
+  "source_sha256": "e92d90a37d646a10391fed9addd599869f8c1451f7b0bca5624912b799260362",
+  "source_description": "User-supplied recording of the playable browser build; the original HUD is preserved.",
+  "adaptations": [
+    "Only Alpine and Canopy gameplay appears in the supplied recording. No snow footage is fabricated.",
+    "The garage shows the selected Mercedes-AMG W14 in Trail orange; car and paint changes were not recorded.",
+    "Map selection, starting, pausing and returning to the garage are shown. Starter, Settings and Continue interactions were not recorded.",
+    "Wide gameplay is fitted inside the 16:9 export to retain the complete recorded HUD without stretching.",
+    "The hook uses the real recorded acceleration sound; no unrecorded ignition is implied."
+  ],
+  "shots": [
+    {"id": "01-car-detail", "at": 0, "duration": 2, "source_in": 28.55, "crop": [350, 420, 720, 330], "audio_gain": 0, "fade_in": 0.4, "note": "Close framing of the actual orange car rotating in the recorded garage; the source cursor is outside this crop."},
+    {"id": "02-hook", "at": 2, "duration": 3, "source_in": 41.4, "audio_gain": 1.4, "title": "YOUR ROAD. YOUR PACE.", "note": "Alpine acceleration, ramp and landing, beginning beyond the obstructing start arch."},
+    {"id": "03-garage", "at": 5, "duration": 4, "source_in": 28.0, "crop": [40, 160, 1820, 680], "audio_gain": 0, "title": "MAKE THE DRIVE YOURS.", "note": "Real garage, car choices and paint swatches; navigation header excluded by framing."},
+    {"id": "04-map-choice", "at": 9, "duration": 2, "source_in": 33.5, "crop": [40, 160, 1820, 680], "audio_gain": 0, "note": "Actual map selection from Canopy to Alpine."},
+    {"id": "05-start", "at": 11, "duration": 2, "source_in": 43.4, "audio_gain": 1.1, "note": "Match the selected orange car to the same car accelerating on the road."},
+    {"id": "06-alpine", "at": 13, "duration": 5.5, "source_in": 44.8, "audio_gain": 1.1, "title": "ALPINE VALLEY", "eyebrow": "01 / WINDWAY VALLEY", "title_seconds": 3.6, "note": "Mountain scenery, river and checkpoint."},
+    {"id": "07-canopy", "at": 18.5, "duration": 5.5, "source_in": 10.4, "audio_gain": 1.1, "title": "CANOPY RUN", "eyebrow": "02 / JUNGLE RESERVE", "title_seconds": 3.6, "note": "Tropical corner and checkpoint."},
+    {"id": "08-canopy-ramp", "at": 24, "duration": 2.5, "source_in": 7.6, "audio_gain": 1.1, "note": "Real jungle boost ramp."},
+    {"id": "09-canopy-river", "at": 26.5, "duration": 2.5, "source_in": 16.8, "audio_gain": 1.1, "note": "Jade river crossing, ending before the later collision."},
+    {"id": "10-continuous-drive", "at": 29, "duration": 14, "source_in": 41.4, "audio_gain": 1.1, "note": "Uninterrupted, normal-speed acceleration, ramp landing, checkpoint, river bridge and cornering. No title obscures the original HUD. Begins beyond the obstructing start arch."},
+    {"id": "11-pause", "at": 43, "duration": 2, "source_in": 24.4, "crop": [300, 70, 1320, 760], "audio_gain": 0, "title": "START. EXPLORE.", "note": "Actual pause menu, framed more closely for readability."},
+    {"id": "12-return-garage", "at": 45, "duration": 2, "source_in": 27.77, "crop": [40, 160, 1820, 680], "audio_gain": 0, "note": "Recorded return from pause to the garage."},
+    {"id": "13-start-button", "at": 47, "duration": 2, "source_in": 34.2, "crop": [40, 160, 1820, 680], "audio_gain": 0, "note": "Actual map page and start-drive button."},
+    {"id": "14-drive-again", "at": 49, "duration": 2, "source_in": 57.1, "audio_gain": 1.1, "note": "Cut from the real start-drive button to driving on the Alpine road; not an unrecorded Continue action."},
+    {"id": "15-canopy-finish-montage", "at": 51, "duration": 1, "source_in": 11.8, "audio_gain": 1.1, "note": "Jungle corner."},
+    {"id": "16-alpine-finish-montage", "at": 52, "duration": 2, "source_in": 62.9, "audio_gain": 1.1, "fade_out": 0.12, "note": "Fast approach to the Alpine finish, cut before the results screen."},
+    {"id": "17-end-card", "at": 54, "duration": 6, "asset": "windway-ending-preview-6s.mp4", "audio_gain": 0, "note": "Prepared animated ending, video only. The full score is mixed once across the trailer."}
+  ]
+}

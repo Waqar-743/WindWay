@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256" fill="none" role="img" aria-labelledby="title desc">
+<title id="title">Pit-stop garage</title>
+<desc id="desc">A compact cartoon garage with a checkered fascia, roller door and small side window.</desc>
+<g stroke="#253b39" stroke-width="5" stroke-linecap="round" stroke-linejoin="round">
+<path d="M30 104h195v121H30z" fill="#f0dcb7"/>
+<path d="M20 105V84l34-28h145l36 28v21z" fill="#e98254"/>
+<path d="M24 86h207" fill="none" stroke="#b96344" stroke-width="4"/>
+<path d="M65 225V126h115v99" fill="#6d8c81"/>
+<path d="M73 144h99m-99 18h99m-99 18h99m-99 18h99" fill="none" stroke="#4c6b60" stroke-width="4"/>
+<rect x="192" y="133" width="23" height="35" rx="3" fill="#a8cfd0"/>
+<path d="M204 135v31m-10-15h19" stroke="#f7edcf" stroke-width="3"/>
+<path d="M75 105V94h96v11" fill="#fff7e8"/>
+<g fill="#253b39" stroke="none"><path d="M75 94h12v6H75zm24 0h12v6H99zm24 0h12v6h-12zm24 0h12v6h-12zM87 100h12v6H87zm24 0h12v6h-12zm24 0h12v6h-12zm24 0h12v6h-12z"/></g>
+<path d="M21 227h216" stroke="#9cb49b" stroke-width="7"/>
+<path d="M111 57V35h36v22" fill="#f7d674"/><path d="m120 47 6 6 12-12" fill="none" stroke-width="3"/>
+</g>
+</svg>

@@ -1,0 +1,26 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256" fill="none" role="img" aria-labelledby="title desc">
+<title id="title">Wild-haired driver</title>
+<desc id="desc">A mischievous roadside character with windblown hair, goggles and a huge grin.</desc>
+<g stroke="#253b39" stroke-width="5" stroke-linecap="round" stroke-linejoin="round">
+<ellipse cx="129" cy="235" rx="73" ry="9" fill="#253b39" opacity=".12"/>
+<path d="M58 225q4-51 44-56h49q40 9 47 56z" fill="#e98254"/>
+<path d="m112 170 16 24 20-24v-24h-36z" fill="#eeb98c"/>
+<path d="m97 178 18 31 13-15 15 15 17-31M128 198v26" fill="#f7edcf"/>
+<path d="m56 79-20-17 30-3-10-29 31 13 8-28 21 20 21-24 12 29 30-18-2 32 28-1-17 28 22 15-31 14H68z" fill="#d88844"/>
+<path d="M68 82q-17-4-18 15-1 19 18 19m120-34q17-4 18 15 1 19-18 19" fill="#eeb98c"/>
+<path d="M67 72q9-27 61-25 50 0 62 30l-4 57q-9 36-56 39-47-3-58-38z" fill="#f2c598"/>
+<path d="m73 71 20-22 16 19 20-22 20 19 22-10 14 20" fill="#d88844"/>
+<path d="M65 88h127" fill="none" stroke-width="12"/>
+<rect x="74" y="76" width="45" height="35" rx="13" fill="#b7ded6"/>
+<rect x="135" y="76" width="45" height="35" rx="13" fill="#b7ded6"/>
+<path d="M119 91q8-8 16 0" fill="none"/>
+<path d="m83 82 12 1m49 0 11 1" stroke="#fff7e8" stroke-width="4"/>
+<circle cx="100" cy="94" r="5" fill="#253b39" stroke="none"/><circle cx="151" cy="92" r="5" fill="#253b39" stroke="none"/>
+<path d="m128 101-8 18h14" fill="none" stroke-width="4"/>
+<path d="M91 128q36 38 71-4-31 9-71 4z" fill="#fff7e8"/>
+<path d="m103 134 2 10m15-10 1 16m15-18 2 14" stroke-width="3"/>
+<path d="m44 145-13 4m15-17-13-6m171 15 14 5m-11-20 12-9" fill="none" stroke="#e98254"/>
+<path d="m76 197-5 28m111-28 5 28" fill="none"/>
+<circle cx="97" cy="221" r="4" fill="#f7d674" stroke="none"/>
+</g>
+</svg>

@@ -1,0 +1,19 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256" fill="none" role="img" aria-labelledby="title desc">
+<title id="title">Trail buggy</title>
+<desc id="desc">A friendly orange off-road buggy with chunky tires, round lamps and an open cabin.</desc>
+<g stroke="#253b39" stroke-width="5" stroke-linecap="round" stroke-linejoin="round">
+<ellipse cx="127" cy="227" rx="107" ry="11" fill="#253b39" opacity=".12"/>
+<g fill="#354d43"><rect x="22" y="150" width="49" height="72" rx="18"/><rect x="182" y="150" width="49" height="72" rx="18"/></g>
+<path d="m25 168 42 1m-42 15h42m-42 15h42m119-31 42 1m-42 15h42m-42 15h42" stroke="#597064" stroke-width="4"/>
+<path d="m68 132 11-61q45-32 94 0l17 61" fill="#b5dbd4"/>
+<path d="m76 87 101 1m-52-28v65" fill="none" stroke-width="7"/>
+<path d="M45 138q77-31 163 0l-8 61H53z" fill="#e98254"/>
+<path d="m74 134 12-17h81l15 17-19 32H92z" fill="#f0a66c"/>
+<path d="M49 190h153v23H49z" fill="#a6b0a0"/>
+<circle cx="72" cy="163" r="16" fill="#fff0bd"/><circle cx="181" cy="163" r="16" fill="#fff0bd"/>
+<rect x="107" y="171" width="39" height="20" rx="5" fill="#354d43"/>
+<path d="m118 177 1 8m13-8 1 8" stroke="#8da396" stroke-width="3"/>
+<path d="m97 75 9-4m22-6 27 7" stroke="#e6f5e7" stroke-width="5"/>
+<path d="m26 131 18 2m162-2 20-2" stroke-width="7"/>
+</g>
+</svg>

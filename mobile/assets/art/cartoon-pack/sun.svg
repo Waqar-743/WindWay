@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256" fill="none" role="img" aria-labelledby="title desc">
+<title id="title">Sunny side</title>
+<desc id="desc">A friendly warm sun with alternating rays and a contented face.</desc>
+<g stroke="#253b39" stroke-width="5" stroke-linecap="round" stroke-linejoin="round">
+<g stroke="#dfac55" stroke-width="8"><path d="M128 23v18m0 174v18M23 128h18m174 0h18M54 54l13 13m122 122 13 13M54 202l13-13M189 67l13-13"/></g>
+<g stroke="#dfac55" stroke-width="5"><path d="m90 32 6 15m64 162 6 15M32 90l15 6m162 64 15 6M32 166l15-6m162-64 15-6M90 224l6-15m64-162 6-15"/></g>
+<circle cx="128" cy="128" r="69" fill="#f7d674"/>
+<path d="M88 117q10-12 20 0m40 0q10-12 20 0m-60 29q20 22 40 0" fill="none" stroke-width="4"/>
+<ellipse cx="89" cy="138" rx="11" ry="6" fill="#e9a065" stroke="none"/><ellipse cx="167" cy="138" rx="11" ry="6" fill="#e9a065" stroke="none"/>
+<path d="M89 91q14-17 33-17" fill="none" stroke="#fff0b3" stroke-width="6"/>
+</g>
+</svg>

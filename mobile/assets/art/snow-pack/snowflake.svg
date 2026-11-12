@@ -1,0 +1,4 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256" fill="none" role="img" aria-labelledby="snowflake-title snowflake-desc">
+<title id="snowflake-title">Snowflake</title><desc id="snowflake-desc">A six-point ice crystal with warm coral centre.</desc>
+<g stroke="#263d52" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"><path d="M128 24v208M38 76l180 104M38 180 218 76" stroke="#7aa7bf" stroke-width="11"/><path d="m104 41 24 23 24-23m-48 174 24-23 24 23M43 102l33-10-6-34m116 140-6-34 33-10M70 198l6-34-33-10m170-52-33-10 6-34" stroke="#b9e1ed" stroke-width="8"/><path d="m128 101 24 14v27l-24 14-24-14v-27z" fill="#d47762"/></g>
+</svg>

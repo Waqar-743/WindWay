@@ -55,4 +55,7 @@ check('both game cars, attribution, no-Jekyll marker and helpful 404 page ship t
   assert(recovery.includes(`https://waqar-743.github.io/${repository}/`));
   assert(recovery.includes('Waqar Ahmed') && recovery.includes('Back to Windway'));
 });
+check('lightweight homepage driving previews and poster are included in the deployment', () => {
+  for (const file of ['f1-drive.mp4', 'f1-drive-mobile.mp4', 'f1-drive-poster.webp']) localFile(`media/${file}`);
+});
 console.log(`\n${checks} production deployment checks passed for ${base}`);

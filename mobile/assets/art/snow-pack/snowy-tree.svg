@@ -1,0 +1,4 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256" fill="none" role="img" aria-labelledby="snowy-tree-title snowy-tree-desc">
+<title id="snowy-tree-title">Snowy tree</title><desc id="snowy-tree-desc">A layered fir with heavy snow caps and a frosted trunk.</desc>
+<g stroke="#263d52" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"><path d="M116 183h24v51h-24z" fill="#7a6b61"/><path d="m128 22 40 62h-17l41 61h-22l40 58H46l39-58H64l41-61H88z" fill="#527485"/><path d="m128 22 40 62-23-4-17 12-17-12-23 4zM104 86l-40 59 24-6 19 13 21-12 22 12 19-13 23 6-40-59-24 9zM85 149l-39 54 34-7 22 11 26-11 25 11 22-11 35 7-40-54-21 8-21-9-22 9z" fill="#f3f8fb"/><path d="m40 231 35-4m106 4 35-5" stroke="#b9e1ed"/></g>
+</svg>

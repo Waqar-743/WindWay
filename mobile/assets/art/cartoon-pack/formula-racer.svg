@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256" fill="none" role="img" aria-labelledby="title desc">
+<title id="title">Pocket racer</title>
+<desc id="desc">A compact stylized open-wheel racing car in papaya orange, viewed from above.</desc>
+<g stroke="#253b39" stroke-width="5" stroke-linecap="round" stroke-linejoin="round">
+<ellipse cx="128" cy="223" rx="81" ry="10" fill="#253b39" opacity=".1"/>
+<g fill="#354d43"><rect x="49" y="48" width="33" height="53" rx="9"/><rect x="174" y="48" width="33" height="53" rx="9"/><rect x="45" y="165" width="38" height="56" rx="10"/><rect x="173" y="165" width="38" height="56" rx="10"/></g>
+<path d="M72 74h110M72 190h111" stroke-width="10"/>
+<path d="m108 31 39 1 6 81 18 36-8 60H91l-8-60 19-36z" fill="#e98254"/>
+<path d="m119 35-4 68m24-69 4 69" stroke="#f7d674" stroke-width="5"/>
+<path d="M108 117q18-20 39 0l7 40q-22 29-51 0z" fill="#354d43"/>
+<ellipse cx="128" cy="140" rx="15" ry="20" fill="#a7d0c9"/>
+<path d="m111 121 17 14 17-14" fill="none" stroke="#e98254" stroke-width="7"/>
+<rect x="76" y="24" width="103" height="16" rx="4" fill="#f7d674"/>
+<rect x="77" y="209" width="103" height="18" rx="4" fill="#354d43"/>
+<path d="m96 184 13 6m51-6-13 6" fill="none" stroke="#f7d674" stroke-width="4"/>
+</g>
+</svg>

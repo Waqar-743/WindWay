@@ -1,0 +1,63 @@
+{
+  "status": "Awaiting genuine gameplay recordings; full trailer not rendered",
+  "width": 1920,
+  "height": 1080,
+  "fps": 30,
+  "duration": 60,
+  "scenes": [
+    {
+      "in": 0,
+      "out": 5,
+      "footage": "Garage close-up, then Alpine acceleration",
+      "text": "YOUR ROAD. YOUR PACE."
+    },
+    {
+      "in": 5,
+      "out": 13,
+      "footage": "Actual lobby, both garage cars, paint change; matching car on road",
+      "text": "MAKE THE DRIVE YOURS."
+    },
+    {
+      "in": 13,
+      "out": 18.5,
+      "footage": "Alpine corners, river crossing and ramp",
+      "text": "ALPINE VALLEY"
+    },
+    {
+      "in": 18.5,
+      "out": 24,
+      "footage": "Canopy Run jungle circuit",
+      "text": "CANOPY RUN"
+    },
+    {
+      "in": 24,
+      "out": 29,
+      "footage": "Frostbite Ascent switchbacks and snow climb",
+      "text": "FROSTBITE ASCENT"
+    },
+    {
+      "in": 29,
+      "out": 43,
+      "footage": "One continuous actual drive: acceleration, corner, checkpoint, successful landing",
+      "text": null
+    },
+    {
+      "in": 43,
+      "out": 51,
+      "footage": "Settings steering choice, Start, Pause, Stop, Continue",
+      "text": "START. EXPLORE. PICK UP WHERE YOU LEFT OFF."
+    },
+    {
+      "in": 51,
+      "out": 54,
+      "footage": "Three strongest authentic driving moments",
+      "text": null
+    },
+    {
+      "in": 54,
+      "out": 60,
+      "footage": "Completed animated end card",
+      "text": "WINDWAY / Your road. Your pace. / COMING SOON TO ANDROID"
+    }
+  ]
+}

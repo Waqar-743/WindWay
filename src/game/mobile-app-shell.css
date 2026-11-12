@@ -1,0 +1,189 @@
+body.windway-app { margin: 0; overflow: hidden; background: #0b141b; }
+.wwa { --app-ink: #edf3f2; --app-muted: #a9bec7; --app-accent: #dfba7a; --app-line: #d5edf02b; position: fixed; inset: 0; display: flex; flex-direction: column; isolation: isolate; overflow: hidden; color: var(--app-ink); background: #0b141b; font-family: 'Trebuchet MS', Arial, sans-serif; font-size: 14px; line-height: 1.45; -webkit-tap-highlight-color: transparent; }
+.wwa *, .wwa *::before, .wwa *::after { box-sizing: border-box; }
+.wwa button, .wwa input { font: inherit; }
+.wwa button { cursor: pointer; color: inherit; }
+.wwa button:disabled { cursor: default; opacity: .36; }
+.wwa button, .wwa a, .wwa input { outline-offset: 4px; }
+.wwa :is(button, a, input):focus-visible { outline: 2px solid var(--app-accent); }
+.wwa h1:focus { outline: none; }
+.wwa button:active:not(:disabled) { transform: translateY(1px); }
+.wwa svg { width: 24px; height: 24px; flex: 0 0 auto; }
+.wwa h1, .wwa h2, .wwa p { margin: 0; }
+.wwa-scenery { position: absolute; z-index: -2; inset: 0; pointer-events: none; background: #1a303a; }
+.wwa-scenery > svg { width: 100%; height: 100%; opacity: .55; }
+.wwa-scenery::after { content: ''; position: absolute; inset: 0; background: linear-gradient(90deg, #0b141bef 0%, #0b141ba8 36%, #0b141b25 80%), linear-gradient(0deg, #0b141bf2, #0b141b22 55%, #0b141b4a); }
+.wwa:not(.wwa-page-home) .wwa-scenery > svg { opacity: .2; }
+.wwa-scenery-jungle { filter: hue-rotate(-12deg); }
+.wwa-header { position: relative; z-index: 4; flex: 0 0 auto; display: grid; grid-template-columns: 1fr auto 1fr; align-items: center; gap: 16px; min-height: 92px; padding: max(18px, env(safe-area-inset-top)) max(32px, env(safe-area-inset-right)) 16px max(32px, env(safe-area-inset-left)); }
+.wwa-brand { display: flex; align-items: center; gap: 12px; width: fit-content; }
+.wwa-brand > svg { width: 30px; height: 30px; color: var(--app-accent); }
+.wwa-brand > span { font-size: 22px; letter-spacing: 4px; font-weight: 700; line-height: 1.2; }
+.wwa-brand small { display: block; margin-top: 5px; color: var(--app-muted); font-size: 7px; letter-spacing: 2px; font-weight: 400; }
+.wwa-header-label { color: var(--app-muted); font-size: 9px; letter-spacing: 2px; white-space: nowrap; }
+.wwa-header-tools { justify-self: end; display: flex; gap: 8px; }
+.wwa-icon-button { display: grid; place-items: center; width: 44px; height: 44px; padding: 10px; background: #13242b90; border: 1px solid #d5edf020; border-radius: 10px; transition: background .2s, border-color .2s; }
+.wwa-icon-button:hover { background: #263b44d9; border-color: #d5edf060; }
+.wwa-back { display: flex; align-items: center; gap: 10px; width: fit-content; min-height: 44px; padding: 10px 12px 10px 0; border: 0; background: none; font-size: 13px; }
+.wwa-back > svg { width: 20px; }
+.wwa-kicker { display: block; color: var(--app-accent); font-size: 9px; line-height: 1.4; letter-spacing: 1.9px; font-weight: 700; text-transform: uppercase; }
+.wwa-lobby { position: relative; flex: 1 1 auto; min-height: 0; padding: 0 48px 20px; display: flex; flex-direction: column; justify-content: center; }
+.wwa-lobby-copy { position: relative; z-index: 2; width: min(510px, 50%); margin-bottom: 158px; padding-top: 8px; pointer-events: none; }
+.wwa-lobby-copy h1 { margin-top: 16px; font-size: clamp(44px, 6.3vw, 90px); line-height: .98; letter-spacing: -.065em; font-weight: 700; }
+.wwa-lobby-copy h1 em { font-style: normal; color: #c9d7da; }
+.wwa-lobby-copy > p:not(.wwa-save-caption) { display: flex; flex-wrap: wrap; align-items: center; gap: 10px; margin-top: 22px; color: #d6e2e4; font-size: 13px; }
+.wwa-lobby-copy > p > span { width: 3px; height: 3px; border-radius: 50%; background: #9eb6bd; }
+.wwa-start-actions { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 30px; pointer-events: auto; }
+.wwa-button { display: inline-flex; align-items: center; justify-content: center; gap: 9px; min-height: 52px; padding: 14px 24px; border: 1px solid var(--app-line); border-radius: 10px; background: #14262fbf; color: var(--app-ink); font-size: 13px; font-weight: 700; line-height: 1.2; white-space: nowrap; transition: background .2s, border-color .2s, transform .15s; }
+.wwa-button > svg { width: 21px; height: 21px; }
+.wwa .wwa-primary { background: var(--app-accent); color: #13232b; border-color: var(--app-accent); box-shadow: inset 0 1px 0 #fff3d140; }
+.wwa .wwa-primary:hover { background: #edcc97; border-color: #edcc97; }
+.wwa-button:not(.wwa-primary):not(:disabled):hover { background: #2a414be0; border-color: #d5edf066; }
+.wwa-save-caption { margin-top: 13px !important; color: var(--app-muted); font-size: 11px; line-height: 1.6; }
+.wwa-showroom { position: absolute; inset: 0 -3% 90px 32%; pointer-events: none; }
+.wwa-showroom > div { position: absolute !important; inset: 0; }
+.wwa-showroom canvas { width: 100% !important; height: 100% !important; }
+.wwa-showroom-interactive { pointer-events: auto; touch-action: none; }
+.wwa-preview-fallback { position: absolute; top: 45%; left: 50%; width: 180px; height: 180px; transform: translate(-50%, -65%) rotate(-25deg); object-fit: contain; opacity: .4; pointer-events: none; }
+.wwa-preview-note { position: absolute; top: 52%; left: 60%; width: min(240px, 70%); transform: translate(-50%, -50%); color: var(--app-muted); text-align: center; font-size: 11px; pointer-events: none; }
+.wwa-showroom .wwa-preview-note { left: 50%; }
+.wwa-preview-hint { position: absolute; right: 0; left: 0; bottom: 10px; color: var(--app-muted); font-size: 10px; text-align: center; pointer-events: none; }
+.wwa-car-caption { position: absolute; right: 52px; bottom: 168px; z-index: 1; text-align: right; pointer-events: none; }
+.wwa-car-caption > span { display: block; color: var(--app-accent); font-size: 9px; text-transform: uppercase; letter-spacing: 1.5px; }
+.wwa-car-caption > strong { display: block; font-size: 20px; letter-spacing: -.4px; margin-top: 5px; }
+.wwa-car-caption > small { display: block; color: var(--app-muted); font-size: 11px; margin-top: 4px; }
+.wwa-lobby-dock { position: absolute; z-index: 3; bottom: 48px; right: 48px; left: 48px; display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 10px; }
+.wwa-lobby-dock > button { display: flex; align-items: center; gap: 14px; min-height: 82px; padding: 16px 20px; border: 1px solid var(--app-line); border-radius: 12px; text-align: left; background: #14262fbd; box-shadow: inset 0 1px 0 #e6f4f60a; transition: background .2s, border-color .2s, transform .15s; }
+.wwa-lobby-dock > button:hover { border-color: #dfba7aa8; background: #2a3d43ed; transform: translateY(-3px); }
+.wwa-lobby-dock > button > svg { width: 27px; height: 27px; color: #c5d6da; }
+.wwa-lobby-dock strong { display: block; font-size: 13px; }
+.wwa-lobby-dock small { display: block; margin-top: 4px; color: var(--app-muted); font-size: 10px; line-height: 1.3; }
+.wwa-about-link { position: absolute; bottom: 12px; left: 48px; padding: 5px 0; border: 0; background: none; color: #9bb1bc; font-size: 9px !important; letter-spacing: .8px; }
+.wwa-content { flex: 1 1 auto; width: 100%; max-width: 1200px; min-height: 0; margin: 0 auto; padding: 16px 40px 36px; overflow-y: auto; overscroll-behavior: contain; scrollbar-width: thin; scrollbar-color: #627c85 transparent; animation: wwa-enter .24s ease-out; }
+.wwa-title { padding-bottom: 28px; }
+.wwa-title > h1 { margin-top: 8px; font-size: clamp(30px, 3.6vw, 44px); font-weight: 700; line-height: 1.12; letter-spacing: -1.5px; }
+.wwa-intro { color: var(--app-muted); max-width: 660px; margin: -10px 0 26px !important; font-size: 13px; line-height: 1.7; }
+.wwa-road-list { display: flex; flex-direction: column; gap: 12px; }
+.wwa-road-choice { display: grid; grid-template-columns: 30px 108px minmax(0, 1fr) 48px; align-items: center; gap: 24px; width: 100%; min-height: 168px; padding: 24px; border: 1px solid var(--app-line); border-radius: 14px; background: #162831ba; text-align: left; transition: background .2s, border-color .2s; }
+.wwa .is-selected { border-color: #dfba7aba; background: #2b3c3dcc; box-shadow: inset 3px 0 0 var(--app-accent); }
+.wwa-road-choice:hover, .wwa-car-choice:hover, .wwa-crew-choice:hover { background: #2b3e46e0; }
+.wwa-choice-number { color: #8da5af; font: 12px monospace; }
+.wwa-road-choice > img { object-fit: contain; width: 108px; height: 108px; opacity: .9; }
+.wwa-road-info { display: flex; flex-direction: column; min-width: 0; }
+.wwa-road-info > strong { font-size: 23px; letter-spacing: -.7px; margin: 5px 0 8px; }
+.wwa-choice-description { color: var(--app-muted); font-size: 12px; line-height: 1.7; max-width: 630px; }
+.wwa-route-facts { display: flex; flex-wrap: wrap; gap: 7px 20px; margin-top: 13px; color: #d8e4e5; font-size: 10px; }
+.wwa-selection-marker { justify-self: end; color: var(--app-accent); font-size: 11px; }
+.wwa-selection-marker > svg { width: 28px; height: 28px; padding: 4px; border: 1px solid #dfba7a70; border-radius: 50%; }
+.wwa-action-bar { z-index: 3; flex: 0 0 auto; display: flex; align-items: center; justify-content: space-between; gap: 20px; min-height: 94px; padding: 16px max(32px, env(safe-area-inset-right)) max(16px, env(safe-area-inset-bottom)) max(32px, env(safe-area-inset-left)); border-top: 1px solid var(--app-line); background: #101f28ed; }
+.wwa-action-bar > div:first-child { min-width: 0; }
+.wwa-action-bar strong { display: block; margin-top: 6px; font-size: 12px; font-weight: 400; color: #d6e2e4; }
+.wwa-action-bar strong > span { color: #75929e; margin: 0 6px; }
+.wwa-footer-actions { display: flex; gap: 10px; }
+.wwa-garage { display: grid; grid-template-columns: minmax(280px, .9fr) minmax(300px, 1.2fr); gap: 30px; }
+.wwa-car-selection { display: flex; flex-direction: column; gap: 12px; }
+.wwa-car-choice { position: relative; display: flex; gap: 16px; align-items: flex-start; padding: 20px; width: 100%; border: 1px solid var(--app-line); border-radius: 12px; background: #162831ba; text-align: left; }
+.wwa-car-choice > span:nth-child(2) { min-width: 0; }
+.wwa-car-choice small, .wwa-crew-choice small { display: block; color: var(--app-accent); font-size: 9px; letter-spacing: .8px; text-transform: uppercase; }
+.wwa-car-choice strong { display: block; margin: 6px 0 8px; font-size: 19px; letter-spacing: -.5px; }
+.wwa-car-choice > span > span, .wwa-crew-choice > span > span { display: block; color: var(--app-muted); font-size: 12px; line-height: 1.7; }
+.wwa-car-choice > svg { position: absolute; right: 12px; top: 12px; width: 16px; height: 16px; color: var(--app-accent); }
+.wwa-paint { margin: 16px 0 0; border: 0; padding: 0; min-width: 0; }
+.wwa-paint > legend { width: 100%; margin-bottom: 14px; font-size: 13px; font-weight: 700; }
+.wwa-paint > legend > span { float: right; color: var(--app-muted); font-size: 11px; font-weight: 400; }
+.wwa-paint > div { display: flex; flex-wrap: wrap; gap: 10px; }
+.wwa-paint button { display: grid; place-items: center; height: 44px; width: 44px; background: var(--paint); border: 3px solid #162831; border-radius: 10px; outline: 1px solid #d5edf030; color: #12232b; }
+.wwa-paint button.is-selected { outline: 2px solid var(--app-accent); border: 3px solid #14242d; box-shadow: none; background: var(--paint); }
+.wwa-paint button[title='Dark pine'] { color: #edf3f2; }
+.wwa-paint p { margin-top: 12px; color: var(--app-muted); font-size: 10px; }
+.wwa-garage-stage { position: relative; min-height: 365px; border-radius: 16px; background: radial-gradient(ellipse at 60% 60%, #6d8d9940, #263b4215 65%); }
+.wwa-garage-stage .wwa-showroom { inset: -20px -20px 80px; }
+.wwa-car-specs { position: absolute; bottom: 0; width: 100%; padding: 20px 12px; border-top: 1px solid var(--app-line); display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
+.wwa-car-specs > span { color: var(--app-muted); font-size: 10px; }
+.wwa-car-specs strong { display: block; color: var(--app-ink); margin-top: 8px; font: 19px monospace; }
+.wwa-car-specs small { font: 10px 'Trebuchet MS', Arial, sans-serif; }
+.wwa-settings { display: grid; grid-template-columns: 1fr 1fr; gap: 48px; }
+.wwa-settings h2 { padding: 0 0 16px; border-bottom: 1px solid var(--app-line); font-size: 17px; }
+.wwa-field { padding: 0; margin: 24px 0 30px; border: 0; min-width: 0; }
+.wwa-field legend { margin-bottom: 12px; font-size: 13px; font-weight: 700; }
+.wwa-segments { display: flex; width: fit-content; max-width: 100%; gap: 5px; padding: 4px; border: 1px solid var(--app-line); border-radius: 10px; background: #12232baa; }
+.wwa-segments button { flex: 1 1 auto; min-height: 42px; padding: 10px 18px; background: none; border: 0; border-radius: 6px; color: var(--app-muted); font-size: 11px; }
+.wwa-segments button[aria-pressed=true] { background: #dfba7a; color: #12232b; font-weight: 700; }
+.wwa-field p, .wwa-slider small { display: block; margin-top: 10px; max-width: 430px; color: var(--app-muted); font-size: 11px; line-height: 1.7; }
+.wwa-slider { display: block; margin: 24px 0 28px; }
+.wwa-slider > span { display: flex; justify-content: space-between; align-items: center; gap: 12px; margin-bottom: 12px; font-size: 13px; font-weight: 700; }
+.wwa-slider strong { font: 12px monospace; color: var(--app-accent); }
+.wwa-slider input { display: block; width: 100%; min-height: 28px; accent-color: var(--app-accent); cursor: pointer; }
+.wwa-toggle { position: relative; display: flex; justify-content: space-between; align-items: center; gap: 20px; padding: 20px 0; border-bottom: 1px solid var(--app-line); cursor: pointer; }
+.wwa-toggle strong { font-size: 13px; }
+.wwa-toggle small { display: block; margin-top: 5px; color: var(--app-muted); font-size: 11px; }
+.wwa-toggle input { position: absolute; right: 0; width: 44px; height: 30px; opacity: 0; cursor: pointer; }
+.wwa-switch { flex: 0 0 auto; position: relative; width: 42px; height: 25px; border: 1px solid #8da5af66; border-radius: 20px; background: #1a2e38; pointer-events: none; }
+.wwa-switch::after { content: ''; position: absolute; top: 4px; left: 4px; width: 15px; height: 15px; border-radius: 50%; background: #9aafb8; transition: transform .2s; }
+.wwa-toggle input:checked + .wwa-switch { border-color: var(--app-accent); background: #dfba7a30; }
+.wwa-toggle input:checked + .wwa-switch::after { transform: translateX(17px); background: var(--app-accent); }
+.wwa-toggle input:focus-visible + .wwa-switch { outline: 2px solid var(--app-accent); outline-offset: 4px; }
+.wwa-crew-list { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; }
+.wwa-crew-choice { position: relative; display: flex; align-items: center; gap: 20px; padding: 24px; border: 1px solid var(--app-line); border-radius: 12px; background: #162831ba; text-align: left; }
+.wwa-crew-choice > img { width: 88px; height: 100px; object-fit: contain; flex: 0 0 auto; }
+.wwa-crew-choice > svg { position: absolute; right: 14px; top: 14px; width: 18px; height: 18px; color: var(--app-accent); }
+.wwa-crew-choice strong { display: block; margin: 5px 0 8px; font-size: 22px; }
+.wwa-help-controls { display: flex; flex-wrap: wrap; gap: 14px 28px; margin-bottom: 30px; padding: 20px; border: 1px solid var(--app-line); border-radius: 10px; background: #14262fc0; }
+.wwa-help-controls > span { display: flex; align-items: center; gap: 5px; color: var(--app-muted); font-size: 10px; }
+.wwa kbd { display: inline-grid; place-items: center; min-width: 24px; height: 24px; padding: 0 5px; border: 1px solid #d5edf044; border-radius: 4px; background: #ecf7ff08; color: #edf3f2; font: 10px monospace; }
+.wwa-help-steps { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 0 38px; }
+.wwa-help-steps article { position: relative; display: flex; align-items: flex-start; gap: 16px; padding: 24px 0; border-top: 1px solid var(--app-line); }
+.wwa-help-steps article > svg { color: var(--app-accent); width: 24px; height: 24px; margin-top: 2px; }
+.wwa-help-number { position: absolute; right: 0; top: 24px; color: #8199a3; font: 10px monospace; }
+.wwa-help-steps h2 { padding-right: 26px; margin-bottom: 10px; font-size: 15px; }
+.wwa-help-steps p { color: var(--app-muted); font-size: 12px; line-height: 1.8; }
+.wwa-records { display: flex; flex-direction: column; gap: 24px; }
+.wwa-records h2 { display: flex; justify-content: space-between; align-items: center; gap: 15px; padding-bottom: 13px; border-bottom: 1px solid var(--app-line); font-size: 17px; }
+.wwa-records h2 > span { color: var(--app-accent); font-size: 10px; font-weight: 400; }
+.wwa-records section > div { display: flex; align-items: center; justify-content: space-between; gap: 20px; padding: 18px 0; border-bottom: 1px solid #d5edf012; font-size: 12px; }
+.wwa-records strong { color: var(--app-accent); font: 17px monospace; }
+.wwa-records strong > small { font: 11px 'Trebuchet MS', Arial, sans-serif; color: #8da5af; }
+.wwa-footnote { margin-top: 24px !important; color: #8da5af; font-size: 10px; }
+.wwa-about { display: grid; grid-template-columns: .8fr 1.3fr; gap: 60px; padding-bottom: 20px; }
+.wwa-about-mark { padding: 30px 0; }
+.wwa-about-mark > svg { color: var(--app-accent); width: 60px; height: 60px; }
+.wwa-about-mark > strong { display: block; font-size: 28px; letter-spacing: 4px; margin: 20px 0 8px; }
+.wwa-about-mark > span { display: block; color: var(--app-muted); font-size: 12px; }
+.wwa-about h2 { font-size: 17px; margin: 20px 0 12px; }
+.wwa-about p { font-size: 12px; color: var(--app-muted); line-height: 1.9; margin-bottom: 20px; }
+.wwa-about a { color: var(--app-accent); text-underline-offset: 4px; }
+.wwa-credit-link { display: inline-block; padding: 12px 0; font-size: 12px; }
+.wwa-notice { position: absolute; z-index: 10; left: 50%; bottom: 110px; transform: translateX(-50%); display: flex; gap: 16px; align-items: center; width: min(500px, calc(100% - 32px)); padding: 14px 16px; border: 1px solid #dfba7a60; border-radius: 10px; background: #263943f5; color: #e5ecec; font-size: 12px; box-shadow: 0 8px 32px #07131d66; }
+.wwa-notice button { align-self: flex-start; margin-left: auto; min-width: 32px; min-height: 32px; border: 0; background: none; font-size: 22px; }
+.wwa-game, .wwa-game > iframe { position: absolute; inset: 0; width: 100%; height: 100%; border: 0; background: #0b141b; }
+.wwa-game-overlay { position: absolute; inset: 0; display: grid; place-items: center; padding: 24px; background: #0b141bf5; }
+.wwa-game-loading { width: min(390px, 100%); max-height: 100%; overflow: auto; padding: 16px; text-align: center; }
+.wwa-game-loading > svg { width: 60px; height: 60px; color: var(--app-accent); margin-bottom: 22px; }
+.wwa-game-loading h1 { margin: 12px 0; font-size: 30px; letter-spacing: -1px; line-height: 1.1; }
+.wwa-game-loading p { color: var(--app-muted); font-size: 12px; line-height: 1.8; margin-bottom: 22px; }
+.wwa-game-loading .wwa-primary { width: 100%; }
+.wwa-text-button { min-height: 44px; padding: 12px; margin-top: 12px; background: none; border: 0; color: var(--app-muted); font-size: 12px; }
+.wwa-progress { height: 3px; width: 100%; overflow: hidden; background: #dfba7a20; border-radius: 4px; }
+.wwa-progress > span { display: block; width: 35%; height: 100%; background: var(--app-accent); animation: wwa-load 1.4s ease-in-out infinite alternate; }
+@keyframes wwa-load { from { transform: translateX(-100%); } to { transform: translateX(300%); } }
+@keyframes wwa-enter { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: translateY(0); } }
+@media (min-width: 1600px) { .wwa-lobby { padding-left: max(64px, calc((100vw - 1440px) / 2)); } .wwa-lobby-dock { left: max(64px, calc((100vw - 1440px) / 2)); right: max(64px, calc((100vw - 1440px) / 2)); } }
+@media (max-width: 1024px) { .wwa-lobby { padding: 0 28px 20px; } .wwa-lobby-dock { left: 28px; right: 28px; gap: 8px; } .wwa-lobby-dock > button { gap: 10px; padding: 14px 12px; } .wwa-lobby-dock small { display: none; } .wwa-lobby-dock > button > svg { width: 23px; height: 23px; } .wwa-about-link { left: 28px; } .wwa-car-caption { right: 32px; } .wwa-content { padding-right: 28px; padding-left: 28px; } .wwa-road-choice { gap: 18px; } .wwa-garage { gap: 20px; } }
+@media (max-width: 767px) {
+  .wwa-header { min-height: 76px; padding: 12px 20px; gap: 10px; } .wwa-brand > span { font-size: 19px; letter-spacing: 3px; } .wwa-brand > svg { width: 25px; height: 25px; } .wwa-brand small { font-size: 6px; letter-spacing: 1.5px; } .wwa-header-label { display: none; } .wwa-header { grid-template-columns: 1fr auto; }
+  .wwa-lobby { overflow-y: auto; justify-content: flex-start; padding: 12px 20px 18px; } .wwa-lobby-copy { width: 100%; margin: 0; padding-top: 12px; } .wwa-lobby-copy h1 { font-size: 56px; } .wwa-lobby-copy > p:not(.wwa-save-caption) { margin-top: 16px; font-size: 11px; } .wwa-start-actions { margin-top: 22px; }
+  .wwa-lobby > .wwa-showroom { position: relative; inset: auto; width: 100%; height: 230px; min-height: 230px; margin-top: -5px; } .wwa-car-caption { position: relative; inset: auto; margin: -16px 0 20px; text-align: left; } .wwa-car-caption > strong { font-size: 17px; } .wwa-car-caption > small { display: none; }
+  .wwa-lobby-dock { position: relative; inset: auto; display: flex; flex-direction: column; gap: 8px; } .wwa-lobby-dock > button { min-height: 58px; padding: 12px 16px; gap: 14px; } .wwa-lobby-dock > button > span { display: flex; justify-content: space-between; align-items: center; width: 100%; gap: 10px; } .wwa-lobby-dock small { display: block; margin: 0; text-align: right; } .wwa-lobby-dock strong { font-size: 12px; } .wwa-about-link { position: static; align-self: flex-start; padding-top: 18px; }
+  .wwa-content { padding: 12px 20px 28px; } .wwa-title { padding-bottom: 24px; } .wwa-title > h1 { font-size: 32px; letter-spacing: -1px; } .wwa-road-choice { grid-template-columns: 56px minmax(0, 1fr) 24px; gap: 14px; padding: 18px 16px; } .wwa-road-choice > .wwa-choice-number { display: none; } .wwa-road-choice > img { width: 56px; height: 66px; } .wwa-road-info > strong { font-size: 20px; } .wwa-road-choice .wwa-kicker { font-size: 7px; letter-spacing: .9px; } .wwa-choice-description { font-size: 11px; } .wwa-route-facts { gap: 5px 12px; font-size: 9px; } .wwa-selection-marker > span { display: none; }
+  .wwa-action-bar { min-height: 86px; padding: 12px 20px max(12px, env(safe-area-inset-bottom)); gap: 12px; } .wwa-action-bar > div:first-child { flex: 1; } .wwa-action-bar strong { font-size: 10px; } .wwa-action-bar strong > span { display: block; height: 2px; overflow: hidden; color: transparent; } .wwa-footer-actions .wwa-secondary { display: none; } .wwa-action-bar .wwa-primary { min-height: 48px; padding: 12px 18px; }
+  .wwa-garage, .wwa-settings, .wwa-crew-list, .wwa-help-steps, .wwa-about { grid-template-columns: minmax(0, 1fr); gap: 24px; } .wwa-garage-stage { min-height: 320px; grid-row: 1; } .wwa-garage-stage .wwa-showroom { inset: -20px -20px 75px; } .wwa-car-specs { padding: 16px 0; } .wwa-settings { gap: 16px; } .wwa-settings section { min-width: 0; } .wwa-crew-list { gap: 10px; } .wwa-crew-choice { padding: 20px; gap: 18px; } .wwa-crew-choice > img { width: 68px; height: 84px; } .wwa-help-steps { gap: 0; } .wwa-help-controls { padding: 15px; gap: 12px 18px; } .wwa-about { gap: 8px; } .wwa-about-mark { padding: 12px 0; }
+}
+@media (orientation: landscape) and (max-height: 620px) {
+  .wwa-header { min-height: 64px; padding: 8px max(20px, env(safe-area-inset-right)) 8px max(20px, env(safe-area-inset-left)); } .wwa-brand > span { font-size: 17px; letter-spacing: 3px; } .wwa-brand small { display: none; } .wwa-lobby { overflow: hidden; padding: 0 24px 12px; justify-content: flex-start; } .wwa-lobby-copy { width: 53%; margin-bottom: 0; padding-top: 8px; } .wwa-lobby-copy h1 { font-size: clamp(34px, 7.7vh, 48px); margin-top: 8px; } .wwa-lobby-copy > p:not(.wwa-save-caption) { margin-top: 12px; gap: 6px; font-size: 10px; } .wwa-start-actions { margin-top: 16px; gap: 8px; } .wwa-button { min-height: 46px; padding: 11px 17px; font-size: 12px; } .wwa-save-caption { font-size: 9px; margin-top: 8px !important; }
+  .wwa-lobby > .wwa-showroom { position: absolute; top: -12px; bottom: 48px; left: 36%; right: -4%; width: auto; height: auto; margin: 0; } .wwa-car-caption { display: none; } .wwa-lobby-dock { position: absolute; bottom: 12px; left: 24px; right: 24px; display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 7px; } .wwa-lobby-dock > button { min-height: 48px; padding: 10px 12px; gap: 8px; } .wwa-lobby-dock strong { font-size: 10px; } .wwa-lobby-dock small { display: none; } .wwa-lobby-dock > button > svg { width: 20px; height: 20px; } .wwa-about-link { position: absolute; top: 8px; bottom: auto; left: auto; right: 24px; font-size: 8px !important; padding: 4px; z-index: 3; }
+  .wwa-content { padding-top: 8px; } .wwa-title { padding-bottom: 20px; } .wwa-title > h1 { font-size: 29px; } .wwa-action-bar { min-height: 74px; padding-top: 10px; padding-bottom: 10px; } .wwa-action-bar > div:first-child { display: block; } .wwa-footer-actions .wwa-secondary { display: inline-flex; } .wwa-action-bar strong > span { display: inline; margin: 0 4px; color: #75929e; } .wwa-garage { grid-template-columns: minmax(240px, 1fr) minmax(240px, 1fr); gap: 20px; } .wwa-garage-stage { grid-row: auto; min-height: 300px; } .wwa-garage-stage .wwa-showroom { inset: -30px -20px 60px; } .wwa-car-specs strong { font-size: 15px; } .wwa-game-loading { padding: 6px; } .wwa-game-loading > svg { width: 36px; height: 36px; margin-bottom: 10px; } .wwa-game-loading h1 { font-size: 26px; }
+}
+@media (orientation: landscape) and (max-height: 390px) { .wwa-lobby-copy h1 { font-size: 32px; } .wwa-lobby-copy h1 br { display: none; } .wwa-lobby-copy h1 em::before { content: ' '; } .wwa-lobby-copy > p:not(.wwa-save-caption) { margin-top: 9px; } .wwa-start-actions { margin-top: 12px; } .wwa-save-caption { max-width: 340px; } .wwa-lobby-copy { width: 56%; } .wwa-lobby-dock > button { min-height: 44px; } }
+@media (max-width: 370px) { .wwa-header { padding-left: 16px; padding-right: 16px; } .wwa-lobby, .wwa-content { padding-left: 16px; padding-right: 16px; } .wwa-lobby-copy h1 { font-size: 48px; } .wwa-start-actions .wwa-button { padding: 13px 18px; } .wwa-segments button { padding-left: 12px; padding-right: 12px; } .wwa-road-choice { grid-template-columns: minmax(0, 1fr) 24px; } .wwa-road-choice > img { display: none; } }
+@media (prefers-reduced-motion: reduce) { .wwa *, .wwa *::before, .wwa *::after { animation: none !important; transition: none !important; } }
+.wwa-reduce-motion *, .wwa-reduce-motion *::before, .wwa-reduce-motion *::after { animation: none !important; transition: none !important; }

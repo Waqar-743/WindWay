@@ -1,0 +1,4 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256" fill="none" role="img" aria-labelledby="route-badge-title route-badge-desc">
+<title id="route-badge-title">Frostbite Ascent badge</title><desc id="route-badge-desc">The crest of Windway’s hardest, coldest, longest climb.</desc>
+<g stroke="#263d52" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"><path d="m128 20 91 31v78q-1 65-91 109-90-44-91-109V51z" fill="#b9e1ed"/><path d="m49 151 44-80 24 37 33-62 58 106z" fill="#7aa7bf"/><path d="m150 46-23 44 23-8 17 11 9-8zM93 71l-18 32 19-5 12 8z" fill="#f3f8fb"/><path d="M112 207c-54-26 68-34 30-56-34-20-22-20 9-41" stroke="#f3f8fb" stroke-width="15"/><path d="m23 170 105 13 105-13-12 43-93-10-93 10z" fill="#d47762"/><text x="128" y="198" fill="#263d52" stroke="none" font-family="Trebuchet MS,Arial,sans-serif" font-size="18" font-weight="900" text-anchor="middle">FROSTBITE</text><path d="m150 46 1-23 26 6-26 12" fill="#d47762"/></g>
+</svg>

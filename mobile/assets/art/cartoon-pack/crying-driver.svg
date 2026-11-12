@@ -1,0 +1,22 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256" fill="none" role="img" aria-labelledby="title desc">
+<title id="title">Crying driver</title>
+<desc id="desc">An expressive, teary racer with a soft helmet, crumpled eyebrows and oversized tears.</desc>
+<g stroke="#253b39" stroke-width="5" stroke-linecap="round" stroke-linejoin="round">
+<ellipse cx="128" cy="236" rx="68" ry="9" fill="#253b39" opacity=".12"/>
+<path d="M66 225q3-42 40-51h44q35 9 41 51z" fill="#83bdb1"/>
+<path d="m111 171 17 22 18-22v-22h-35z" fill="#dca47f"/>
+<path d="M52 102V86q0-61 76-61t76 61v29l-20 18H72z" fill="#e98254"/>
+<path d="M110 28v36h35V28" fill="#f7d674"/>
+<path d="M67 87q61-33 122 0l-5 43q-7 49-56 49-48-1-56-48z" fill="#efc299"/>
+<path d="M64 83q65-28 129 0l-5 22q-62-18-120 0z" fill="#f7edcf"/>
+<path d="m90 112 19-8m38 0 19 8" fill="none" stroke-width="6"/>
+<path d="m89 126q10-11 20 0m38 0q10-11 20 0" fill="none"/>
+<path d="m126 126-6 14 13 1" fill="none" stroke-width="3"/>
+<path d="M111 160q17-25 35 0z" fill="#945d53"/>
+<path d="M88 132q-18 23-15 35 4 13 16 9 12-6 8-17zM170 132q17 24 14 36-4 12-15 8-12-7-7-18z" fill="#78bdd1" stroke="#3b7783" stroke-width="3"/>
+<path d="m83 158-2 8m91-8 2 8" stroke="#e2f5ef" stroke-width="4"/>
+<path d="M70 199q-21-14-28 1-4 14 23 20l12-6m110-15q21-14 28 1 4 14-23 20l-12-6" fill="#efc299"/>
+<path d="m118 201 10 11 11-11M128 213v13" fill="none"/>
+<path d="m29 109-9 10m211-10 8 10" stroke="#78bdd1"/>
+</g>
+</svg>

@@ -1,0 +1,18 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256" fill="none" role="img" aria-labelledby="title desc">
+<title id="title">Lookout eagle</title>
+<desc id="desc">A watchful eagle perched on a weathered wooden trail sign.</desc>
+<g stroke="#253b39" stroke-width="5" stroke-linecap="round" stroke-linejoin="round">
+<path d="M125 209v30m-33-26 69 1" fill="none" stroke="#987653" stroke-width="12"/>
+<path d="m60 185 125-9 23 17-22 18-125 9-15-16z" fill="#b89162"/>
+<path d="m78 200 65-4m15-1 22-1" stroke="#805f47" stroke-width="3"/>
+<path d="m135 164 21 28 13-21" fill="#fff7e8"/>
+<path d="M88 106q-20 56 22 70 41 8 61-35l-9-50z" fill="#936c50"/>
+<path d="M97 108q-15 47 13 54 30-8 36-49" fill="#b58a61"/>
+<path d="m109 129 16-6m-19 20 15-6" stroke="#654e41" stroke-width="3"/>
+<path d="M99 95q-8-43 29-49 39-4 39 34l-8 32-14-10-14 13-12-13-17 8z" fill="#fff7e8"/>
+<path d="m160 73 29 14-30 11" fill="#edbc59"/>
+<path d="m128 74 20 5" stroke-width="4"/><circle cx="143" cy="84" r="4" fill="#253b39" stroke="none"/>
+<path d="m109 174-1 15m25-17 1 15m-33 2 16-1m11-1 16-1" stroke="#edbc59" stroke-width="5"/>
+<path d="m67 72-13-6m17-10-6-12" stroke="#b9cdbf" fill="none" stroke-width="3"/>
+</g>
+</svg>

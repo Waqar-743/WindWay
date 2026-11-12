@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256" fill="none" role="img" aria-labelledby="vines-title vines-desc">
+<title id="vines-title">Canopy vines</title>
+<desc id="vines-desc">Three curling jungle vines hanging from a woody branch, dotted with broad leaves and a coral flower.</desc>
+<g stroke="#153c35" stroke-width="5" stroke-linecap="round" stroke-linejoin="round">
+<path d="M17 32q91 19 222-4" stroke="#887654" stroke-width="16"/>
+<path d="M17 28q91 19 222-4" stroke="#ad9a6a" stroke-width="6"/>
+<path d="M53 39q-18 46 5 76 20 25-3 55-19 24-3 52m73-179q-21 45 4 77 20 28-3 53-22 24-10 50m78-187q19 34-2 66-24 34-4 60 21 29-1 61" stroke="#287451" stroke-width="8"/>
+<g fill="#86b960" stroke-width="4">
+<path d="M47 71q-30 4-28-22 26-4 28 22zm1 15q30-3 29 22-27 8-29-22zM65 129q30-7 34 17-26 13-34-17zm-7 28q-30-4-36 21 26 12 36-21zM49 199q28-11 35 11-23 17-35-11zM122 72q-29-1-27-24 26-8 27 24zm0 26q28-4 31-26-26-9-31 26zM140 138q29 0 28 24-26 9-28-24zm-12 25q-31-3-33 23 27 11 33-23zM116 212q26-15 37 7-23 20-37-7zM202 66q27-5 26-29-24-5-26 29zm-5 23q-29-4-31-27 24-9 31 27zM181 127q-29-7-33 17 25 14 33-17zm0 24q28-4 36 18-24 15-36-18zM198 190q28-8 34 15-25 15-34-15z"/>
+</g>
+<g fill="#d97d73" stroke-width="3"><path d="M69 56q-14-20-3-25 10-4 13 10 7-17 17-9 8 10-5 16 18 0 15 12-4 12-20 3-6 18-16 9-7-7-1-16z"/><circle cx="80" cy="52" r="7" fill="#eac35a"/></g>
+<path d="m211 219-3 13m-147-6 4 11m51-8 1 9" stroke="#d6e8a7" stroke-width="4"/>
+</g>
+</svg>

@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256" fill="none" role="img" aria-labelledby="title desc">
+<title id="title">Toucan</title><desc id="desc">A bold jade toucan with a huge marigold-and-coral bill and a cream chest, perched on a branch.</desc>
+<g stroke="#153c35" stroke-width="5" stroke-linecap="round" stroke-linejoin="round">
+<path d="M32 206q81-14 189-2" stroke="#7f9571" stroke-width="15"/><path d="m97 158-20 44 30-12 13 11 15-45" fill="#287451"/><path d="M78 109q2-42 38-52 39 0 46 48l-9 55q-18 35-49 20-31-18-26-71z" fill="#287451"/><path d="M121 89q32-2 34 23l-9 40q-18 18-33-6z" fill="#e9efda"/>
+<path d="M123 66q25-30 76-18 31 11 27 45-43 14-103-5z" fill="#eac35a"/><path d="M198 49q30 10 28 42l-31 2 1-44" fill="#d97d73"/><path d="M131 82q45 14 92-1" stroke-width="3"/><circle cx="118" cy="74" r="10" fill="#e9efda"/><circle cx="121" cy="74" r="4" fill="#153c35" stroke="none"/>
+<path d="M92 119q-11 34 17 45 12-25-2-41" fill="#153c35"/><path d="m110 184-5 20m21-18 3 17m-32 1h17m7 0h16" stroke="#eac35a" stroke-width="6"/><path d="M42 203q-18-24-3-35 19 11 18 32m141 5q3-31 23-25-3 24-23 25" fill="#86b960"/>
+</g></svg>

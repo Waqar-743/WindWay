@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256" fill="none" role="img" aria-labelledby="title desc">
+<title id="title">Vehicle badge</title>
+<desc id="desc">An original shield emblem with a little mountain and winding road.</desc>
+<g stroke="#253b39" stroke-width="5" stroke-linecap="round" stroke-linejoin="round">
+<path d="m128 24 83 28v78q-3 68-83 103-81-35-83-103V52z" fill="#edbc59"/>
+<path d="m128 42 66 23v65q-2 54-66 85-64-31-66-85V65z" fill="#4f7563"/>
+<path d="m79 127 30-49 22 28 17-21 33 42" fill="#b7d0a0"/>
+<path d="m100 92 9-14 11 14-11-3zM142 94l6-9 7 9-6-2z" fill="#fff7e8" stroke="none"/>
+<path d="M116 199q40-35 4-51-23-10 7-25" fill="none" stroke="#f7edcf" stroke-width="13"/>
+<circle cx="165" cy="70" r="9" fill="#f7d674" stroke="none"/>
+</g>
+</svg>

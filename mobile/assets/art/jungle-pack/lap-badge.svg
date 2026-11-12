@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256" fill="none" role="img" aria-labelledby="lap-title lap-desc">
+<title id="lap-title">Two-lap jungle challenge</title>
+<desc id="lap-desc">A chunky marigold number two on a jade circuit badge, wrapped in green leaves and a coral LAPS ribbon.</desc>
+<g stroke="#153c35" stroke-width="5" stroke-linecap="round" stroke-linejoin="round">
+<circle cx="128" cy="115" r="88" fill="#287451"/>
+<circle cx="128" cy="115" r="72" fill="#e9efda" stroke="#86b960" stroke-width="4"/>
+<path d="M63 91q8-26 34-34m96 81q-10 24-34 33" stroke="#eac35a" stroke-width="8"/>
+<path d="m86 47 12 9-8 12m78 88-11 17 18 1" stroke="#eac35a" stroke-width="5"/>
+<text x="128" y="155" fill="#eac35a" stroke="#153c35" stroke-width="4" paint-order="stroke" text-anchor="middle" font-family="Arial,sans-serif" font-size="111" font-weight="900">2</text>
+<path d="M39 190 20 226l42-8 7 15 16-32m132-11 19 36-42-8-7 15-16-32" fill="#b86461"/>
+<path d="M44 179q84 26 168 0v37q-84 27-168 0z" fill="#d97d73"/>
+<text x="128" y="209" fill="#153c35" stroke="none" text-anchor="middle" font-family="Arial,sans-serif" font-size="26" font-weight="900" letter-spacing="6">LAPS</text>
+<path d="M35 146q-24-5-22-29 24 0 22 29zm-4 25q-24 4-29-18 22-9 29 18zm189-25q24-5 22-29-24 0-22 29zm4 25q24 4 29-18-22-9-29 18z" fill="#86b960" stroke-width="3"/>
+<path d="m26 173 14 15m191-15-14 15" stroke-width="3"/>
+</g>
+</svg>

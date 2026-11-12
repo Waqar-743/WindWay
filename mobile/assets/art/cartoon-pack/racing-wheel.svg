@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256" fill="none" role="img" aria-labelledby="title desc">
+<title id="title">Racing wheel</title>
+<desc id="desc">A chunky tire with five cream spokes and a golden center hub.</desc>
+<g stroke="#253b39" stroke-width="5" stroke-linecap="round" stroke-linejoin="round">
+<circle cx="128" cy="128" r="99" fill="#354d43"/>
+<circle cx="128" cy="128" r="77" fill="#52695d" stroke="#718776" stroke-width="3"/>
+<path d="m89 44 9 12m-33 4 10 10m-30 15 13 6m-23 24 15 1m-13 30 15-3m-3 32 13-8m3 32 11-11m11 28 8-14m29 25v-16m34 10-6-15m32-1-11-12m28-12-13-8m23-25-16-2m16-30-16 3m7-34-14 8m-1-32-10 12m-12-28-6 15m-31-23v16" fill="none" stroke="#91a38b" stroke-width="4"/>
+<circle cx="128" cy="128" r="58" fill="#e9dfc1"/>
+<path d="m128 77 11 35 34-12-22 29 24 27-36-10-11 34-10-34-36 10 24-28-23-28 35 12z" fill="#768e80"/>
+<circle cx="128" cy="128" r="20" fill="#edbc59"/><circle cx="128" cy="128" r="7" fill="#9a7951" stroke="none"/>
+</g>
+</svg>

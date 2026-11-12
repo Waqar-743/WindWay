@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256" fill="none" role="img" aria-labelledby="title desc">
+<title id="title">Traffic cones</title>
+<desc id="desc">Two rounded road cones with broad reflective bands and heavy bases.</desc>
+<g stroke="#253b39" stroke-width="5" stroke-linecap="round" stroke-linejoin="round">
+<path d="m21 214 22-18h100l15 18-17 15H35z" fill="#5a7065"/>
+<path d="m43 199 32-128q6-12 13 0l37 128z" fill="#e98254"/>
+<path d="m63 119 39 1 7 23H57zm-14 57 68 1 6 20H44z" fill="#fff7e8" stroke="none"/>
+<path d="m141 216 13-12h69l13 12-11 11h-74z" fill="#5a7065"/>
+<path d="m155 205 25-92q5-9 10 0l29 92z" fill="#eda367"/>
+<path d="m173 145 27 1 6 19h-39zm-12 42h52l4 16h-61z" fill="#fff7e8" stroke="none"/>
+<path d="m79 89-5 19" stroke="#f7c499" stroke-width="4"/>
+</g>
+</svg>

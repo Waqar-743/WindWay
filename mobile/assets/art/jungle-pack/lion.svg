@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256" fill="none" role="img" aria-labelledby="title desc">
+<title id="title">Lion</title><desc id="desc">A cheerful golden lion with a leaf-shaped jade mane and curled tail.</desc>
+<g stroke="#153c35" stroke-width="5" stroke-linecap="round" stroke-linejoin="round">
+<path d="M177 159q49-45 48-4 0 23-22 26"/><path d="M216 132q25 7 10 23-12-3-10-23" fill="#287451"/>
+<path d="m90 158-9 55h28l7-44m42-11 8 55h27l-9-61" fill="#eac35a"/><path d="M70 129q42-33 103-8 28 10 24 42-8 29-60 25-54 3-69-25z" fill="#eac35a"/>
+<path d="m49 49 28-8 21-20 24 16 30-2 8 28 21 22-14 26-3 30-31 4-25 18-26-16-29-4-6-31-14-25z" fill="#287451"/>
+<path d="m61 52 16 16m65-21-12 20m-91 33 26 1m91-1-20 3m-63 30 11-16m42 23-8-18" stroke="#86b960"/>
+<circle cx="75" cy="74" r="12" fill="#eac35a"/><circle cx="131" cy="74" r="12" fill="#eac35a"/><path d="M62 78q38-30 80 1l-2 35q-8 28-37 28-30-1-38-27z" fill="#eac35a"/>
+<path d="M84 91v6m37-6v6" stroke-width="7"/><path d="M86 109q15-14 31 0v13q-16 18-31 0z" fill="#e9efda"/><path d="m96 106 10 1-5 7z" fill="#153c35"/><path d="M101 116v7m-1 0q-7 7-12 0m13 0q7 7 12 0" stroke-width="3"/><path d="M82 211h27m58 0h25"/>
+</g></svg>

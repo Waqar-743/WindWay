@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256" fill="none" role="img" aria-labelledby="title desc">
+<title id="title">Monkey</title><desc id="desc">A playful gold-and-coral monkey smiles beside its curled tail with a leaf on its head.</desc>
+<g stroke="#153c35" stroke-width="5" stroke-linecap="round" stroke-linejoin="round">
+<path d="M166 171q64 6 54-49-7-34-32-22-18 12-1 27" stroke-width="17"/><path d="M166 171q64 6 54-49-7-34-32-22-18 12-1 27" stroke="#d97d73" stroke-width="9"/>
+<path d="M87 142q-53 13-51-43m119 45q31 13 32-23" stroke-width="22"/><path d="M87 142q-53 13-51-43m119 45q31 13 32-23" stroke="#d97d73" stroke-width="13"/><circle cx="35" cy="90" r="13" fill="#eac35a"/><circle cx="188" cy="112" r="13" fill="#eac35a"/>
+<path d="m88 180-14 29 25 7 19-30m21-4 7 27 26 5-12-38" fill="#d97d73"/><ellipse cx="122" cy="155" rx="45" ry="45" fill="#d97d73"/><ellipse cx="122" cy="164" rx="25" ry="30" fill="#eac35a"/>
+<circle cx="75" cy="86" r="21" fill="#d97d73"/><circle cx="163" cy="86" r="21" fill="#d97d73"/><circle cx="75" cy="87" r="11" fill="#eac35a" stroke="none"/><circle cx="163" cy="87" r="11" fill="#eac35a" stroke="none"/>
+<path d="M78 58q41-31 81 4 23 35-8 62-33 19-66-6-24-23-7-60z" fill="#d97d73"/><path d="M90 79q14-16 29 0 15-16 28 0 13 21-2 37-27 15-51-2-17-15-4-35z" fill="#eac35a"/><circle cx="105" cy="88" r="4" fill="#153c35" stroke="none"/><circle cx="135" cy="88" r="4" fill="#153c35" stroke="none"/><path d="M105 106q15 16 30-1" stroke-width="4"/><path d="M121 48q-6-25 21-25-1 21-21 25" fill="#86b960"/>
+</g></svg>

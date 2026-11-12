@@ -1,0 +1,21 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="108" height="108" viewBox="0 0 108 108" fill="none" role="img" aria-labelledby="title desc">
+  <title id="title">Windway adaptive launcher foreground</title>
+  <desc id="desc">Original open-wheel racer, centered inside Android's 66 dp adaptive icon safe zone, with a transparent background.</desc>
+  <g transform="translate(54 54) scale(.30) translate(-128 -128)" stroke="#0A2926" stroke-width="5" stroke-linejoin="round" stroke-linecap="round">
+    <path d="M83 78h90v19H83zM78 168h100v20H78z" fill="#FFF7E8"/>
+    <rect x="62" y="67" width="30" height="48" rx="9" fill="#0A2926"/>
+    <rect x="164" y="67" width="30" height="48" rx="9" fill="#0A2926"/>
+    <rect x="59" y="153" width="34" height="54" rx="10" fill="#0A2926"/>
+    <rect x="163" y="153" width="34" height="54" rx="10" fill="#0A2926"/>
+    <path d="m117 41-8 71-13 34 9 51h46l9-51-13-34-8-71z" fill="#E98254"/>
+    <path d="m117 41-6 60h34l-6-60z" fill="#FFF7E8"/>
+    <path d="m113 128-5 25 7 28h26l7-28-5-25z" fill="#D96B44"/>
+    <path d="M110 106q18-15 36 0l-3 30q-15 11-30 0z" fill="#0A2926"/>
+    <path d="M116 113q12-10 24 0v16h-24z" fill="#8FC8C8" stroke-width="3"/>
+    <path d="M105 204h46v13h-46z" fill="#FFF7E8"/>
+    <path d="M86 198h84v15H86z" fill="#E98254"/>
+    <path d="M94 58h68v16H94z" fill="#E98254"/>
+    <path d="M128 47v43m-22 65 4 24m40-24-4 24" stroke="#FFF7E8" stroke-width="3"/>
+    <path d="M72 76v29m112-29v29M69 163v34m118-34v34" stroke="#FFF7E8" stroke-opacity=".25" stroke-width="3"/>
+  </g>
+</svg>

@@ -1,0 +1,4 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256" fill="none" role="img" aria-labelledby="ice-warning-title ice-warning-desc">
+<title id="ice-warning-title">Ice warning</title><desc id="ice-warning-desc">An unmistakable coral-edged ice warning sign on a snowy post.</desc>
+<g stroke="#263d52" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"><path d="M117 155h23v77h-23z" fill="#7aa7bf"/><path d="M115 32q13-22 26 0l89 146H26z" fill="#d47762"/><path d="m128 48 65 108H63z" fill="#f3f8fb" stroke="none"/><path d="M128 77v54m-24-42 48 30m-48 0 48-30m-24-12-7 8m7-8 7 8m-7 46-7-8m7 8 7-8" stroke="#527485" stroke-width="5"/><path d="M85 232h86" stroke="#b9e1ed"/></g>
+</svg>

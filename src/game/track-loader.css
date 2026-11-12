@@ -17,8 +17,9 @@
   overflow: hidden;
   isolation: isolate;
   border-block-end: 2px solid currentColor;
-  border-radius: 4px;
-  background: color-mix(in srgb, var(--loader-ink) 5%, var(--loader-paper));
+  border-radius: 8px;
+  background: linear-gradient(180deg, color-mix(in srgb, var(--loader-ink) 3%, var(--loader-paper)), color-mix(in srgb, var(--loader-ink) 9%, var(--loader-paper)));
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.6);
 }
 
 .track-loader .track-loader-road::after {

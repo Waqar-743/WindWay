@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256" fill="none" role="img" aria-labelledby="title desc">
+<title id="title">Brake &amp; throttle</title>
+<desc id="desc">Two separate foot pedals with rounded plates and grippy horizontal grooves.</desc>
+<g stroke="#253b39" stroke-width="5" stroke-linecap="round" stroke-linejoin="round">
+<path d="M61 191v39m128-37v37" stroke="#829b8c" stroke-width="15"/>
+<rect x="29" y="78" width="71" height="122" rx="20" fill="#f4e8cb"/>
+<rect x="144" y="32" width="80" height="168" rx="24" fill="#e98254"/>
+<path d="M45 104h39m-39 22h39m-39 22h39m-39 22h39" stroke="#9bab94" stroke-width="6"/>
+<path d="M161 60h46m-46 25h46m-46 25h46m-46 25h46m-46 25h46m-46 25h46" stroke="#b96445" stroke-width="6"/>
+<path d="m44 231 34-1m94 1 34-1" stroke-width="7"/>
+</g>
+</svg>

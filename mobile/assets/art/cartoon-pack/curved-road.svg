@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256" fill="none" role="img" aria-labelledby="title desc">
+<title id="title">Country road</title>
+<desc id="desc">A sweeping asphalt bend with cream edge lines and dashed center markings.</desc>
+<g stroke="#253b39" stroke-width="5" stroke-linecap="round" stroke-linejoin="round">
+<path d="M40 24h78q-15 47 33 74 66 38 71 134H99q-2-72-51-107Q5 94 40 24z" fill="#63716b"/>
+<path d="M48 26q-28 61 12 92 52 36 58 112m-10-204q-12 49 36 80 56 37 61 124" fill="none" stroke="#f7edcf" stroke-width="5"/>
+<path d="M78 32q-18 53 15 78 70 48 70 115" fill="none" stroke="#f7d674" stroke-width="5" stroke-dasharray="16 17"/>
+<path d="m24 161 6-16 9 12m188-60 6-17 9 12m-30-54 6-14 8 10" stroke="#81a275" stroke-width="4" fill="none"/>
+</g>
+</svg>

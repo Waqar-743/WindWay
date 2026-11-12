@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256" fill="none" role="img" aria-labelledby="title desc">
+<title id="title">River bridge</title>
+<desc id="desc">A sturdy little timber bridge with perspective deck planks and warm wooden railings.</desc>
+<g stroke="#253b39" stroke-width="5" stroke-linecap="round" stroke-linejoin="round">
+<path d="m29 151 118-72 84 61-119 78z" fill="#ba9265"/>
+<path d="m29 151 83 67v17l119-77v-18m-119 78v17" fill="#8d684c"/>
+<path d="m53 137 84 65m-60-80 84 65m-60-80 84 65m-60-80 83 65" fill="none" stroke="#8d684c" stroke-width="3"/>
+<g fill="#ac8056"><path d="M35 154v-55l10-6v61l-10 6zm55 43v-57l10-6v62l-10 7zm59-36V99l10-5v62l-10 7zm58-37V65l10-5v62l-10 7z"/></g>
+<path d="m37 105 57 44m58-44 60-38" fill="none" stroke="#b58b60" stroke-width="13"/>
+<path d="m37 105 57 44m58-44 60-38" fill="none" stroke="#eed5a5" stroke-width="4"/>
+<path d="M22 224q13 9 26 0t26 0m92-11q13 9 26 0t26 0" stroke="#79b5bd" stroke-width="4"/>
+</g>
+</svg>

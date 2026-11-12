@@ -1,0 +1,19 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256" fill="none" role="img" aria-labelledby="finish-title finish-desc">
+<title id="finish-title">Jungle finish flag</title>
+<desc id="finish-desc">A waving jade-and-mist checkered racing flag with coral edging, tied to a bamboo pole.</desc>
+<defs><clipPath id="finish-cloth"><path d="M62 40q43-19 82 0t80-1v110q-41 20-80 1t-82 0z"/></clipPath></defs>
+<g stroke="#153c35" stroke-width="5" stroke-linecap="round" stroke-linejoin="round">
+<ellipse cx="69" cy="237" rx="40" ry="7" fill="#153c35" opacity=".12" stroke="none"/>
+<path d="M52 30h12v202H52z" fill="#b9ad78"/>
+<path d="M52 77h12m-12 49h12m-12 50h12" stroke="#287451" stroke-width="7"/>
+<circle cx="58" cy="27" r="10" fill="#eac35a"/>
+<path d="M62 40q43-19 82 0t80-1v110q-41 20-80 1t-82 0z" fill="#e9efda"/>
+<g clip-path="url(#finish-cloth)" stroke="none" fill="#287451">
+<path d="M62 23h27v28H62zm54 0h27v28h-27zm54 0h27v28h-27zm54 0h27v28h-27zM89 51h27v28H89zm54 0h27v28h-27zm54 0h27v28h-27zM62 79h27v28H62zm54 0h27v28h-27zm54 0h27v28h-27zm54 0h27v28h-27zM89 107h27v28H89zm54 0h27v28h-27zm54 0h27v28h-27zM62 135h27v28H62zm54 0h27v28h-27zm54 0h27v28h-27zm54 0h27v28h-27z"/>
+</g>
+<path d="M65 42q41-18 79 0t77-1M65 147q40-17 79 1t77-1" stroke="#d97d73" stroke-width="7"/>
+<path d="M62 40q43-19 82 0t80-1v110q-41 20-80 1t-82 0z"/>
+<path d="M52 180q-24-1-23-20 22-4 23 20zm11 16q4-23 25-19-1 20-25 19z" fill="#86b960" stroke-width="3"/>
+<path d="m30 211-9 7m137-27 7 11m43-25 11 3" stroke="#eac35a" stroke-width="5"/>
+</g>
+</svg>

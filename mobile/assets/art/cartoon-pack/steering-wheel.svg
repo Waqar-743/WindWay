@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256" fill="none" role="img" aria-labelledby="title desc">
+<title id="title">Steering control</title>
+<desc id="desc">A thick-rimmed three-spoke steering wheel with a warm center badge.</desc>
+<g stroke="#253b39" stroke-width="5" stroke-linecap="round" stroke-linejoin="round">
+<circle cx="128" cy="128" r="95" fill="#4f6b5d"/>
+<circle cx="128" cy="128" r="72" fill="#f4e8cb"/>
+<path d="M57 111q72 15 142 0l-5 30-42 11-10 49h-28l-12-49-40-11z" fill="#8da496"/>
+<path d="M57 111q72 15 142 0m-85 41 14-8 14 8" fill="none" stroke="#577362" stroke-width="4"/>
+<circle cx="128" cy="128" r="29" fill="#edbc59"/>
+<path d="m116 124 11 13 15-20" fill="none" stroke-width="5"/>
+<path d="m72 70 9-8m94 1 8 8" stroke="#9db99f" stroke-width="7"/>
+</g>
+</svg>

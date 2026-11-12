@@ -1,0 +1,170 @@
+/* Native game cockpit. The web edition keeps its existing layout. */
+.windway-native { overscroll-behavior: none; touch-action: none; background: #101d24 !important; color-scheme: dark; }
+.windway-native .wildway,
+.windway-native .wildway.page-race,
+.windway-native .wildway.page-results {
+  --ink: #edf3f2; --muted: #b8c9cf; --paper: #14252e; --orange: #dfba7a;
+  background: transparent;
+  font-family: 'Trebuchet MS', Arial, sans-serif;
+}
+.windway-native .wildway .scene-shell { background: #101d24; }
+.windway-native .wildway .race-ui {
+  --mobile-control-scale: .333333;
+  --hud-edge: 12px; --hud-controls-space: 104px; --hud-map-size: 30px; --hud-speed-height: 24px;
+  --hud-panel: transparent; --hud-text: #ffffff; --hud-muted: #edf3f2; --hud-accent: #f2c57c; --hud-rule: transparent;
+  text-shadow: 0 1px 2px #07131dcc;
+}
+.windway-native .wildway .race-ui .race-dashboard {
+  width: min(104px, calc(50vw - var(--hud-right) - 12px));
+  display: grid; grid-template-columns: minmax(0, 1fr) 44px; gap: 2px 0; padding: 0;
+  border: 0; border-radius: 0; background: transparent; box-shadow: none;
+}
+.windway-native .wildway .race-ui .race-header { display: contents; }
+.windway-native .wildway .race-ui .race-wordmark,
+.windway-native .wildway .race-ui .lap-clock > small,
+.windway-native .wildway .race-ui .race-reaction,
+.windway-native .wildway .race-ui .race-tools,
+.windway-native .wildway .race-ui .race-minimap > span,
+.windway-native .wildway .race-ui .race-notices:empty { display: none; }
+.windway-native .wildway .race-ui .pause-button { grid-column: 2; grid-row: 1; width: 44px; height: 44px; min-height: 44px; padding: 0; }
+.windway-native .wildway .race-ui .pause-button > svg { width: calc(20px * var(--mobile-control-scale)); height: calc(20px * var(--mobile-control-scale)); }
+.windway-native .wildway .race-ui .race-stats { grid-column: 1; grid-row: 1; grid-template-columns: minmax(0, 1fr); gap: 1px; align-self: center; }
+.windway-native .wildway .race-ui .lap-clock > strong { font-size: 10px; margin: 0; letter-spacing: -.3px; }
+.windway-native .wildway .race-ui .lap-clock > span { display: none; }
+.windway-native .wildway .race-ui .lap-counter { border: 0; padding: 0; background: none; }
+.windway-native .wildway .race-ui .lap-counter > b { font-size: 6px; letter-spacing: .2px; }
+.windway-native .wildway .race-ui .checkpoint-progress { grid-column: 1 / -1; grid-template-columns: auto minmax(0, 1fr) auto; gap: 4px; padding: 1px 0; border: 0; }
+.windway-native .wildway .race-ui .checkpoint-progress > div { grid-column: auto; grid-row: auto; gap: 1px; }
+.windway-native .wildway .race-ui .checkpoint-progress i { height: 2px; }
+.windway-native .wildway .race-ui .checkpoint-progress > span,
+.windway-native .wildway .race-ui .checkpoint-progress strong,
+.windway-native .wildway .race-ui .checkpoint-progress strong small { font-size: 6px; }
+.windway-native .wildway .race-ui .winter-drive-info { grid-column: 1 / -1; padding: 0; border: 0; background: none; }
+.windway-native .wildway .race-ui .winter-drive-info > img { width: calc(18px * var(--mobile-control-scale)); height: calc(18px * var(--mobile-control-scale)); }
+.windway-native .wildway .race-ui .winter-drive-info strong { font-size: 6px; }
+.windway-native .wildway .race-ui .winter-drive-info small { font-size: 6px; }
+.windway-native .wildway .race-ui .race-notices { grid-column: 1 / -1; gap: 2px; }
+.windway-native .wildway .race-ui .countdown { padding: 0; border: 0; background: none; }
+.windway-native .wildway .race-ui .countdown > span { font-size: 6px; }
+.windway-native .wildway .race-ui .countdown > strong { font-size: 10px; margin: 0; color: var(--hud-accent); }
+.windway-native .wildway .race-ui .countdown > small { display: none; }
+.windway-native .wildway .race-ui .go-message { font-size: 7px; color: var(--hud-accent); }
+.windway-native .wildway .race-ui .ramp-status-label { padding: 0; gap: 2px; border: 0; background: transparent; }
+.windway-native .wildway .race-ui .ramp-status-label > img { width: calc(20px * var(--mobile-control-scale)); height: calc(20px * var(--mobile-control-scale)); }
+.windway-native .wildway .race-ui .ramp-status-label strong { font-size: 6px; }
+.windway-native .wildway .race-ui .ramp-status-label small { display: none; }
+.windway-native .wildway .race-ui .race-minimap { grid-template-rows: minmax(0, 1fr); padding: 0; background: transparent; border: 0; border-radius: 0; box-shadow: none; overflow: visible; }
+.windway-native .wildway .race-ui .race-minimap .track-map { filter: drop-shadow(0 1px 1px #07131dcc); }
+.windway-native .wildway .race-ui .race-minimap .track-map > path:nth-of-type(2) { stroke: #ffffff; }
+.windway-native .wildway .race-ui .race-minimap .track-map > path:nth-of-type(3) { stroke: #f2c57c; }
+.windway-native .wildway .race-ui .speed-gauge { width: 34px; padding: 0; background: transparent; border: 0; border-radius: 0; box-shadow: none; }
+.windway-native .wildway .race-ui .speed-gauge > strong { font-size: 12px; letter-spacing: -.3px; line-height: 1.05; }
+.windway-native .wildway .race-ui .speed-gauge > small { display: none; }
+.windway-native .wildway .race-ui .speed-gauge > span { font-size: 6px; letter-spacing: .5px; }
+
+.windway-native .wildway .race-ui :is(.lap-clock, .lap-counter, .checkpoint-progress, .winter-drive-info, .ramp-status-label, .countdown, .recovery-card, .go-message, .speed-gauge) { text-shadow: 0 1px 2px #07131dcc; }
+.windway-native .wildway .race-ui .hud-button,
+.windway-native .wildway .race-ui .hud-button:hover:not(:disabled) { background: transparent; border: 0; border-radius: 0; box-shadow: none; }
+.windway-native .wildway .race-ui .hud-button { -webkit-tap-highlight-color: transparent; }
+.windway-native .wildway .race-ui :is(.hud-button > svg, .mobile-driver-badge svg, .mobile-control-mark, .mobile-driver-badge > img, .mobile-wheel > svg) { filter: drop-shadow(0 1px 1px #07131dcc); }
+.windway-native .wildway .race-ui .track-loader { gap: 2px; }
+.windway-native .wildway .race-ui .track-loader-road { block-size: 14px; background: transparent; border: 0; border-radius: 0; }
+.windway-native .wildway .race-ui .track-loader-road::after { background: transparent; }
+.windway-native .wildway .race-ui .track-loader-car img { inline-size: 24px; block-size: 10px; }
+.windway-native .wildway .race-ui .track-loader-finish { inline-size: calc(10px * var(--mobile-control-scale)); block-size: calc(10px * var(--mobile-control-scale)); }
+.windway-native .wildway .race-ui .track-loader-caption { font-size: 6px; }
+
+/* Driving actions sit at the edges, leaving the racing line clear. */
+.mobile-driver-badge { position: absolute; top: var(--hud-top); left: var(--hud-left); display: flex; align-items: center; gap: 0; pointer-events: auto; }
+.mobile-driver-badge > button {
+  display: inline-flex; align-items: center; justify-content: center; gap: 0; width: 44px; height: 44px; padding: 0;
+  border: 0; border-radius: 0; color: var(--hud-text); background: transparent; box-shadow: none;
+  -webkit-tap-highlight-color: transparent; transition: color .15s;
+}
+.mobile-driver-badge > button.mobile-stop { width: 44px; padding: 0; font-size: 10px; font-weight: 700; letter-spacing: .7px; }
+.mobile-driver-badge > button > svg { width: calc(21px * var(--mobile-control-scale)); height: calc(21px * var(--mobile-control-scale)); flex-shrink: 0; }
+.mobile-driver-badge > button .mobile-control-mark { display: inline-flex; align-items: center; gap: 5px; transform: scale(var(--mobile-control-scale)); transform-origin: center; white-space: nowrap; pointer-events: none; }
+.mobile-driver-badge > button .mobile-control-mark > svg { width: 21px; height: 21px; flex-shrink: 0; }
+.mobile-driver-badge > img { width: calc(32px * var(--mobile-control-scale)); height: calc(32px * var(--mobile-control-scale)); margin-left: 0; }
+.mobile-driver-badge > button:disabled { opacity: .4; }
+.mobile-driver-badge > button:active { color: var(--hud-accent); background: transparent; box-shadow: none; }
+.windway-native .wildway .race-ui .touch-controls {
+  display: flex; position: absolute; left: var(--hud-left); right: var(--hud-right); bottom: var(--hud-bottom);
+  align-items: flex-end; justify-content: space-between; gap: 24px; pointer-events: none;
+}
+.windway-native .wildway .race-ui .touch-pedals { width: 88px; display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 0; align-items: end; }
+.windway-native .wildway .race-ui .touch-button {
+  display: flex; align-items: center; justify-content: center;
+  min-width: 44px; width: 100%; height: 44px; min-height: 44px; padding: 0; border: 0; border-radius: 0;
+  background: transparent; color: var(--hud-text); box-shadow: none;
+  font-size: 10px !important; line-height: 1; font-weight: 700; letter-spacing: .8px;
+  touch-action: none !important; user-select: none; -webkit-user-select: none; pointer-events: auto;
+  -webkit-tap-highlight-color: transparent; transition: color .12s;
+}
+.windway-native .wildway .race-ui .touch-button .mobile-control-mark { display: flex; flex-direction: column; align-items: center; gap: 7px; transform: scale(var(--mobile-control-scale)); transform-origin: center; pointer-events: none; white-space: nowrap; }
+.windway-native .wildway .race-ui .touch-button .mobile-control-mark > svg { width: 28px; height: 28px; pointer-events: none; }
+.windway-native .wildway .race-ui .touch-button[aria-pressed=true] { background: transparent; border: 0; box-shadow: none; color: var(--hud-accent); transform: none; }
+.windway-native .wildway .race-ui .touch-drift { min-height: 44px; font-size: 9px !important; border-radius: 0; background: transparent; }
+.windway-native .wildway .race-ui .touch-brake { min-height: 44px; }
+.windway-native .wildway .race-ui .touch-throttle { min-height: 44px; background: transparent; border: 0; box-shadow: none; }
+.windway-native .wildway .race-ui .touch-throttle .mobile-control-mark > svg { height: 40px; }
+.mobile-steering-cluster { display: flex; flex-direction: column; align-items: stretch; gap: 4px; width: 88px; pointer-events: auto; }
+.mobile-arrow-controls { display: grid; grid-template-columns: 1fr 1fr; gap: 0; }
+.windway-native .wildway .race-ui .mobile-arrow-controls .touch-button { min-height: 44px; }
+.mobile-wheel { height: 44px; width: 44px; display: flex; align-items: center; justify-content: center; align-self: center; touch-action: none; outline-offset: 4px; background: transparent; border: 0; box-shadow: none; }
+.mobile-wheel > svg { width: calc(92px * var(--mobile-control-scale)); height: calc(92px * var(--mobile-control-scale)); flex-shrink: 0; pointer-events: none; }
+.mobile-tilt-controls { display: grid; gap: 2px; }
+.mobile-tilt-controls > span { font-size: 6px; letter-spacing: .3px; text-align: center; color: var(--hud-text); text-shadow: 0 1px 2px #07131dcc; }
+.windway-native .wildway .race-ui .mobile-tilt-controls > .touch-button { font-size: 9px !important; min-height: 44px; }
+.windway-native .wildway .race-ui :is(.touch-controls, .touch-pedals, .mobile-steering-cluster, .mobile-arrow-controls, .mobile-tilt-controls, .mobile-driver-badge) { background: transparent; border: 0; box-shadow: none; }
+.windway-native .wildway :is(button, [role=slider]):focus-visible { outline: 2px solid #dfba7a; outline-offset: 3px; }
+.windway-native .wildway .race-ui-paused :is(.mobile-driver-badge, .race-dashboard, .race-minimap, .speed-gauge) { visibility: hidden; }
+
+/* The paused world remains visible behind a small translucent panel. */
+.windway-native .wildway .modal-scrim { background: #07131d66; padding: 16px; }
+.windway-native .wildway .pause-card {
+  width: min(360px, 100%); max-height: calc(100dvh - 32px); overflow: auto; padding: 26px;
+  border: 1px solid #d9edfa33; border-radius: 16px; background: #14252ee8; color: #edf3f2;
+  box-shadow: inset 0 1px 0 #ecf7ff12, 0 16px 48px #07131d40; text-align: left;
+}
+.mobile-menu-kicker { display: block; color: #dfba7a; font-size: 9px; font-weight: 700; letter-spacing: 1.8px; }
+.windway-native .wildway .pause-card h1 { margin: 12px 0 8px; font-family: inherit; font-size: 32px; letter-spacing: -1.2px; line-height: 1.1; }
+.windway-native .wildway .pause-card > p { margin: 0 0 22px; font-size: 12px; line-height: 1.6; color: #b8c9cf; }
+.windway-native .wildway .ww-button.ww-primary { display: flex; justify-content: center; align-items: center; gap: 9px; width: 100%; min-height: 50px; margin: 0; padding: 12px 18px; border: 1px solid #dfba7a; border-radius: 9px; background: #dfba7a; color: #14252e; box-shadow: none; font: 700 13px 'Trebuchet MS', Arial, sans-serif; letter-spacing: .2px; }
+.windway-native .wildway .ww-primary > svg { width: 20px; height: 20px; }
+.windway-native .wildway .pause-options { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin: 10px 0 0; padding: 0; border: 0; }
+.windway-native .wildway .pause-options > button { display: flex; justify-content: center; align-items: center; gap: 7px; min-height: 46px; padding: 10px; background: #ecf7ff0a; border: 1px solid #d9edfa33; border-radius: 8px; color: #edf3f2; font-size: 11px; }
+.windway-native .wildway .pause-options svg { width: 17px; height: 17px; }
+.mobile-menu-note { display: block; margin-top: 14px; text-align: center; color: #b8c9cf; font-size: 10px; }
+.windway-native .wildway .track-loader { --loader-ink: #edf3f2; --loader-paper: #14252e; --loader-accent: #dfba7a; }
+.windway-native .wildway .recovery-card { padding: 2px 0; border: 0; background: none; color: #edf3f2; }
+.windway-native .wildway .recovery-card > img,
+.windway-native .wildway .recovery-card > h2,
+.windway-native .wildway .recovery-card > p { display: none; }
+.windway-native .wildway .recovery-card > strong { font-size: 6px; letter-spacing: .2px; }
+.windway-native .wildway .race-ui .recovery-card > progress { height: 2px; margin-top: 2px; border: 0; background: transparent; }
+.windway-native .wildway .race-ui .recovery-card > progress::-webkit-progress-bar { background: transparent; }
+.windway-native .wildway .results-page { background: #07131d66; padding: 16px; }
+.windway-native .wildway .results-card { width: min(420px, 100%); max-height: calc(100dvh - 32px); overflow: auto; padding: 22px 26px; border: 1px solid #d9edfa33; border-radius: 16px; background: #14252ee8; color: #edf3f2; }
+.windway-native .wildway .results-trophy { width: 40px; height: 40px; }
+.windway-native .wildway .results-card h1 { font-family: inherit; font-size: 26px; line-height: 1.1; margin: 10px 0; letter-spacing: -.8px; }
+.windway-native .wildway .results-card h1 > br { display: none; }
+.windway-native .wildway .results-card h1 em { font-family: inherit; color: #dfba7a; }
+.windway-native .wildway .result-badge { margin-top: 6px; padding: 0; border: 0; background: none; color: #dfba7a; font-size: 8px; }
+.windway-native .wildway .result-time { font-size: 32px; color: #edf3f2; margin: 10px 0; }
+.windway-native .wildway .results-card > p,
+.windway-native .wildway .result-details span,
+.windway-native .wildway .results-card .back-link { color: #c2d2d8; }
+.windway-native .wildway .result-details { margin: 12px 0; padding: 12px 0; border-color: #d9edfa33; }
+.windway-native .wildway .results-card .back-link { display: block; min-height: 44px; width: 100%; margin: 8px 0 0; }
+@media (max-height: 360px) {
+  .windway-native .wildway .race-ui { --hud-edge: 8px; }
+  .windway-native .wildway .race-ui .winter-drive-info { display: none; }
+  .mobile-driver-badge > img { display: none; }
+  .windway-native .wildway .pause-card { padding: 18px 24px; }
+  .windway-native .wildway .pause-card h1 { margin-top: 8px; font-size: 27px; }
+  .windway-native .wildway .pause-card > p { margin-bottom: 14px; }
+}
+@media (max-width: 480px) {
+  .mobile-driver-badge > img { display: none; }
+}

@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256" fill="none" role="img" aria-labelledby="title desc">
+<title id="title">Cloud cluster</title>
+<desc id="desc">Two puffy clouds with rounded contours and a small trailing puff.</desc>
+<g stroke="#253b39" stroke-width="5" stroke-linecap="round" stroke-linejoin="round">
+<path d="M38 139q-22 0-22-22 0-23 25-23-2-33 30-39 31-6 43 20 22-15 39 5 29-2 31 27 26 0 26 24 0 23-27 23H44z" fill="#fff7e8"/>
+<path d="M61 91q8-14 23-11m32 20q8-7 19-3m-95 39h86" fill="none" stroke="#d5dfd0" stroke-width="4"/>
+<path d="M122 186q-17-3-15-19 1-17 21-17 5-25 30-21 16 3 20 20 25-8 29 15 25-2 25 16 0 17-24 17h-70z" fill="#dfebdf" stroke="#7b9c94" stroke-width="4"/>
+<path d="m149 175 23-1" stroke="#fff7e8" stroke-width="4"/>
+</g>
+</svg>

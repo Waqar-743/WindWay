@@ -44,6 +44,7 @@ export interface Telemetry {
   drifting: boolean; airborne: boolean; boosting: boolean; resets: number;
   altitude?: number; surface?: 'dry' | 'packed-snow' | 'black-ice';
 }
+export interface ResumeRun { checkpoint: number; lap: number; elapsed: number; resets: number }
 const emptyTelemetry: Telemetry = { speed: 0, elapsed: 0, lap: 1, checkpoint: 0, progress: 0, x: 0, z: 119, drifting: false, airborne: false, boosting: false, resets: 0 };
 const emptyRun = (): Telemetry => ({ ...emptyTelemetry, x: START.point.x, z: START.point.z, altitude: START.point.y, surface: mapById(preferences.selectedMap).mode === 'ascent' ? 'packed-snow' : 'dry' });
 
@@ -58,7 +59,7 @@ interface GameState extends Preferences {
   selectMap: (id: string) => void;
   selectLevel: (id: number) => void;
   updateSettings: (settings: Partial<Settings>) => void;
-  startRace: () => void; setReady: (ready: boolean) => void; setError: (error: string | null) => void;
+  startRace: (resume?: ResumeRun) => void; setReady: (ready: boolean) => void; setError: (error: string | null) => void;
   startCountdown: () => void; tickCountdown: () => void; pause: () => void; resume: () => void;
   resetCar: () => void; finish: (time: number, resets: number) => void;
   beginRecovery: (reason: RecoveryReason, checkpoint: number) => void; tickRecovery: (dt: number) => void;
@@ -109,7 +110,7 @@ export const useGame = create<GameState>((set, get) => ({
   },
   setPaint: (paint) => { set({ paint }); persistPreferences(get()); },
   updateSettings: (settings) => { set({ settings: { ...get().settings, ...settings } }); persistPreferences(get()); },
-  startRace: () => set((state) => ({ page: 'race', status: 'loading', countdown: 3, runId: state.runId + 1, resetRequest: 0, telemetry: { ...emptyRun(), surface: mapById(state.selectedMap).mode === 'ascent' ? 'packed-snow' : 'dry' }, result: null, reaction: null, recovery: null, cameraMode: 'chase', error: null })),
+  startRace: (resume) => set((state) => ({ page: 'race', status: 'loading', countdown: 3, runId: state.runId + 1, resetRequest: 0, telemetry: { ...emptyRun(), ...(resume ?? {}), surface: mapById(state.selectedMap).mode === 'ascent' ? 'packed-snow' : 'dry' }, result: null, reaction: null, recovery: null, cameraMode: 'chase', error: null })),
   setReady: (ready) => set({ ready }),
   setError: (error) => set({ error }),
   startCountdown: () => { if (get().status === 'loading') set({ status: 'countdown', countdown: 3 }); },

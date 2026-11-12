@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256" fill="none" role="img" aria-labelledby="title desc">
+<title id="title">Jump ramp</title>
+<desc id="desc">An orange-sided stunt ramp with a striped approach and curved launch surface.</desc>
+<g stroke="#253b39" stroke-width="5" stroke-linecap="round" stroke-linejoin="round">
+<ellipse cx="128" cy="224" rx="105" ry="11" fill="#253b39" opacity=".1"/>
+<path d="M24 204q103-15 141-145l67 38v109l-96 34z" fill="#e98254"/>
+<path d="M24 204q103-15 141-145l67 38q-34 116-122 131z" fill="#65736d"/>
+<path d="M44 204q87-25 120-131m-50 145q70-28 100-113" fill="none" stroke="#f7edcf" stroke-width="4"/>
+<path d="m92 188 59 24m-42-43 57 24m-43-46 57 25m-44-50 57 27" fill="none" stroke="#f7d674" stroke-width="8"/>
+<path d="m148 223 3-26 38-18 19 21" fill="none" stroke="#b86443" stroke-width="4"/>
+<circle cx="218" cy="181" r="4" fill="#f7edcf" stroke="none"/>
+</g>
+</svg>

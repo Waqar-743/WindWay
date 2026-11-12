@@ -24,3 +24,16 @@ Thumbs.db
 
 # TypeScript cache
 *.tsbuildinfo
+
+# Local Android / Flutter toolchains and generated builds
+.tooling/
+mobile/.dart_tool/
+mobile/.flutter-plugins-dependencies
+mobile/build/
+mobile/android/.gradle/
+mobile/android/.kotlin/
+mobile/android/local.properties
+mobile/android/key.properties
+mobile/assets/game/
+*.jks
+*.keystore

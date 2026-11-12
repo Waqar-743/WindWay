@@ -1,0 +1,25 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256" fill="none" role="img" aria-labelledby="station-title station-desc">
+<title id="station-title">Canopy roadside station</title>
+<desc id="station-desc">A friendly jungle stop station with jade stepped roofing, a cream garage, marigold signs and coral fuel pumps.</desc>
+<g stroke="#153c35" stroke-width="5" stroke-linecap="round" stroke-linejoin="round">
+<path d="M35 99h183v121H35z" fill="#e9efda"/>
+<path d="M24 101V83h205v18z" fill="#153c35"/>
+<path d="M45 83V64h163v19z" fill="#287451"/>
+<path d="M70 64V50h114v14z" fill="#86b960"/>
+<path d="M79 220v-99h88v99" fill="#52775d"/>
+<path d="M87 140h72m-72 18h72m-72 18h72m-72 18h72m-72 17h72" stroke="#86b960" stroke-width="4"/>
+<rect x="181" y="123" width="23" height="34" rx="3" fill="#a2c4ad"/>
+<path d="M193 126v27m-9-13h17" stroke="#e9efda" stroke-width="3"/>
+<rect x="87" y="27" width="81" height="30" rx="7" fill="#eac35a"/>
+<text x="127.5" y="48" fill="#153c35" stroke="none" text-anchor="middle" font-family="Arial,sans-serif" font-size="19" font-weight="900" letter-spacing="2">STOP</text>
+<path d="M126 26q-20 0-20-16 18-2 20 16zm3 0q2-19 21-17-1 16-21 17z" fill="#86b960" stroke-width="3"/>
+<rect x="14" y="160" width="38" height="59" rx="7" fill="#d97d73"/>
+<rect x="22" y="168" width="22" height="17" rx="3" fill="#153c35" stroke-width="3"/>
+<path d="M24 197h18m9-31 9-7 8 8v34q0 8-7 8t-7-8v-12" stroke-width="4"/>
+<rect x="207" y="174" width="31" height="45" rx="5" fill="#eac35a"/>
+<path d="m215 188 6 6 9-13" stroke-width="4"/>
+<path d="M17 222h223" stroke="#287451" stroke-width="7"/>
+<path d="M37 75q7-21 22-15m-10 9q1 20 17 17" stroke="#86b960" stroke-width="4"/>
+<path d="M208 59q15-3 20 11-14 9-21-5z" fill="#86b960" stroke-width="3"/>
+</g>
+</svg>

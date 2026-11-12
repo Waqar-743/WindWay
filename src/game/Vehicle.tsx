@@ -19,7 +19,8 @@ import { gameAudio } from './audio';
 const testDrive = import.meta.env.DEV && new URLSearchParams(window.location.search).has('testDrive');
 
 export default function Vehicle() {
-  const initialPose = useMemo(() => getRespawnPose(0, true), []);
+  const initialRun = useMemo(() => ({ ...useGame.getState().telemetry }), []);
+  const initialPose = useMemo(() => getRespawnPose(initialRun.checkpoint, initialRun.elapsed === 0 && initialRun.checkpoint === 0), [initialRun]);
   const spawn = initialPose.position;
   const initialPosition: [number, number, number] = [spawn.x, spawn.y, spawn.z];
   const body = useRef<RapierRigidBody>(null); const visual = useRef<THREE.Group>(null);
@@ -28,9 +29,13 @@ export default function Vehicle() {
   const resetRequest = useGame((state) => state.resetRequest);
   const car = carById(selectedCar);
   const motion = useRef<CarMotion>({ speed: 0, steer: 0, lean: 0, bounce: 0 });
-  const simulation = useRef({ elapsed: 0, lap: 1, checkpoint: 0, resets: 0, publish: 0, previous: { x: spawn.x, z: spawn.z }, airTime: 0, offRoadTime: 0, wasGrounded: true, lastCrash: -10 });
+  const simulation = useRef({ elapsed: initialRun.elapsed, lap: initialRun.lap, checkpoint: initialRun.checkpoint, resets: initialRun.resets, publish: 0, previous: { x: spawn.x, z: spawn.z }, airTime: 0, offRoadTime: 0, wasGrounded: true, lastCrash: -10 });
   const vectors = useRef(createMotionTools(rapier));
-  const ready = useCallback(() => { useGame.getState().setReady(true); useGame.getState().startCountdown(); }, []);
+  const ready = useCallback(() => {
+    const game = useGame.getState();
+    game.updateTelemetry({ ...game.telemetry, x: initialPose.position.x, z: initialPose.position.z, progress: initialPose.progress, altitude: initialPose.point.y, surface: surfaceAt(initialPose.progress).kind });
+    game.setReady(true); game.startCountdown();
+  }, [initialPose]);
 
   const resetToRoad = useCallback((reason: RecoveryReason = 'manual') => {
     const rb = body.current; if (!rb) return;
@@ -50,7 +55,7 @@ export default function Vehicle() {
   useEffect(() => { if (resetRequest > 0) resetToRoad(); }, [resetRequest, resetToRoad]);
   useEffect(() => {
     vehicleFrame.position.set(...initialPosition); vehicleFrame.yaw = initialPose.yaw;
-    vehicleFrame.speed = 0; vehicleFrame.drifting = false; vehicleFrame.grounded = true; vehicleFrame.boosting = false; vehicleFrame.shake = 0; vehicleFrame.resets = 0;
+    vehicleFrame.speed = 0; vehicleFrame.drifting = false; vehicleFrame.grounded = true; vehicleFrame.boosting = false; vehicleFrame.shake = 0; vehicleFrame.resets = initialRun.resets;
   }, []);
   useEffect(() => () => { clearInput(); gameAudio.stop(); }, []);
 

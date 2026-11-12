@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256" fill="none" role="img" aria-labelledby="title desc">
+<title id="title">Wolf</title><desc id="desc">A curious moss-jade wolf with pointed ears, a cream muzzle and bushy curling tail.</desc>
+<g stroke="#153c35" stroke-width="5" stroke-linecap="round" stroke-linejoin="round">
+<path d="M174 148q52 7 36-54 30 10 27 51-4 39-50 39l-19-20" fill="#6e9485"/><path d="M216 109q14 5 18 17l-13 17-11-14" fill="#e9efda"/><path d="m78 167-8 46h23l13-46m47-5 8 51h23l-7-53" fill="#6e9485"/><path d="M62 132q40-29 101-11 34 11 25 45-48 25-106 7z" fill="#6e9485"/>
+<path d="m62 86-8-48 32 24 17-29 15 52 8 42-37 29-35-27z" fill="#6e9485"/><path d="m62 91 23 15 27-17-6 37-20 21-26-19z" fill="#e9efda"/><path d="m64 55 8 24 9-9m23-19-5 24 10 1" fill="#d97d73" stroke="none"/><path d="m67 91 9 5m19 0 9-5" stroke-width="4"/><path d="m77 113 19-1-10 12z" fill="#153c35"/><path d="M85 126v8m0 0-7 4m7-4 8 3" stroke-width="3"/><path d="m121 130 8 13 10-8m-65 76h18m71 0h21"/><path d="m36 211 4-13 7 13m155 4 7-15 6 15" stroke="#86b960"/>
+</g></svg>

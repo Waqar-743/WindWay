@@ -1,0 +1,19 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256" fill="none" role="img" aria-labelledby="checkpoint-title checkpoint-desc">
+<title id="checkpoint-title">Jungle checkpoint arch</title>
+<desc id="checkpoint-desc">A jade checkpoint gate with bamboo posts, a golden check mark and coral route flags, standing above a clear road.</desc>
+<g stroke="#153c35" stroke-width="5" stroke-linecap="round" stroke-linejoin="round">
+<path d="M39 224h178l-36-51H76z" fill="#6a8065"/>
+<path d="m128 221 1-15m0-15v-10" stroke="#e9efda" stroke-width="4"/>
+<path d="M42 71h20v148H42zm152 0h20v148h-20z" fill="#86b960"/>
+<path d="M42 106h20m-20 35h20m-20 35h20m132-70h20m-20 35h20m-20 35h20" stroke="#e9efda" stroke-width="8"/>
+<path d="M29 58h198v34H29z" fill="#287451"/>
+<path d="M37 65h182" stroke="#86b960" stroke-width="4"/>
+<circle cx="128" cy="75" r="25" fill="#eac35a"/>
+<path d="m114 75 10 10 20-21" stroke-width="7"/>
+<path d="M53 57V18m152 39V18"/>
+<path d="m54 20 33 9-33 11zm152 0 32 9-32 11z" fill="#d97d73" stroke-width="3"/>
+<path d="M52 139q-20-4-21-23 19-3 21 23zm3 14q6-21 24-15 0 18-24 15zM205 105q-19-2-21-20 19-5 21 20z" fill="#287451" stroke-width="3"/>
+<path d="M23 219h48m115 0h48" stroke="#153c35" stroke-width="8"/>
+<path d="m85 118 6 6m80-6-6 6m-37-7v9" stroke="#eac35a" stroke-width="4"/>
+</g>
+</svg>

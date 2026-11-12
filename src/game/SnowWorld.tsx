@@ -7,6 +7,7 @@ import { CHECKPOINTS, ROAD_WIDTH, START, TRACK_POINTS, nearestTrackPoint, ribbon
 import { SNOW_HURDLES, SNOW_ICE_ZONES } from './snowCourse';
 import { CheckpointGates, Instances, TrackSurface } from './World';
 import { useGame } from './store';
+import { surfaceTexture, worldSurfaceUV } from './surfaceDetail';
 
 const snowArt = (name: string) => `${import.meta.env.BASE_URL}snow-pack/${name}.svg`;
 const signs = ['snowman', 'snowy-tree', 'arctic-fox', 'mountain-hut', 'summit-flag', 'ice-warning', 'slalom-gate'];
@@ -22,7 +23,7 @@ function SnowTerrain({ low }: { low: boolean }) {
     g.rotateX(-Math.PI / 2); g.translate(0, 0, -150);
     const p = g.attributes.position;
     for (let i = 0; i < p.count; i++) p.setY(i, terrainHeight(p.getX(i), p.getZ(i)));
-    g.computeVertexNormals(); return g;
+    g.computeVertexNormals(); return worldSurfaceUV(g, 16);
   }, [low]);
   const foundation = useMemo(() => {
     const positions: number[] = [], indices: number[] = [];
@@ -35,9 +36,11 @@ function SnowTerrain({ low }: { low: boolean }) {
     });
     const g = new THREE.BufferGeometry(); g.setAttribute('position', new THREE.Float32BufferAttribute(positions, 3)); g.setIndex(indices); g.computeVertexNormals(); return g;
   }, []);
+  const snow = useMemo(() => surfaceTexture('ground'), []);
+  useEffect(() => () => snow.dispose(), [snow]);
   useEffect(() => () => { terrain.dispose(); }, [terrain]);
   useEffect(() => () => foundation.dispose(), [foundation]);
-  return <><mesh geometry={terrain} receiveShadow><meshLambertMaterial color="#d9e6ed" flatShading /></mesh><mesh geometry={foundation} receiveShadow><meshLambertMaterial color="#bdced9" side={THREE.DoubleSide} flatShading /></mesh></>;
+  return <><mesh geometry={terrain} receiveShadow><meshLambertMaterial map={snow} color="#bfd3e0" /></mesh><mesh geometry={foundation} receiveShadow><meshLambertMaterial color="#8da6b8" side={THREE.DoubleSide} flatShading /></mesh></>;
 }
 
 const SnowForest = memo(function SnowForest({ low }: { low: boolean }) {
@@ -60,14 +63,14 @@ const SnowForest = memo(function SnowForest({ low }: { low: boolean }) {
       return { position: [x, 80 + height / 2, z] as [number, number, number], scale: [160 + random() * 120, height, 190] as [number, number, number], rotation: random() };
     });
   }, []);
-  return <><Instances points={peaks} kind="cone" color="#b6ccd9" /><Instances points={trunks} kind="box" color="#697a80" /><Instances points={branches} kind="cone" color="#527485" /><Instances points={caps} kind="cone" color="#f3f8fb" /></>;
+  return <><Instances points={peaks} kind="cone" color="#84a2ba" colors={['#6f8ea6', '#94aec2', '#64839c']} /><Instances points={trunks} kind="box" color="#465660" /><Instances points={branches} kind="cone" color="#234559" /><Instances points={caps} kind="cone" color="#dcebf3" /></>;
 });
 
 function IceAndHurdles() {
   const ice = useMemo(() => SNOW_ICE_ZONES.map(([from, to]) => ribbonGeometry(ROAD_WIDTH - 0.8, 0, 0.035, from, to)), []);
   useEffect(() => () => ice.forEach((g) => g.dispose()), [ice]);
   return <>
-    {ice.map((geometry, i) => <mesh key={i} geometry={geometry} receiveShadow><meshLambertMaterial color="#b9e1ed" transparent opacity={0.88} /></mesh>)}
+    {ice.map((geometry, i) => <mesh key={i} geometry={geometry} receiveShadow><meshStandardMaterial color="#76b8d6" roughness={0.12} metalness={0.28} envMapIntensity={0.85} transparent opacity={0.82} depthWrite={false} /></mesh>)}
     <RigidBody type="fixed" colliders={false} name="barriers">
       {SNOW_HURDLES.map((hurdle) => <group key={hurdle.id}>
         <CuboidCollider position={hurdle.position} rotation={[0, hurdle.yaw, 0]} args={hurdle.halfExtents} friction={0} restitution={0} />

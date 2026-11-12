@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256" fill="none" role="img" aria-labelledby="title desc">
+<title id="title">Alpine pine</title>
+<desc id="desc">A layered evergreen tree with a warm trunk and chunky rounded branches.</desc>
+<g stroke="#253b39" stroke-width="5" stroke-linecap="round" stroke-linejoin="round">
+<ellipse cx="127" cy="234" rx="67" ry="9" fill="#253b39" opacity=".12"/>
+<path d="M113 176h28v55h-28z" fill="#b8895c"/>
+<path d="m118 208 17 6" stroke="#805e46" stroke-width="3"/>
+<path d="m128 27 52 67-22-1 38 57-30-2 45 58q-83 29-167 0l44-58-29 2 39-57-24 1z" fill="#659c7c"/>
+<path d="m128 27 7 55 31 12-15-1 12 43 18 15-27-3 18 57q-30 9-61 12l-26-4q31-41 32-68l-18 3 18-54-21 1z" fill="#80b18b" stroke="none"/>
+<path d="m98 93 29 7 31-7m-70 55 40 10 38-10" fill="none" stroke="#3e745d" stroke-width="4"/>
+<path d="m107 185 8 3m29-70 7 1m-33-53 9 2" fill="none" stroke="#b4cf9c" stroke-width="4"/>
+</g>
+</svg>

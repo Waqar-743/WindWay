@@ -1,0 +1,18 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256" fill="none" role="img" aria-labelledby="ramp-title ramp-desc">
+<title id="ramp-title">Marigold boost ramp</title>
+<desc id="ramp-desc">An optional on-road jungle jump ramp with golden forward chevrons, jade side walls and playful airborne speed trails.</desc>
+<g stroke="#153c35" stroke-width="5" stroke-linecap="round" stroke-linejoin="round">
+<path d="m18 220 123-54 98 29-122 48z" fill="#637c64"/>
+<path d="m36 207 112-43 59-66-103 39z" fill="#eac35a"/>
+<path d="m148 164 59-66v63l-59 64z" fill="#287451"/>
+<path d="m36 207 112-43v61L36 231z" fill="#86b960"/>
+<path d="m36 207 68-70v31z" fill="#287451"/>
+<path d="m65 183 39-17 19 4m-39-8 39-17 19 4m-37-9 38-17 19 4m-34-10 35-15 18 4" stroke="#e9efda" stroke-width="7"/>
+<path d="m159 193 16-17m-6 27 19-20m-2-15 9-9" stroke="#eac35a" stroke-width="4"/>
+<path d="m51 218 22-8m16-5 27-9m15-6 10-4" stroke="#153c35" stroke-width="3"/>
+<path d="m140 81 19-25m15 23 11-35m4 42 28-22" stroke="#d97d73" stroke-width="6"/>
+<path d="m84 99 16-15m11 0 9-22m-2 46 16-10" stroke="#eac35a" stroke-width="5"/>
+<path d="M45 192q-22-1-23-20 20-4 23 20zm0 0q-3-21 16-25 10 18-16 25z" fill="#86b960" stroke-width="3"/>
+<path d="m214 206 11-5m-9 19 12-4" stroke="#d6e8a7" stroke-width="4"/>
+</g>
+</svg>

@@ -1,0 +1,21 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256" fill="none" role="img" aria-labelledby="title desc">
+<title id="title">Mountain goat</title>
+<desc id="desc">A cheerful alpine goat with curved horns, a little beard and sturdy hooves.</desc>
+<g stroke="#253b39" stroke-width="5" stroke-linecap="round" stroke-linejoin="round">
+<path d="m27 223 40-34 40 7 27-20 41 17 45 30z" fill="#9aafa3"/>
+<path d="m65 192 17 19 25-15m28-20 13 24 27-7" fill="none" stroke="#718b80" stroke-width="3"/>
+<path d="m83 158 1 42 20 1 6-36m35-6 7 39h20l-3-49" fill="#fff7e8"/>
+<path d="m83 192 2 12 20-1-1-11m48-1 2 11h20l-3-12" fill="#6c6558"/>
+<path d="M64 119q-25-20-26 1 4 18 24 17" fill="#fff7e8"/>
+<path d="M63 112q20-23 67-9l43 8 9 34q-19 35-70 25-37 0-49-28z" fill="#f3e7cb"/>
+<path d="m75 131 10 7 12-5m22 18 14 4" fill="none" stroke="#d9c9a6" stroke-width="3"/>
+<path d="M147 79q-17-33-2-47 6-6 11-6-6 22 7 46m23 3q-1-39 21-45 13-3 16 7-23 7-19 42" fill="#9a8467"/>
+<path d="m146 44 9 1m-8 12 11-1m43-10 11 3m-13 8 12 3" stroke="#71634e" stroke-width="3"/>
+<path d="M146 87q-31-20-33-1 3 18 29 15m55-15q30-20 34-3-1 18-28 19" fill="#f3e7cb"/>
+<path d="M141 79q32-20 63 2l4 36q-10 24-36 23-28-3-32-26z" fill="#fff7e8"/>
+<path d="m164 137 8 22 11-21" fill="#fff7e8"/>
+<ellipse cx="174" cy="118" rx="21" ry="14" fill="#dfc8a9"/>
+<path d="m160 96 6 1m23-1 6-2" stroke-width="4"/><circle cx="164" cy="102" r="3" fill="#253b39" stroke="none"/><circle cx="192" cy="101" r="3" fill="#253b39" stroke="none"/>
+<path d="m168 117 2 1m15-1 2 1m-15 8q6 5 12-1" fill="none" stroke-width="3"/>
+</g>
+</svg>

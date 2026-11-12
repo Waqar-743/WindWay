@@ -1,0 +1,81 @@
+name: Build Windway Android demo
+
+on:
+  push:
+    branches:
+      - codex/flutter-android
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: windway-android-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  android:
+    name: Offline Android APK
+    runs-on: ubuntu-latest
+    timeout-minutes: 35
+    steps:
+      - name: Check out Android branch
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: npm
+
+      - name: Install web dependencies
+        run: npm ci
+
+      - name: Test game, website and mobile bridge
+        run: npm exec tsc -- --noEmit && npm run test:game && npm run test:site && npm run test:android:bridge && npm run test:mobile:app
+
+      - name: Prepare mobile SVGs and launcher icons
+        run: node scripts/prepare-android-assets.mjs
+
+      - name: Bundle the real offline 3D game
+        run: node scripts/prepare-android-web.mjs
+
+      - name: Verify Android assets and offline paths
+        run: node scripts/test-android-assets.mjs && node scripts/test-android-web.mjs
+
+      - name: Set up Java
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '17'
+
+      - name: Set up Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          flutter-version: '3.47.7'
+          channel: stable
+          cache: true
+
+      - name: Install Flutter dependencies
+        working-directory: mobile
+        run: flutter pub get
+
+      - name: Analyze Flutter application
+        working-directory: mobile
+        run: flutter analyze
+
+      - name: Test native menus and saved settings
+        working-directory: mobile
+        run: flutter test
+
+      - name: Build a universal Android demo APK
+        working-directory: mobile
+        run: flutter build apk --release --target-platform android-arm,android-arm64
+
+      - name: Upload installable demo APK
+        uses: actions/upload-artifact@v4
+        with:
+          name: windway-android-demo
+          path: mobile/build/app/outputs/flutter-apk/app-release.apk
+          if-no-files-found: error
+          retention-days: 14

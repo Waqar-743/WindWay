@@ -1,0 +1,4 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256" fill="none" role="img" aria-labelledby="mountain-hut-title mountain-hut-desc">
+<title id="mountain-hut-title">Mountain hut</title><desc id="mountain-hut-desc">A warm rescue hut at the base of the winter mountain.</desc>
+<g stroke="#263d52" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"><path d="M51 115h155v108H51z" fill="#b9e1ed"/><path d="m30 118 98-85 100 85-17 19-83-64-80 64z" fill="#527485"/><path d="m30 118 98-85 100 85-34-6-12-25-22-5-32-29-29 30-23 9-15 25z" fill="#f3f8fb"/><path d="M157 63V27h24v57" fill="#d47762"/><path d="M109 154h42v69h-42z" fill="#d47762"/><path d="M67 150h28v31H67zm97 0h27v31h-27z" fill="#e9cb8d"/><path d="M80 150v31m-13-16h28m82-15v31m-13-16h27" stroke-width="3"/><path d="M29 230h199m-47-214q-25-13-3-22" stroke="#b9e1ed"/></g>
+</svg>

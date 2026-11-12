@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256" fill="none" role="img" aria-labelledby="title desc">
+<title id="title">Deer</title><desc id="desc">A gentle spotted forest deer with branching antlers and a cream belly.</desc>
+<g stroke="#153c35" stroke-width="5" stroke-linecap="round" stroke-linejoin="round">
+<path d="m172 132 30-17-5 25-21 9" fill="#e9efda"/><path d="m78 165-7 49h20l15-43m47-6 7 49h20l-5-62" fill="#d9aa70"/><path d="M64 130q41-32 101-9 30 17 14 50-52 25-103-3z" fill="#d9aa70"/><path d="M90 153q32 23 72 7-7 21-42 18-22-1-30-25" fill="#e9efda" stroke="none"/>
+<path d="M74 92 57 61q-21-4-22 8 11 18 35 22m31-4 18-29q22-2 22 11-13 15-34 20" fill="#86b960"/><path d="M71 65 58 42l-20-6m20 6 3-19m44 41 14-24 19-4m-19 4-2-18"/>
+<path d="M60 82q25-23 52 1l-1 36q-11 23-26 24-21-2-24-23z" fill="#d9aa70"/><path d="m76 115 21 1-11 13z" fill="#153c35"/><path d="M73 97v2m28-2v2M86 129v8" stroke-width="5"/>
+<g fill="#e9efda" stroke="none"><circle cx="116" cy="131" r="5"/><circle cx="135" cy="130" r="5"/><circle cx="151" cy="141" r="5"/><circle cx="125" cy="148" r="5"/></g><path d="M72 211h18m71 0h19" stroke-width="7"/><path d="m30 214 7-17 6 17m166-13 5-14 6 14" stroke="#86b960"/>
+</g></svg>

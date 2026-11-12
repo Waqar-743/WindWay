@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256" fill="none" role="img" aria-labelledby="title desc">
+<title id="title">Safety barrier</title>
+<desc id="desc">A chunky orange-and-cream road barrier with weighted feet.</desc>
+<g stroke="#253b39" stroke-width="5" stroke-linecap="round" stroke-linejoin="round">
+<ellipse cx="128" cy="228" rx="102" ry="9" fill="#253b39" opacity=".1"/>
+<path d="m35 213 8-37h29l8 37zm142 0 8-37h29l8 37z" fill="#5c7168"/>
+<path d="m42 73 171 2 16 102H27z" fill="#f7edcf"/>
+<path d="m46 75 38 1-54 72m78-73 37 1-69 101H39zm61 1 36 1-70 100h-35zm46 35 7 42-15 23h-30z" fill="#e98254" stroke="none"/>
+<path d="m42 73 171 2 16 102H27z" fill="none"/>
+<path d="M88 92h17m47 0h17" fill="none" stroke="#f7edcf" stroke-width="5"/>
+</g>
+</svg>

@@ -1,0 +1,4 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256" fill="none" role="img" aria-labelledby="snowbank-title snowbank-desc">
+<title id="snowbank-title">Snowbank</title><desc id="snowbank-desc">Sculpted drifts pile against a striped roadside snow marker.</desc>
+<g stroke="#263d52" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"><path d="M29 211v-21q0-35 37-37 9-48 53-41 20-32 54-10 27-9 44 19 24 2 24 43v47z" fill="#f3f8fb"/><path d="M48 189q42-38 80-7m-29-50q26-7 37 11m16 38q37-21 69 5" stroke="#b9e1ed"/><path d="M57 159V29h17v126" fill="#d47762"/><path d="M57 61h17m-17 39h17m-17 38h17" stroke="#f3f8fb" stroke-width="13"/><path d="M23 219h218" stroke="#7aa7bf"/></g>
+</svg>

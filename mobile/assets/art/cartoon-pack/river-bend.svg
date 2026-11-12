@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256" fill="none" role="img" aria-labelledby="title desc">
+<title id="title">Winding river</title>
+<desc id="desc">A ribbon of turquoise river curving between grassy banks and smooth pebbles.</desc>
+<g stroke="#253b39" stroke-width="5" stroke-linecap="round" stroke-linejoin="round">
+<path d="M24 45q106-15 185 4l18 159q-118 26-200 0z" fill="#b9d6a0" stroke="none"/>
+<path d="M53 40q110 18 49 54-84 42 8 65 53 13 77 62l52-13q-20-58-103-69-52-7-8-28 108-48-16-75z" fill="#70b9c7" stroke="#417e85" stroke-width="4"/>
+<path d="M75 49q90 9 46 36M82 116q-51 28 18 34m40 12q39 10 51 31" fill="none" stroke="#d2efde" stroke-width="5"/>
+<path d="m46 72 8-17 9 14m111 13 10-18 8 17m-38 123 7-19 10 14m-131-31 7-17 8 14" fill="none" stroke="#6a996b" stroke-width="4"/>
+<ellipse cx="47" cy="122" rx="13" ry="8" fill="#94a69b" stroke-width="3"/><ellipse cx="205" cy="148" rx="16" ry="10" fill="#94a69b" stroke-width="3"/><ellipse cx="32" cy="188" rx="10" ry="6" fill="#cad2b8" stroke-width="3"/>
+</g>
+</svg>

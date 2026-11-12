@@ -1,0 +1,4 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256" fill="none" role="img" aria-labelledby="slalom-gate-title slalom-gate-desc">
+<title id="slalom-gate-title">Slalom obstacle</title><desc id="slalom-gate-desc">A solid snow block with coral stripes and an arrow pointing to the passing lane.</desc>
+<g stroke="#263d52" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"><path d="m32 155 134-23 62 32-131 29z" fill="#b9e1ed"/><path d="M32 96v59l65 38V129z" fill="#d9e8ef"/><path d="m97 129 131-24v59L97 193z" fill="#7aa7bf"/><path d="m32 96 130-24 66 33-131 24z" fill="#f3f8fb"/><path d="m112 151 100-18" stroke="#d47762" stroke-width="13"/><path d="M57 77V26m0 0h95l-19 21 19 19H57" fill="#d47762"/><path d="M75 46h45m-13-9 13 9-13 9" stroke="#f3f8fb"/><path d="M24 216q101 22 206-5" stroke="#b9e1ed"/></g>
+</svg>

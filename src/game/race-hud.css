@@ -11,15 +11,15 @@
   --hud-controls-space: 0px;
   --hud-map-size: clamp(80px, 18dvh, 156px);
   --hud-speed-height: clamp(60px, 12dvh, 106px);
-  --hud-panel: #243b31f5;
-  --hud-text: #f8f3e5;
-  --hud-muted: #cedbc5;
-  --hud-accent: #f0b58a;
-  --hud-rule: #ffffff26;
+  --hud-panel: #1f352cf5;
+  --hud-text: #f9f5e8;
+  --hud-muted: #d2e0c9;
+  --hud-accent: #f4ba8e;
+  --hud-rule: #ffffff2a;
   color: var(--hud-text);
 }
-.wildway.map-jungle .race-ui { --hud-panel: #173e35f5; --hud-text: #f4f6e8; --hud-muted: #c6d7bc; --hud-accent: #f0d176; }
-.wildway.map-snow .race-ui { --hud-panel: #213b4ff5; --hud-text: #f3f8fb; --hud-muted: #c6dce9; --hud-accent: #f0b5a3; }
+.wildway.map-jungle .race-ui { --hud-panel: #143830f5; --hud-text: #f5f7ea; --hud-muted: #cbe0c1; --hud-accent: #f3d479; }
+.wildway.map-snow .race-ui { --hud-panel: #1d3649f5; --hud-text: #f4f9fc; --hud-muted: #cbe0ed; --hud-accent: #f3b8a6; }
 
 .wildway .race-ui .race-dashboard {
   position: absolute;
@@ -33,9 +33,10 @@
   padding: 12px;
   color: var(--hud-text);
   background: var(--hud-panel);
+  backdrop-filter: blur(12px);
   border: 1px solid var(--hud-rule);
-  border-radius: 12px;
-  box-shadow: 0 3px 14px #152a2520;
+  border-radius: 14px;
+  box-shadow: inset 0 1px 0 rgba(255,255,255,0.16), 0 10px 28px -6px rgba(10, 22, 18, 0.38);
   overflow: auto;
   overscroll-behavior: contain;
   scrollbar-width: thin;
@@ -100,14 +101,15 @@
   height: var(--hud-map-size);
   display: grid;
   grid-template-rows: auto minmax(0, 1fr);
-  padding: 6px;
-  border: 1px solid var(--hud-rule);
-  border-radius: 10px;
+  padding: 7px;
+  border: 1.5px solid rgba(31, 56, 46, 0.22);
+  border-radius: 14px;
   background: var(--paper);
+  box-shadow: inset 0 1px 0 rgba(255,255,255,0.8), 0 10px 24px -6px rgba(10, 22, 18, 0.32);
   color: var(--ink);
   overflow: hidden;
 }
-.wildway .race-ui .race-minimap > span { display: block; padding: 2px 0 4px; font-size: 8px; letter-spacing: .1px; line-height: 1.4; }
+.wildway .race-ui .race-minimap > span { display: block; padding: 2px 0 4px; font-size: 8px; font-weight: 700; letter-spacing: .4px; line-height: 1.4; }
 .wildway .race-ui .race-minimap .track-map { display: block; width: 100%; height: 100%; min-height: 0; aspect-ratio: auto; }
 .wildway .race-ui .race-minimap > small { display: none; }
 .wildway .race-ui .speed-gauge {
@@ -123,13 +125,15 @@
   justify-content: center;
   padding: 6px;
   border: 1px solid var(--hud-rule);
-  border-radius: 10px;
+  border-radius: 14px;
   background: var(--hud-panel);
+  backdrop-filter: blur(12px);
+  box-shadow: inset 0 1px 0 rgba(255,255,255,0.16), 0 10px 24px -6px rgba(10, 22, 18, 0.36);
   color: var(--hud-text);
   text-align: center;
   font-variant-numeric: tabular-nums;
 }
-.wildway .race-ui .speed-gauge > strong { position: static; font-family: ui-monospace, Consolas, monospace; font-size: clamp(26px, 3vw, 40px); font-weight: 600; letter-spacing: -1.5px; line-height: 1.1; }
+.wildway .race-ui .speed-gauge > strong { position: static; font-family: 'JetBrains Mono', ui-monospace, Consolas, monospace; font-size: clamp(26px, 3vw, 40px); font-weight: 700; letter-spacing: -1.5px; line-height: 1.1; }
 .wildway .race-ui .speed-gauge > span { font-size: 10px; margin-top: 2px; letter-spacing: .8px; color: var(--hud-muted); }
 .wildway .race-ui .speed-gauge > small { font-size: 9px; margin-top: 4px; letter-spacing: .2px; color: var(--hud-accent); line-height: 1.5; }
 .wildway .race-ui .race-tools { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 6px; }

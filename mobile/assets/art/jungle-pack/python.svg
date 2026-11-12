@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256" fill="none" role="img" aria-labelledby="title desc">
+<title id="title">Python</title><desc id="desc">A smiling jungle python loops around a branch with marigold patches and a forked coral tongue.</desc>
+<g stroke="#153c35" stroke-width="5" stroke-linecap="round" stroke-linejoin="round">
+<path d="M26 195q93 15 201-8" stroke="#7f9571" stroke-width="20"/><path d="M92 183q-54-5-52-43 2-33 41-32 56 4 66 43 11 40 50 31 36-9 12-46-21-32-55-44-16-8-13-23" stroke-width="39"/><path d="M92 183q-54-5-52-43 2-33 41-32 56 4 66 43 11 40 50 31 36-9 12-46-21-32-55-44-16-8-13-23" stroke="#287451" stroke-width="28"/>
+<path d="m51 124 19 12m15-16 9 22m29 3-15 15m50 8 20-10m26-13-13-3m-1 32-8 10m-18-80-9 15" stroke="#eac35a" stroke-width="10"/>
+<path d="M119 38q24-18 53 3 26 21 3 42-31 19-62-5-19-16 6-40z" fill="#86b960"/><path d="M125 46q-6 7-7 13m34-10 12 4" stroke="#287451" stroke-width="4"/><circle cx="135" cy="57" r="5" fill="#153c35" stroke="none"/><circle cx="167" cy="63" r="5" fill="#153c35" stroke="none"/><path d="M135 76q15 11 29 0" stroke-width="3"/><path d="M153 84v17m0-1-7 7m7-7 7 7" stroke="#d97d73" stroke-width="4"/><path d="M28 184q0-31 23-26-2 21-23 26m188 18q-1 24-22 21 0-20 22-21" fill="#86b960"/>
+</g></svg>

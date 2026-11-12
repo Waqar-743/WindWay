@@ -1,0 +1,4 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256" fill="none" role="img" aria-labelledby="penguin-title penguin-desc">
+<title id="penguin-title">Penguin</title><desc id="penguin-desc">An enthusiastic winter spectator in a coral scarf.</desc>
+<g stroke="#263d52" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"><path d="M71 139q-32-4-39 32 27 17 43-2m111-31q34-4 38 32-27 14-43-2" fill="#527485"/><path d="M68 189q-1-88 15-121 16-35 47-34 39-1 49 39 14 46 9 116-9 36-60 36-50-2-60-36z" fill="#527485"/><path d="M86 175q-2-56 40-58 45 1 44 63 0 34-42 35-43-1-42-40z" fill="#f3f8fb"/><path d="M81 94q5-38 27-25l20 10 19-11q29-11 32 28l-23 22-28-9-26 8z" fill="#f3f8fb"/><path d="M105 87v5m43-5v5" stroke-width="7"/><path d="m115 100 26 1-14 15z" fill="#d47762"/><path d="M78 125q48 17 103-2l3 18q-55 22-108 1z" fill="#d47762"/><path d="m151 143 18 36-21 6-10-40M76 224l-13 14h45l4-14m31 0 3 14h46l-15-14" fill="#d47762"/></g>
+</svg>

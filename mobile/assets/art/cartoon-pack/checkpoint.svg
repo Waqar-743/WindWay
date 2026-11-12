@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256" fill="none" role="img" aria-labelledby="title desc">
+<title id="title">Checkpoint gate</title>
+<desc id="desc">A playful checkpoint arch with chevron markers and striped uprights.</desc>
+<g stroke="#253b39" stroke-width="5" stroke-linecap="round" stroke-linejoin="round">
+<path d="M36 227V67q0-24 25-24h135q25 0 25 24v160h-26V76H62v151z" fill="#e98254"/>
+<path d="M36 111h26v23H36zm0 49h26v23H36zm159-49h26v23h-26zm0 49h26v23h-26z" fill="#fff7e8" stroke="none"/>
+<path d="M62 76h133" fill="none" stroke="#b96243" stroke-width="4"/>
+<path d="m91 53 8 7-8 7m27-14 8 7-8 7m27-14 8 7-8 7m27-14 8 7-8 7" fill="none" stroke="#f7edcf" stroke-width="4"/>
+<path d="m25 228 49 1m110-1 49 1" stroke="#526d5d" stroke-width="8"/>
+<path d="M128 94v53m-13-14 13 14 13-14" stroke="#8eb89a" stroke-width="5"/>
+</g>
+</svg>

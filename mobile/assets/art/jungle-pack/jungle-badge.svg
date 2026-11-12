@@ -1,0 +1,20 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256" fill="none" role="img" aria-labelledby="jungle-title jungle-desc">
+<title id="jungle-title">Canopy Run jungle badge</title>
+<desc id="jungle-desc">A shield-shaped jungle racing emblem with a tropical canopy, a winding jade road and a coral Canopy Run name ribbon.</desc>
+<g stroke="#153c35" stroke-width="5" stroke-linecap="round" stroke-linejoin="round">
+<path d="M128 15q-49 21-98 20v97q0 67 98 108 98-41 98-108V35q-49 1-98-20z" fill="#287451"/>
+<path d="M128 31q-41 16-81 18v82q0 54 81 90 81-36 81-90V49q-40-2-81-18z" fill="#d6e8a7" stroke="#86b960" stroke-width="4"/>
+<circle cx="165" cy="77" r="21" fill="#eac35a" stroke="none"/>
+<path d="M52 153q35-38 76-22t75 5v34q-31 35-75 51-45-17-76-51z" fill="#86b960" stroke="none"/>
+<path d="M130 119q-27 12-8 30t-9 39l-13 18 28 15 24-36q19-25-10-42t6-23" fill="#52775d" stroke-width="3"/>
+<path d="m133 136 4 5m-7 19 1 8m-9 19-5 8" stroke="#eac35a" stroke-width="4"/>
+<path d="M84 149q14-34 9-68h12q8 43-9 74z" fill="#ac9c6c" stroke-width="3"/>
+<path d="M98 84q-31-34-47-2 27-11 47 2zm0 0q-10-43-39-34 10 24 39 34zm0 0q17-41 43-24-13 23-43 24zm0 0q34-16 45 16-24-14-45-16z" fill="#287451" stroke-width="3"/>
+<path d="M185 136q-22-3-23-24 22-6 23 24zm1 0q4-24 25-20-1 21-25 20z" fill="#287451" stroke-width="3"/>
+<path d="m187 135-1 16" stroke-width="3"/>
+<path d="m27 171-12 33 33-6 9 18 14-37m158-8 12 33-33-6-9 18-14-37" fill="#b96862"/>
+<path d="M32 163q96 29 192 0v39q-96 29-192 0z" fill="#d97d73"/>
+<text x="128" y="193" fill="#153c35" stroke="none" text-anchor="middle" font-family="Arial,sans-serif" font-size="21" font-weight="900" letter-spacing="1">CANOPY RUN</text>
+<path d="m176 35 3-10m17 18 9-7" stroke="#eac35a" stroke-width="4"/>
+</g>
+</svg>

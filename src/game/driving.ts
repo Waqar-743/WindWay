@@ -1,4 +1,4 @@
-export interface DrivingInput { throttle: boolean; brake: boolean; left: boolean; right: boolean; handbrake: boolean }
+export interface DrivingInput { throttle: boolean; brake: boolean; left: boolean; right: boolean; handbrake: boolean; steering?: number }
 export const neutralInput = (): DrivingInput => ({ throttle: false, brake: false, left: false, right: false, handbrake: false });
 
 export function driveVelocity(forward: number, lateral: number, input: DrivingInput, car: { topSpeed: number; acceleration: number; braking: number; grip: number; steering: number }, onRoad: boolean, grounded: boolean, dt: number) {
@@ -14,7 +14,8 @@ export function driveVelocity(forward: number, lateral: number, input: DrivingIn
   next = Math.max(-12, Math.min(car.topSpeed, next));
   const grip = grounded ? car.grip * (input.handbrake ? 0.17 : 1) * (onRoad ? 1 : 0.45) : 0.25;
   const nextLateral = lateral * Math.exp(-grip * dt);
-  const steer = Number(input.left) - Number(input.right);
+  const steer = input.steering !== undefined && Number.isFinite(input.steering)
+    ? Math.max(-1, Math.min(1, input.steering)) : Number(input.left) - Number(input.right);
   const speedFactor = Math.min(1, Math.abs(next) / 9) * (1 - Math.min(0.65, Math.abs(next) / 100));
   const yawRate = steer * car.steering * speedFactor * Math.sign(next || 1) * (grounded ? 1 : 0.2);
   return { forward: next, lateral: nextLateral, yawRate, steer };

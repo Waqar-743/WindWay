@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256" fill="none" role="img" aria-labelledby="title desc">
+<title id="title">Finish flag</title>
+<desc id="desc">A waving checkered race flag on a warm wooden pole.</desc>
+<g stroke="#253b39" stroke-width="5" stroke-linecap="round" stroke-linejoin="round">
+<path d="M56 231V34" fill="none" stroke="#ac8056" stroke-width="10"/>
+<path d="M60 45q38-22 77-4t76-1v108q-38 18-76 1t-77 1z" fill="#fff7e8"/>
+<path d="M60 45q13-8 25-9v27q-13 2-25 9zm51-10q13 2 26 6v27q-14-6-26-7zm51 14q13 1 26-2v27q-13 3-26 2zm26 25q13-2 25-7v27q-13 5-25 7zM85 63q13-4 26-2v27q-13-2-26 2zm52 5q12 5 25 8v27q-13-2-25-8zM60 99q13-7 25-9v27q-13 2-25 8zm51-11q13 2 26 7v27q-13-5-26-7zm51 15q13 1 26-2v27q-13 3-26 2zm26 25q13-2 25-7v27q-13 5-25 7zM85 117q13-4 26-2v27q-13-2-26 2zm52 5q12 5 25 8v27q-13-2-25-8z" fill="#344d43" stroke="none"/>
+<path d="M60 45q38-22 77-4t76-1v108q-38 18-76 1t-77 1z" fill="none"/>
+<path d="m44 232 28 1" stroke="#526d5d" stroke-width="6"/>
+</g>
+</svg>

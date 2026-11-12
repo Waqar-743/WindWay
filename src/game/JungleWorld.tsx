@@ -5,9 +5,9 @@ import { CuboidCollider, RigidBody } from '@react-three/rapier';
 import * as THREE from 'three';
 import { nearestTrackPoint, seededRandom, trackFrame } from './track';
 import { CheckpointGates, JumpRamp, TrackSurface } from './World';
+import { surfaceTexture } from './surfaceDetail';
 import JungleVillage from './JungleVillage';
 import { buildJungleVillage } from './jungleSettlement';
-import { isTownLot, type TownSite } from './alpineVillage';
 
 type Point = {
   position: [number, number, number];
@@ -89,7 +89,7 @@ function VegetationInstances({ points, kind, color, colors, low = false }: {
   </instancedMesh>;
 }
 
-const DenseJungle = memo(function DenseJungle({ low, sites }: { low: boolean; sites: TownSite[] }) {
+const DenseJungle = memo(function DenseJungle({ low }: { low: boolean }) {
   const foliage = useMemo(() => {
     const random = seededRandom(817420);
     const trunks: Point[] = [], crowns: Point[] = [], fronds: Point[] = [];
@@ -97,7 +97,7 @@ const DenseJungle = memo(function DenseJungle({ low, sites }: { low: boolean; si
     const station = stationFrame();
     const clearings = wildlife.map((animal) => wildlifePosition(animal.progress, animal.side, animal.width));
     const available = (x: number, z: number, margin: number) => Math.abs(z) > 29
-      && nearestTrackPoint(x, z).distance > margin && !isTownLot(x, z, sites, 6)
+      && nearestTrackPoint(x, z).distance > margin
       && Math.hypot(x - station.x, z - station.z) > 17
       && clearings.every((point) => Math.hypot(x - point.x, z - point.z) > 5.5);
     const treeTarget = low ? 820 : 1470;
@@ -126,14 +126,14 @@ const DenseJungle = memo(function DenseJungle({ low, sites }: { low: boolean; si
       if (attempt % 13 === 0) rocks.push({ position: [x, size * 0.33, z], scale: [size * 1.4, size * 0.6, size], rotation: [0, angle, 0] });
     }
     return { trunks, crowns, fronds, ferns, vines, rocks };
-  }, [low, sites]);
+  }, [low]);
   return <>
-    <VegetationInstances points={foliage.trunks} kind="trunk" color="#775e3d" low={low} />
-    <VegetationInstances points={foliage.crowns} kind="canopy" color={LEAF} colors={['#1e6247', '#287451', '#3f8350', '#397747', '#5b9257']} low={low} />
-    <VegetationInstances points={foliage.fronds} kind="leaf" color="#438b4e" low={low} />
-    <VegetationInstances points={foliage.ferns} kind="leaf" color="#6b9c51" colors={['#487b42', '#86b960', '#5e9348']} low={low} />
-    <VegetationInstances points={foliage.vines} kind="trunk" color="#567744" low={low} />
-    <VegetationInstances points={foliage.rocks} kind="rock" color="#45674f" low={low} />
+    <VegetationInstances points={foliage.trunks} kind="trunk" color="#6e5435" low={low} />
+    <VegetationInstances points={foliage.crowns} kind="canopy" color={LEAF} colors={['#17583e', '#236e4b', '#347e4b', '#41874d', '#589756']} low={low} />
+    <VegetationInstances points={foliage.fronds} kind="leaf" color="#3c8748" low={low} />
+    <VegetationInstances points={foliage.ferns} kind="leaf" color="#669a4d" colors={['#43783d', '#82b85c', '#589043']} low={low} />
+    <VegetationInstances points={foliage.vines} kind="trunk" color="#4e723e" low={low} />
+    <VegetationInstances points={foliage.rocks} kind="rock" color="#3f6249" low={low} />
   </>;
 });
 
@@ -191,11 +191,11 @@ function JungleRiver({ low }: { low: boolean }) {
   const current = useRef<THREE.Group>(null);
   useFrame(({ clock }) => { if (current.current) current.current.position.x = clock.elapsedTime * 1.4 % 24; });
   return <>
-    <mesh position={[0, -1.05, 0]} rotation={[-Math.PI / 2, 0, 0]} receiveShadow><planeGeometry args={[1000, 47]} /><meshLambertMaterial color="#3e9290" /></mesh>
+    <mesh position={[0, -1.05, 0]} rotation={[-Math.PI / 2, 0, 0]} receiveShadow><planeGeometry args={[1000, 47]} /><meshStandardMaterial color="#1d6d68" roughness={0.2} metalness={0.32} envMapIntensity={0.75} /></mesh>
     <group ref={current}>{Array.from({ length: low ? 18 : 30 }, (_, index) => <mesh key={index} position={[(index % 10) * 45 - 240, -1.025, Math.floor(index / 10) * 13 - 13]} rotation={[-Math.PI / 2, 0, 0]}>
-      <planeGeometry args={[9 + index % 4, 0.2]} /><meshBasicMaterial color="#a3c9b2" transparent opacity={0.45} />
+      <planeGeometry args={[9 + index % 4, 0.2]} /><meshBasicMaterial color="#b4dcc6" transparent opacity={0.52} />
     </mesh>)}</group>
-    {[-1, 1].map((side) => <mesh key={side} position={[0, -0.1, side * 27]} rotation={[-Math.PI / 2, 0, 0]} receiveShadow><planeGeometry args={[960, 6]} /><meshLambertMaterial color="#5f8250" /></mesh>)}
+    {[-1, 1].map((side) => <mesh key={side} position={[0, -0.1, side * 27]} rotation={[-Math.PI / 2, 0, 0]} receiveShadow><planeGeometry args={[960, 6]} /><meshLambertMaterial color="#587d49" /></mesh>)}
   </>;
 }
 
@@ -224,9 +224,11 @@ function FlyingToucans() {
 }
 
 export default memo(function JungleWorld({ low }: { low: boolean }) {
+  const sites = useMemo(() => buildJungleVillage(), []);
+  const ground = useMemo(() => { const texture = surfaceTexture('ground'); texture.repeat.set(90, 40); return texture; }, []);
+  useEffect(() => () => ground.dispose(), [ground]);
   // Batch only this selected map's small, actually visible SVG textures. This
   // avoids serial suspense requests without loading either car or the other map.
-  const sites = useMemo(buildJungleVillage, []);
   const textures = useTexture(sceneArtwork);
   useEffect(() => {
     textures.forEach((texture) => {
@@ -239,8 +241,8 @@ export default memo(function JungleWorld({ low }: { low: boolean }) {
       <CuboidCollider position={[0, -1, 236]} args={[480, 1, 212]} friction={0.9} restitution={0} />
       <CuboidCollider position={[0, -6, 0]} args={[480, 1, 480]} restitution={0} />
     </RigidBody>
-    {[-1, 1].map((side) => <mesh key={side} position={[0, -0.035, side * 236]} rotation={[-Math.PI / 2, 0, 0]} receiveShadow><planeGeometry args={[960, 424]} /><meshLambertMaterial color={side > 0 ? '#547a42' : '#436d3d'} /></mesh>)}
-    <DenseJungle low={low} sites={sites} /><JungleVillage sites={sites} /><JungleRiver low={low} />
+    {[-1, 1].map((side) => <mesh key={side} position={[0, -0.035, side * 236]} rotation={[-Math.PI / 2, 0, 0]} receiveShadow><planeGeometry args={[960, 424]} /><meshLambertMaterial map={ground} color={side > 0 ? '#496d35' : '#365c31'} /></mesh>)}
+    <DenseJungle low={low} /><JungleVillage sites={sites} /><JungleRiver low={low} />
     <TrackSurface /><CheckpointGates /><JumpRamp /><StopStation />
     {wildlife.map((animal) => <JungleBillboard key={animal.name} {...animal} />)}
     <JungleBillboard name="finish-flag" progress={0.99} side={1} width={5.5} height={5.5} lift={0.8} />

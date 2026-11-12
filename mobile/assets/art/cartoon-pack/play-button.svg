@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256" fill="none" role="img" aria-labelledby="title desc">
+<title id="title">Start driving</title>
+<desc id="desc">A cream play arrow on a warm orange rounded square.</desc>
+<g stroke="#253b39" stroke-width="5" stroke-linecap="round" stroke-linejoin="round">
+<rect x="31" y="36" width="194" height="194" rx="48" fill="#b86b4a" stroke="none"/>
+<rect x="31" y="26" width="194" height="194" rx="48" fill="#e98254"/>
+<path d="m101 72 71 51-71 51z" fill="#fff7e8"/>
+<path d="M57 63q8-12 21-14" stroke="#f6ba86" stroke-width="6"/>
+</g>
+</svg>
