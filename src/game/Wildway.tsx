@@ -97,12 +97,14 @@ function TrackMap({ live = false }: { live?: boolean }) {
   const jungle = map.id === 'jungle';
   if (map.mode === 'ascent') return <SnowTrackMap x={x} z={z} live={live} checkpoint={checkpoint} />;
   return <svg viewBox="0 0 200 200" className="track-map" role="img" aria-label={live ? `Live ${map.name} minimap showing your position` : `${map.name} circuit map with eight gates`}>
-    {jungle && <g fill={map.theme.leaf} opacity=".25">{[[24,28],[49,18],[89,38],[147,28],[172,69],[23,145],[54,177],[112,156],[159,174]].map(([cx,cy],i) => <circle key={i} cx={cx} cy={cy} r={i % 2 ? 11 : 15} />)}</g>}
-    <path d={jungle ? 'M19 89q37 25 74 4t88 8' : 'M10 96q50-17 90 5t90-5'} fill="none" stroke={jungle ? map.theme.water : '#9dcbd0'} opacity={jungle ? .7 : 1} strokeWidth={live ? 15 : 19} />
-    <path d={MAP_PATH} fill="none" stroke={map.theme.road} strokeWidth={live ? 8 : 9} strokeLinejoin="round" />
-    <path d={MAP_PATH} fill="none" stroke={map.theme.paper} strokeWidth="1" strokeDasharray="3 4" />
-    {CHECKPOINTS.map(({ point }, index) => { const p = trackMapPoint(point.x, point.z); return <circle key={index} cx={p.x} cy={p.y} r={live ? 2.8 : 4.5} fill={index === 0 ? map.theme.accent : index <= checkpoint ? map.theme.leaf : map.theme.paper} stroke={map.theme.ink} strokeWidth="1" />; })}
-    {live ? <circle cx={trackMapPoint(x, z).x} cy={trackMapPoint(x, z).y} r="4.5" fill={map.theme.accent} stroke={map.theme.paper} strokeWidth="2" /> : <><text x="112" y="181" fontSize="6" fontWeight="700" fill={map.theme.ink}>START / FINISH</text><text x="13" y="100" fontSize="5" fill={map.theme.ink} transform="rotate(-6 13 100)">{jungle ? 'CANOPY CREEK' : 'RIVER CROSSING'}</text></>}
+    {jungle && <g fill={map.theme.leaf} opacity=".28">{[[24,28],[49,18],[89,38],[147,28],[172,69],[23,145],[54,177],[112,156],[159,174]].map(([cx,cy],i) => <circle key={i} cx={cx} cy={cy} r={i % 2 ? 11 : 15} />)}</g>}
+    <path d={jungle ? 'M19 89q37 25 74 4t88 8' : 'M10 96q50-17 90 5t90-5'} fill="none" stroke={jungle ? map.theme.water : '#88bfc6'} opacity={jungle ? .78 : .92} strokeWidth={live ? 16 : 20} strokeLinecap="round" />
+    <path d={jungle ? 'M19 89q37 25 74 4t88 8' : 'M10 96q50-17 90 5t90-5'} fill="none" stroke="#ffffff" opacity=".28" strokeWidth={live ? 3 : 4} strokeDasharray="8 10" strokeLinecap="round" />
+    <path d={MAP_PATH} fill="none" stroke={map.theme.ink} opacity=".22" strokeWidth={live ? 11 : 13} strokeLinejoin="round" />
+    <path d={MAP_PATH} fill="none" stroke={map.theme.road} strokeWidth={live ? 8.5 : 9.5} strokeLinejoin="round" />
+    <path d={MAP_PATH} fill="none" stroke={map.theme.paper} strokeWidth="1.2" strokeDasharray="3 4" />
+    {CHECKPOINTS.map(({ point }, index) => { const p = trackMapPoint(point.x, point.z); return <circle key={index} cx={p.x} cy={p.y} r={live ? 3 : 4.8} fill={index === 0 ? map.theme.accent : index <= checkpoint ? map.theme.leaf : map.theme.paper} stroke={map.theme.ink} strokeWidth="1.2" />; })}
+    {live ? <><circle cx={trackMapPoint(x, z).x} cy={trackMapPoint(x, z).y} r="7.5" fill={map.theme.accent} opacity=".28" /><circle cx={trackMapPoint(x, z).x} cy={trackMapPoint(x, z).y} r="4.6" fill={map.theme.accent} stroke={map.theme.paper} strokeWidth="2" /></> : <><text x="112" y="181" fontSize="6" fontWeight="700" fill={map.theme.ink}>START / FINISH</text><text x="13" y="100" fontSize="5" fill={map.theme.ink} transform="rotate(-6 13 100)">{jungle ? 'CANOPY CREEK' : 'RIVER CROSSING'}</text></>}
   </svg>;
 }
 
@@ -115,12 +117,14 @@ function Valley() {
 function SnowTrackMap({ x, z, live, checkpoint }: { x: number; z: number; live: boolean; checkpoint: number }) {
   const player = trackMapPoint(x, z), finish = trackMapPoint(CHECKPOINTS[CHECKPOINTS.length - 1].point.x, CHECKPOINTS[CHECKPOINTS.length - 1].point.z);
   return <svg viewBox="0 0 200 200" className="track-map" role="img" aria-label={live ? 'Live Frostbite Ascent minimap from base camp to summit' : 'Frostbite Ascent route with fifteen checkpoints and a summit finish'}>
-    <path d="m11 74 28-27 26 27 33-54 39 54 27-32 27 32v112H11z" fill="#d5e5ee" />
-    <path d={MAP_PATH} fill="none" stroke="#527485" strokeWidth={live ? 5.5 : 6.5} strokeLinejoin="round" strokeLinecap="round" />
-    <path d={MAP_PATH} fill="none" stroke="#f3f8fb" strokeWidth="1" strokeDasharray="2 3" />
-    {CHECKPOINTS.map(({ point }, i) => { const p = trackMapPoint(point.x, point.z); return <circle key={i} cx={p.x} cy={p.y} r={live ? 2.1 : 3} fill={i <= checkpoint ? '#d47762' : '#f3f8fb'} stroke="#263d52" strokeWidth=".8" />; })}
+    <path d="m11 74 28-27 26 27 33-54 39 54 27-32 27 32v112H11z" fill="#cee1ec" />
+    <path d="m39 47 14 14h-28zm59-27 18 28h-36zm66 22 14 16h-28z" fill="#eef6fa" opacity=".75" />
+    <path d={MAP_PATH} fill="none" stroke="#263d52" opacity=".2" strokeWidth={live ? 8 : 9.5} strokeLinejoin="round" strokeLinecap="round" />
+    <path d={MAP_PATH} fill="none" stroke="#496b7d" strokeWidth={live ? 5.8 : 6.8} strokeLinejoin="round" strokeLinecap="round" />
+    <path d={MAP_PATH} fill="none" stroke="#f3f8fb" strokeWidth="1.15" strokeDasharray="2 3" />
+    {CHECKPOINTS.map(({ point }, i) => { const p = trackMapPoint(point.x, point.z); return <circle key={i} cx={p.x} cy={p.y} r={live ? 2.3 : 3.2} fill={i <= checkpoint ? '#d47762' : '#f3f8fb'} stroke="#263d52" strokeWidth=".9" />; })}
     <path d={`M${finish.x} ${finish.y}v-11l12 3-12 4`} fill="#d47762" stroke="#263d52" strokeWidth="1.2" />
-    {live ? <circle cx={player.x} cy={player.y} r="3.8" fill="#d47762" stroke="#f3f8fb" strokeWidth="1.5" /> : <><text x="17" y="192" fontSize="6" fill="#263d52">BASE CAMP</text><text x={Math.min(147, finish.x + 16)} y="18" fontSize="6" fill="#263d52">SUMMIT</text></>}
+    {live ? <><circle cx={player.x} cy={player.y} r="6.5" fill="#d47762" opacity=".28" /><circle cx={player.x} cy={player.y} r="3.9" fill="#d47762" stroke="#f3f8fb" strokeWidth="1.6" /></> : <><text x="17" y="192" fontSize="6" fontWeight="700" fill="#263d52">BASE CAMP</text><text x={Math.min(147, finish.x + 16)} y="18" fontSize="6" fontWeight="700" fill="#263d52">SUMMIT</text></>}
   </svg>;
 }
 
