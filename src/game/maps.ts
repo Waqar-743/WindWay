@@ -42,7 +42,7 @@ export const GAME_MAPS: GameMap[] = [
 
 export const mapById = (id: string): GameMap => GAME_MAPS.find((map) => map.id === id) ?? GAME_MAPS[0];
 // Keep pre-existing alpine records readable, with a separate namespace for new maps.
-export const gameRecordKey = (mapId: string, carId: string, level = currentLevel.id) => mapId === 'alpine' && level === 0 ? carId : `${mapId}:${carId}:${level}`;
+export const gameRecordKey = (mapId: string, carId: string, level: number = currentLevel.id) => level === 0 ? (mapId === 'alpine' ? carId : `${mapId}:${carId}`) : `${mapId}:${carId}:${level}`;
 export let currentMap: GameMap = GAME_MAPS[0];
 export function activateMap(id: string, level = 0) {
   activateLevel(level);
