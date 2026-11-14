@@ -4,8 +4,8 @@ import * as THREE from 'three';
 import { seededRandom } from './track';
 
 const atmospheres = {
-  alpine: { zenith: '#2c6ea4', midSky: '#6fb1d9', horizon: '#f3e5cf', glow: '#ffdfa8', ridge: '#6a878e', ground: '#6d8b63', fog: '#dfece8', near: 310, far: 1050 },
-  jungle: { zenith: '#194a59', midSky: '#3d7c7a', horizon: '#a8c6aa', glow: '#f4d993', ridge: '#25523e', ground: '#183b2b', fog: '#82ab95', near: 105, far: 450 },
+  alpine: { zenith: '#1d4f7f', midSky: '#5a9fc9', horizon: '#f2ddb8', glow: '#ffe0a8', ridge: '#5f7f88', ground: '#6a8a60', fog: '#e2eee9', near: 310, far: 1050 },
+  jungle: { zenith: '#123f52', midSky: '#3f7f7c', horizon: '#b9d0ad', glow: '#ffe0a0', ridge: '#1e4a35', ground: '#143526', fog: '#8fb59b', near: 105, far: 450 },
   snow: { zenith: '#1b4772', midSky: '#588bb4', horizon: '#cfe1ec', glow: '#ffe4c4', ridge: '#6b889e', ground: '#7892a4', fog: '#bdd2df', near: 380, far: 1950 },
 };
 
@@ -64,6 +64,75 @@ export default function SceneAtmosphere({ mapId }: { mapId: keyof typeof atmosph
     context.globalAlpha = 0.45;
     context.fill();
     context.restore();
+
+    // Alpine gets a second, higher range with snow caps for a deeper horizon.
+    if (mapId === 'alpine') {
+      context.save();
+      context.beginPath();
+      context.moveTo(0, 262);
+      for (let x = 0; x <= canvas.width; x += 24) {
+        const wave = Math.sin(x * 0.012) * 18 + Math.cos(x * 0.031) * 10 + Math.sin(x * 0.007) * 12;
+        context.lineTo(x, 238 - wave);
+      }
+      context.lineTo(canvas.width, 276);
+      context.lineTo(0, 276);
+      context.closePath();
+      context.fillStyle = '#8fa9b4';
+      context.globalAlpha = 0.5;
+      context.fill();
+      context.globalAlpha = 0.75;
+      context.fillStyle = '#eef3f2';
+      for (let i = 0; i < 9; i++) {
+        const x = (i + 0.5) / 9 * canvas.width;
+        const peakY = 238 - (Math.sin(x * 0.012) * 18 + Math.cos(x * 0.031) * 10 + Math.sin(x * 0.007) * 12);
+        context.beginPath();
+        context.moveTo(x - 26, peakY + 22);
+        context.lineTo(x, peakY);
+        context.lineTo(x + 26, peakY + 22);
+        context.closePath();
+        context.fill();
+      }
+      const haze = context.createLinearGradient(0, 240, 0, 286);
+      haze.addColorStop(0, 'rgba(255,240,214,0)');
+      haze.addColorStop(0.5, 'rgba(255,240,214,0.22)');
+      haze.addColorStop(1, 'rgba(255,240,214,0)');
+      context.fillStyle = haze;
+      context.fillRect(0, 240, canvas.width, 46);
+      context.restore();
+    }
+
+    // The jungle horizon is a layered canopy rather than bare mountains. The
+    // silhouette also gives the car's reflections a believable green edge.
+    if (mapId === 'jungle') {
+      context.save();
+      context.beginPath();
+      const canopyY = 258;
+      context.moveTo(0, canopyY);
+      for (let x = 0; x <= canvas.width; x += 8) {
+        const wave = Math.sin(x * 0.021) * 8 + Math.cos(x * 0.047) * 5 + Math.sin(x * 0.009) * 6;
+        context.lineTo(x, canopyY - 18 - wave);
+      }
+      context.lineTo(canvas.width, canopyY + 24);
+      context.lineTo(0, canopyY + 24);
+      context.closePath();
+      context.fillStyle = '#1c4a35';
+      context.globalAlpha = 0.72;
+      context.fill();
+      for (let i = 0; i < 18; i++) {
+        const x = (i + 0.5) / 18 * canvas.width + Math.sin(i * 2.3) * 18;
+        const radius = 18 + (i % 4) * 8;
+        context.beginPath();
+        context.arc(x, canopyY - 22 - (i % 3) * 6, radius, Math.PI, 0);
+        context.fill();
+      }
+      const haze = context.createLinearGradient(0, 228, 0, 276);
+      haze.addColorStop(0, 'rgba(205,228,208,0)');
+      haze.addColorStop(0.5, 'rgba(205,228,208,0.2)');
+      haze.addColorStop(1, 'rgba(205,228,208,0)');
+      context.fillStyle = haze;
+      context.fillRect(0, 228, canvas.width, 48);
+      context.restore();
+    }
 
     const glow = context.createRadialGradient(608, 96, 1, 608, 96, 128);
     glow.addColorStop(0, 'rgba(255,248,220,0.95)');
