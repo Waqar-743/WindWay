@@ -3,7 +3,7 @@ import { useFrame, useThree } from '@react-three/fiber';
 import { Billboard, useTexture } from '@react-three/drei';
 import { CuboidCollider, RigidBody } from '@react-three/rapier';
 import * as THREE from 'three';
-import { CHECKPOINTS, ROAD_WIDTH, TRACK_CLOSED, TRACK_POINTS, nearestTrackPoint, ribbonGeometry, seededRandom, trackFrame } from './track';
+import { CHECKPOINTS, ROAD_WIDTH, TRACK_CLOSED, TRACK_POINTS, nearestTrackPoint, ribbonGeometry, roadHalfWidthAt, seededRandom, trackFrame } from './track';
 import { BOOST_JUMP, JUMP_STRIPES, jumpRampGeometry } from './trackFeatures';
 import { art } from './config';
 import { useGame } from './store';
@@ -14,6 +14,9 @@ import AlpineTown from './AlpineTown';
 import { buildAlpineTown, isTownLot, type TownSite } from './alpineVillage';
 
 const INK = '#30483d';
+const LIME = '#d5fc58';
+const GRAPHITE = '#20262a';
+const ROUTE_ACCENTS = { alpine: '#f08b5b', jungle: '#6bdeb1', snow: '#8bdcff' } as const;
 type InstancePoint = { position: [number, number, number]; scale: [number, number, number]; rotation?: number };
 
 export function Instances({ points, kind, color, colors, shadows }: { points: InstancePoint[]; kind: 'cone' | 'box' | 'rock' | 'sphere'; color: string; colors?: string[]; shadows?: boolean }) {
@@ -659,11 +662,35 @@ function CharacterSign({ name, position }: { name: string; position: [number, nu
   </group>;
 }
 
+function gateLabelTexture(label: string, accent: string, finish: boolean) {
+  const canvas = document.createElement('canvas');
+  canvas.width = 512; canvas.height = 128;
+  const context = canvas.getContext('2d')!;
+  context.fillStyle = GRAPHITE; context.fillRect(0, 0, 512, 128);
+  context.fillStyle = '#2c3438'; context.fillRect(8, 8, 496, 112);
+  context.fillStyle = accent; context.fillRect(0, 0, 10, 128); context.fillRect(0, 120, 512, 8);
+  context.fillStyle = LIME; context.fillRect(28, 25, 5, 28);
+  context.fillStyle = '#aeb8b5'; context.font = '600 20px Arial'; context.textAlign = 'left';
+  context.fillText('WINDWAY / RACE CONTROL', 48, 45);
+  context.fillStyle = '#f3f5ef'; context.font = '700 45px Arial';
+  context.fillText(finish ? 'START / FINISH' : label, 28, 96);
+  if (finish) for (let y = 0; y < 4; y++) for (let x = 0; x < 4; x++) {
+    context.fillStyle = (x + y) % 2 ? '#f3f5ef' : GRAPHITE;
+    context.fillRect(432 + x * 16, 24 + y * 16, 16, 16);
+  }
+  const texture = new THREE.CanvasTexture(canvas);
+  texture.colorSpace = THREE.SRGBColorSpace;
+  texture.anisotropy = 4;
+  return texture;
+}
+
 export function CheckpointGates() {
   const checkpoint = useGame((state) => state.telemetry.checkpoint);
   const { theme, id } = currentMap;
-  const gateColor = (index: number, active: boolean) => id === 'snow' ? (active ? theme.accent : index === CHECKPOINTS.length - 1 ? '#d47762' : '#7aa7bf') : index === 0 ? (id === 'jungle' ? '#d97d73' : '#f7d674') : active ? theme.accent : (id === 'jungle' ? '#86b960' : '#b8c7a0');
+  const accent = ROUTE_ACCENTS[id];
   const gateWidth = ROAD_WIDTH + 2.2;
+  const labels = useMemo(() => CHECKPOINTS.map((_, index) => gateLabelTexture(`CP ${String(index + 1).padStart(2, '0')}`, ROUTE_ACCENTS[currentMap.id], TRACK_CLOSED ? index === 0 : index === CHECKPOINTS.length - 1)), [id, accent]);
+  useEffect(() => () => labels.forEach((texture) => texture.dispose()), [labels]);
   const overheads = useRef<(THREE.Group | null)[]>([]);
   const cameraWorld = useMemo(() => new THREE.Vector3(), []);
   const cameraLocal = useMemo(() => new THREE.Vector3(), []);
@@ -684,14 +711,27 @@ export function CheckpointGates() {
   return <group>{CHECKPOINTS.map(({ point, yaw }, index) => {
     const active = index === (TRACK_CLOSED ? (checkpoint + 1) % CHECKPOINTS.length : Math.min(CHECKPOINTS.length - 1, checkpoint + 1));
     const finish = TRACK_CLOSED ? index === 0 : index === CHECKPOINTS.length - 1;
+    const color = active ? LIME : accent;
     return <group key={index} position={point} rotation={[0, yaw, 0]}>
       {[-gateWidth / 2, gateWidth / 2].map((x) => <group key={x} position={[x, 0, 0]}>
-        <mesh position={[0, 2.7, 0]} castShadow><boxGeometry args={[0.55, 5.4, 0.7]} /><meshLambertMaterial color={gateColor(index, active)} /></mesh>
-        {[1.4, 3.6].map((y) => <mesh key={y} position={[0, y, 0.02]}><boxGeometry args={[0.58, 0.65, 0.73]} /><meshLambertMaterial color="#fff7e8" /></mesh>)}
+        <mesh position={[0, 0.14, 0]} castShadow><boxGeometry args={[0.96, 0.28, 1.04]} /><meshStandardMaterial color={GRAPHITE} roughness={0.7} metalness={0.35} /></mesh>
+        <mesh position={[0, 2.7, 0]} castShadow><boxGeometry args={[0.62, 5.4, 0.78]} /><meshStandardMaterial color={GRAPHITE} roughness={0.58} metalness={0.42} /></mesh>
+        <mesh position={[0, 2.76, 0.401]}><boxGeometry args={[0.34, 4.68, 0.025]} /><meshStandardMaterial color={color} emissive={color} emissiveIntensity={active ? 0.24 : 0.035} roughness={0.4} metalness={0.15} /></mesh>
+        {[1.4, 3.6].map((y) => <mesh key={y} position={[0, y, 0.425]}><boxGeometry args={[0.48, 0.1, 0.04]} /><meshBasicMaterial color={theme.paper} /></mesh>)}
+        <mesh position={[0, 5.03, 0]}><boxGeometry args={[0.66, 0.12, 0.82]} /><meshBasicMaterial color={active ? LIME : accent} /></mesh>
       </group>)}
       <group ref={(group) => { overheads.current[index] = group; }} position={[0, 5.4, 0]}>
-        <mesh castShadow><boxGeometry args={[gateWidth + 0.5, 0.75, 0.7]} /><meshLambertMaterial color={gateColor(index, active)} /></mesh>
-        {finish && Array.from({ length: 16 }, (_, i) => <mesh key={i} position={[(i - 7.5) * gateWidth / 16, 0.02, 0.37]}><planeGeometry args={[gateWidth / 16 - 0.03, 0.55]} /><meshBasicMaterial color={i % 2 ? theme.paper : theme.ink} side={THREE.DoubleSide} /></mesh>)}
+        <mesh castShadow><boxGeometry args={[gateWidth + 0.5, 0.75, 0.7]} /><meshStandardMaterial color={GRAPHITE} roughness={0.55} metalness={0.45} /></mesh>
+        {[-1, 1].map((side) => <group key={side}>
+          <mesh position={[0, 0.28, side * 0.356]}><boxGeometry args={[gateWidth - 0.6, 0.08, 0.018]} /><meshBasicMaterial color={color} /></mesh>
+          <mesh position={[0, -0.015, side * 0.37]} rotation={[0, side < 0 ? Math.PI : 0, 0]}><planeGeometry args={[4.9, 0.56]} /><meshBasicMaterial map={labels[index]} toneMapped={false} /></mesh>
+        </group>)}
+        {[-1, 1].map((side) => <mesh key={side} position={[side * (gateWidth / 2 - 0.35), 0, 0]}><boxGeometry args={[0.55, 0.75, 0.7]} /><meshStandardMaterial color={color} emissive={color} emissiveIntensity={active ? 0.2 : 0.025} roughness={0.45} /></mesh>)}
+        {finish && [-1, 1].map((side) => Array.from({ length: 16 }, (_, i) => {
+          // Leave a clean centre plaque while retaining the familiar checker beam.
+          if (i >= 6 && i <= 9) return null;
+          return <mesh key={`${side}-${i}`} position={[(i - 7.5) * gateWidth / 16, -0.08, side * 0.368]} rotation={[0, side < 0 ? Math.PI : 0, 0]}><planeGeometry args={[gateWidth / 16 - 0.03, 0.43]} /><meshBasicMaterial color={i % 2 ? theme.paper : theme.ink} side={THREE.DoubleSide} /></mesh>;
+        }))}
       </group>
     </group>;
   })}</group>;
@@ -700,18 +740,36 @@ export function CheckpointGates() {
 export const TrackSurface = memo(() => {
   const { theme, id } = currentMap;
   const jungle = id === 'jungle', snow = id === 'snow';
+  const accent = ROUTE_ACCENTS[id];
   const gl = useThree((state) => state.gl);
   const asphalt = useMemo(() => surfaceTexture('asphalt', gl.capabilities.getMaxAnisotropy()), [gl]);
   const road = useMemo(() => worldSurfaceUV(ribbonGeometry(ROAD_WIDTH), 5), []);
   const shoulder = useMemo(() => ribbonGeometry(ROAD_WIDTH + 3, 0, -0.09), []);
   const leftLine = useMemo(() => ribbonGeometry(0.24, -ROAD_WIDTH / 2 + 0.4, 0.035), []);
   const rightLine = useMemo(() => ribbonGeometry(0.24, ROAD_WIDTH / 2 - 0.4, 0.035), []);
-  const marks = useMemo(() => TRACK_POINTS.filter((_, i) => i % 4 === 0).map(({ point, yaw }) => ({ position: [point.x, point.y + 0.025, point.z] as [number, number, number], scale: [0.24, 0.025, 2.8] as [number, number, number], rotation: yaw })), []);
+  const tireTracks = useMemo(() => [-1, 1].map((side) => ribbonGeometry(0.48, side * 1.85, 0.014)), []);
+  const outerStrips = useMemo(() => [-1, 1].map((side) => ribbonGeometry(0.12, side * (ROAD_WIDTH / 2 + 1.28), -0.045)), []);
+  const marks = useMemo(() => TRACK_POINTS.filter((_, i) => i % 4 === 0).map(({ point, yaw }) => ({ position: [point.x, point.y + 0.038, point.z] as [number, number, number], scale: [0.18, 0.025, 2.6] as [number, number, number], rotation: yaw })), []);
+  const delineators = useMemo(() => {
+    const posts: InstancePoint[] = [], reflectors: InstancePoint[] = [];
+    const stride = id === 'snow' ? 18 : 12;
+    TRACK_POINTS.forEach(({ point, right, yaw }, index) => {
+      if (index % stride) return;
+      const progress = index / (TRACK_POINTS.length - (TRACK_CLOSED ? 0 : 1));
+      for (const side of [-1, 1]) {
+        const p = point.clone().addScaledVector(right, side * (roadHalfWidthAt(progress) + 1.18));
+        posts.push({ position: [p.x, p.y + 0.23, p.z], scale: [0.11, 0.46, 0.11], rotation: yaw });
+        reflectors.push({ position: [p.x, p.y + 0.39, p.z], scale: [0.18, 0.09, 0.13], rotation: yaw });
+      }
+    });
+    return { posts, reflectors };
+  }, [id]);
+  const startFrame = TRACK_CLOSED ? trackFrame(0) : CHECKPOINTS[CHECKPOINTS.length - 1];
   const kerbs = useMemo(() => [-1, 1].map((side) => {
     const indexed = ribbonGeometry(0.52, side * (ROAD_WIDTH / 2 - 0.15), 0.04);
     const geometry = indexed.toNonIndexed(); indexed.dispose();
     const positions = geometry.attributes.position, colors = new Float32Array(positions.count * 3);
-    const accent = new THREE.Color(currentMap.theme.accent), pale = new THREE.Color('#cbd4ce');
+    const accent = new THREE.Color(ROUTE_ACCENTS[currentMap.id]), pale = new THREE.Color('#d8dfda');
     let distance = 0, previousX = positions.getX(0), previousZ = positions.getZ(0);
     for (let i = 0; i < positions.count; i += 6) {
       const x = positions.getX(i), z = positions.getZ(i);
@@ -728,29 +786,35 @@ export const TrackSurface = memo(() => {
   const roadsideWalls = useMemo(() => TRACK_BARRIERS.filter(({ kind }) => kind === 'roadside').map(({ position, yaw, halfExtents }) => ({ position, rotation: yaw, scale: halfExtents.map((value) => value * 2) as [number, number, number] })), []);
   const roadsideStripes = useMemo(() => TRACK_BARRIERS.filter(({ kind }) => kind === 'roadside').map(({ position, yaw, halfExtents }) => ({ position: [position[0], position[1] + 0.1, position[2]] as [number, number, number], rotation: yaw, scale: [0.72, 0.28, halfExtents[2] * 2 + 0.05] as [number, number, number] })), []);
   useEffect(() => () => asphalt.dispose(), [asphalt]);
-  useEffect(() => () => { road.dispose(); shoulder.dispose(); leftLine.dispose(); rightLine.dispose(); kerbs.forEach((geometry) => geometry.dispose()); }, [road, shoulder, leftLine, rightLine, kerbs]);
+  useEffect(() => () => { road.dispose(); shoulder.dispose(); leftLine.dispose(); rightLine.dispose(); tireTracks.forEach((geometry) => geometry.dispose()); outerStrips.forEach((geometry) => geometry.dispose()); kerbs.forEach((geometry) => geometry.dispose()); }, [road, shoulder, leftLine, rightLine, tireTracks, outerStrips, kerbs]);
   return <>
-    <mesh geometry={shoulder} receiveShadow><meshLambertMaterial color={snow ? '#b5c9d6' : jungle ? '#56633b' : '#b8a986'} /></mesh>
-    <RigidBody type="fixed" colliders="trimesh" friction={0.8}><mesh geometry={road} receiveShadow><meshStandardMaterial color={snow ? '#4a6073' : jungle ? '#2c3a37' : '#3d4954'} map={asphalt} bumpMap={asphalt} bumpScale={0.032} roughness={snow ? 0.56 : 0.82} metalness={0.05} envMapIntensity={0.28} side={THREE.DoubleSide} /></mesh></RigidBody>
-    <mesh geometry={leftLine}><meshBasicMaterial color="#faf2dc" /></mesh><mesh geometry={rightLine}><meshBasicMaterial color="#faf2dc" /></mesh>
+    <mesh geometry={shoulder} receiveShadow><meshStandardMaterial color={snow ? '#aebfc9' : jungle ? '#46503e' : '#8e8878'} roughness={0.96} metalness={0} /></mesh>
+    <RigidBody type="fixed" colliders="trimesh" friction={0.8}><mesh geometry={road} receiveShadow><meshStandardMaterial color={snow ? '#405461' : jungle ? '#293330' : '#30363b'} map={asphalt} bumpMap={asphalt} bumpScale={snow ? 0.022 : 0.038} roughness={snow ? 0.52 : 0.86} metalness={0.035} envMapIntensity={0.32} side={THREE.DoubleSide} /></mesh></RigidBody>
+    {tireTracks.map((geometry, index) => <mesh key={index} geometry={geometry}><meshBasicMaterial color={snow ? '#182d39' : '#111817'} transparent opacity={snow ? 0.1 : 0.18} depthWrite={false} /></mesh>)}
+    {outerStrips.map((geometry, index) => <mesh key={index} geometry={geometry}><meshBasicMaterial color={accent} transparent opacity={0.58} /></mesh>)}
+    <mesh geometry={leftLine}><meshBasicMaterial color="#edf0e8" /></mesh><mesh geometry={rightLine}><meshBasicMaterial color="#edf0e8" /></mesh>
     {kerbs.map((geometry, index) => <mesh key={index} geometry={geometry} receiveShadow><meshLambertMaterial vertexColors /></mesh>)}
-    <Instances points={marks} kind="box" color={snow ? '#e9f4f8' : jungle ? '#d6e8a7' : '#f4d477'} />
+    <Instances points={marks} kind="box" color={snow ? '#e9f4f8' : jungle ? '#d6e8a7' : '#e8ddaf'} />
+    <Instances points={delineators.posts} kind="box" color={GRAPHITE} shadows={false} />
+    <Instances points={delineators.reflectors} kind="box" color={accent} colors={[accent, LIME]} shadows={false} />
     <Instances points={bridgePlanks} kind="box" color={jungle ? '#8b9564' : '#b98e60'} />
     <Instances points={bridgeWalls} kind="box" color={jungle ? '#287451' : '#a67d53'} />
     <Instances points={bridgeCaps} kind="box" color={jungle ? '#d6e8a7' : '#f5e7c5'} />
     <Instances points={BRIDGE_SUPPORTS} kind="box" color={jungle ? '#456b51' : '#99724d'} />
-    <Instances points={roadsideWalls} kind="box" color={theme.accent} colors={[theme.accent, theme.paper]} />
-    <Instances points={roadsideStripes} kind="box" color={theme.paper} colors={[theme.paper, theme.accent]} />
+    <Instances points={roadsideWalls} kind="box" color={accent} colors={[accent, theme.paper]} />
+    <Instances points={roadsideStripes} kind="box" color={theme.paper} colors={[theme.paper, accent]} />
     <RigidBody type="fixed" colliders={false} name="bridge-decks">
       {BRIDGE_DECK_SEGMENTS.map(({ id, position, yaw, halfExtents }) => <CuboidCollider key={id} position={position} rotation={[0, yaw, 0]} args={halfExtents} friction={0.8} restitution={0} />)}
     </RigidBody>
     <RigidBody type="fixed" colliders={false} name="barriers">
       {TRACK_BARRIERS.map(({ id, position, yaw, halfExtents }) => <CuboidCollider key={id} position={position} rotation={[0, yaw, 0]} args={halfExtents} friction={0.2} restitution={0} />)}
     </RigidBody>
-    {Array.from({ length: 16 }, (_, index) => <mesh key={index} position={START_MARK(index)} rotation={[-Math.PI / 2, 0, 0]}><planeGeometry args={[ROAD_WIDTH / 16, 0.9]} /><meshBasicMaterial color={index % 2 ? theme.paper : theme.ink} /></mesh>)}
+    <group position={startFrame.point} rotation={[0, startFrame.yaw, 0]}>
+      {[-1, 1].map((row) => Array.from({ length: 16 }, (_, index) => <mesh key={`${row}-${index}`} position={[(index - 7.5) * ROAD_WIDTH / 16, 0.045, row * 0.225]} rotation={[-Math.PI / 2, 0, 0]}><planeGeometry args={[ROAD_WIDTH / 16, 0.45]} /><meshBasicMaterial color={(index + (row > 0 ? 1 : 0)) % 2 ? theme.paper : theme.ink} /></mesh>))}
+      {[-1, 1].map((side) => <mesh key={side} position={[0, 0.043, side * 0.52]} rotation={[-Math.PI / 2, 0, 0]}><planeGeometry args={[ROAD_WIDTH, 0.075]} /><meshBasicMaterial color={LIME} /></mesh>)}
+    </group>
   </>;
 });
-function START_MARK(index: number): [number, number, number] { const frame = TRACK_CLOSED ? trackFrame(0) : CHECKPOINTS[CHECKPOINTS.length - 1]; const p = frame.point.clone().addScaledVector(frame.right, (index - 7.5) * ROAD_WIDTH / 16); return [p.x, p.y + 0.045, p.z]; }
 
 export function JumpRamp() {
   const geometry = useMemo(jumpRampGeometry, []);

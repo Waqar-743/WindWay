@@ -1,0 +1,57 @@
+
+/* Live route telemetry shares the precise desktop map, reduced to racing essentials. */
+.route-map--live {
+  border: 0;
+  border-radius: 0;
+  background: transparent;
+  box-shadow: none;
+}
+
+.route-map__player-pulse {
+  fill: rgba(var(--route-accent-rgb), .18);
+  stroke: rgba(var(--route-accent-rgb), .35);
+  stroke-width: .35;
+  animation: route-player-ping 2.2s ease-out infinite;
+  transform-box: fill-box;
+  transform-origin: center;
+}
+
+.route-map__player-halo {
+  fill: #091116;
+  stroke: var(--route-accent);
+  stroke-width: 1.2;
+}
+
+.route-map__player path {
+  fill: var(--route-accent);
+  stroke: #f7fff0;
+  stroke-width: .4;
+  stroke-linejoin: round;
+}
+
+.route-map__checkpoint--passed > circle:not(.route-map__checkpoint-pulse) {
+  fill: #4a615d;
+  stroke: #73918b;
+  opacity: .72;
+}
+
+.route-map__checkpoint--next > circle:not(.route-map__checkpoint-pulse) {
+  fill: var(--route-accent);
+  stroke: #f6ffe5;
+}
+
+.route-map__checkpoint-pulse {
+  fill: none;
+  stroke: var(--route-accent);
+  stroke-width: .55;
+  stroke-dasharray: 1.3 1.4;
+}
+
+@keyframes route-player-ping {
+  0%, 30% { opacity: .7; transform: scale(.75); }
+  85%, 100% { opacity: 0; transform: scale(1.45); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .route-map__player-pulse { animation: none; opacity: .55; }
+}

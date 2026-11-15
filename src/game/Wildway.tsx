@@ -3,7 +3,7 @@ import { useShallow } from 'zustand/react/shallow';
 import { useGame, type Page } from './store';
 import { GAME_CARS, PAINTS, art, carById, formatTime } from './config';
 import { GAME_MAPS, gameRecordKey, mapById } from './maps';
-import { CHECKPOINTS, MAP_PATH, START, TRACK_LENGTH, trackMapPoint } from './track';
+import { CHECKPOINTS, START, TRACK_LENGTH } from './track';
 import { SNOW_HURDLES, SNOW_ICE_ZONES } from './snowCourse';
 import { clearInput, drivingInput, installDrivingInput } from './input';
 import { gameAudio } from './audio';
@@ -15,6 +15,7 @@ import LevelSelector from './LevelSelector';
 import { checkpointCount } from './levels';
 import MobileTouchControls, { MobileDriverBadge, MobileIcon } from './MobileTouchControls';
 import { installMobileBridge, isNativeGame } from './mobileBridge';
+import { RouteMap } from './RouteMap';
 import './wildway.css';
 import './race-hud.css';
 import './mobile-game.css';
@@ -32,9 +33,7 @@ function Art({ name, className = '', alt = '' }: { name: string; className?: str
   return <img className={className} src={source} alt={alt} draggable={false} />;
 }
 function Brand({ light = false }: { light?: boolean }) {
-  const jungle = useGame((state) => state.selectedMap === 'jungle');
-  const snow = useGame((state) => state.selectedMap === 'snow');
-  return <button className={`brand ${light ? 'brand-light' : ''}`} onClick={() => useGame.getState().navigate('home')} aria-label="Windway home"><Art name={snow ? 'route-badge' : jungle ? 'jungle-badge' : 'vehicle-badge'} /><span>WINDWAY<small>TAKE THE LONG WAY.</small></span></button>;
+  return <button className={`brand ${light ? 'brand-light' : ''}`} onClick={() => useGame.getState().navigate('home')} aria-label="Windway home"><svg className="brand-mark" viewBox="0 0 40 40" aria-hidden="true"><path d="M8 30 16 9h5l-4 11h10l5-11h5l-8 21h-5l4-11H18l-5 11Z" fill="currentColor" /></svg><span>WINDWAY<small>DRIVE BEYOND THE EXPECTED</small></span></button>;
 }
 function StartButton({ children = 'Let’s drive', className = '' }: { children?: React.ReactNode; className?: string }) {
   return <button className={`ww-button ww-primary ${className}`} onClick={() => { void gameAudio.unlock(); useGame.getState().startRace(); }}>{children}<span aria-hidden="true">↗</span></button>;
@@ -49,14 +48,14 @@ function BackButton({ to = 'home', label = 'Back to the start' }: { to?: Page; l
 function Header() {
   const page = useGame((state) => state.page);
   return <header className="ww-header"><Brand /><nav aria-label="Main navigation">
-    {([{ page: 'garage', text: 'The garage' }, { page: 'map', text: 'The maps' }, { page: 'howto', text: 'How to play' }, { page: 'settings', text: 'Settings' }] as const).map((link) => <button key={link.page} aria-current={page === link.page ? 'page' : undefined} onClick={() => useGame.getState().navigate(link.page)}>{link.text}</button>)}
+    {([{ page: 'garage', text: 'Garage' }, { page: 'map', text: 'Routes' }, { page: 'howto', text: 'Driver briefing' }, { page: 'settings', text: 'Settings' }] as const).map((link) => <button key={link.page} aria-current={page === link.page ? 'page' : undefined} onClick={() => useGame.getState().navigate(link.page)}>{link.text}</button>)}
   </nav><span className="header-edition">THREE WORLDS. <i /> ONE WINDWAY.</span></header>;
 }
 
 function MapSelector({ compact = false }: { compact?: boolean }) {
   const selected = useGame((state) => state.selectedMap);
   const selectMap = useGame((state) => state.selectMap);
-  return <fieldset className={`map-selector ${compact ? 'map-selector-compact' : ''}`}><legend>Choose your road</legend><div>{GAME_MAPS.map((map, index) => <button key={map.id} type="button" aria-pressed={selected === map.id} onClick={() => selectMap(map.id)}><img src={`${import.meta.env.BASE_URL}${map.pack}/${map.id === 'snow' ? 'route-badge' : map.id === 'jungle' ? 'jungle-badge' : 'mountain-range'}.svg`} alt="" draggable={false} /><span><strong>{map.name}</strong><small>{map.mode === 'ascent' ? 'Expert · Summit climb' : `${map.id === 'jungle' ? 'Dense jungle' : 'Mountain valley'} · ${map.laps} ${map.laps === 1 ? 'lap' : 'laps'}`}</small></span><i aria-hidden="true">{selected === map.id ? '✓' : `0${index + 1}`}</i></button>)}</div></fieldset>;
+  return <fieldset className={`map-selector ${compact ? 'map-selector-compact' : ''}`}><legend>Choose your road</legend><div>{GAME_MAPS.map((map, index) => <button key={map.id} type="button" aria-pressed={selected === map.id} onClick={() => selectMap(map.id)}><span className="map-selector-code" aria-hidden="true">{map.id === 'snow' ? 'FBA' : map.id === 'jungle' ? 'CNP' : 'ALP'}</span><span><strong>{map.name}</strong><small>{map.mode === 'ascent' ? 'Expert · Summit climb' : `${map.id === 'jungle' ? 'Dense jungle' : 'Mountain valley'} · ${map.laps} ${map.laps === 1 ? 'lap' : 'laps'}`}</small></span><i aria-hidden="true">{selected === map.id ? '✓' : `0${index + 1}`}</i></button>)}</div></fieldset>;
 }
 
 function Home() {
@@ -81,54 +80,30 @@ function Garage() {
   const { selectedCar, paint, selectCar, setPaint } = useGame(useShallow((state) => ({ selectedCar: state.selectedCar, paint: state.paint, selectCar: state.selectCar, setPaint: state.setPaint })));
   const car = carById(selectedCar);
   return <main className="garage-page">
-    <div className="garage-heading"><BackButton /><PageTitle eyebrow="THE GARAGE / TWO VERY DIFFERENT ATTITUDES">Pick your kind<br />of <em>trouble.</em></PageTitle></div>
+    <div className="garage-heading"><BackButton /><PageTitle eyebrow="Pick your kind / VEHICLE SELECT">CHOOSE YOUR<br /><em>MACHINE.</em></PageTitle></div>
     <div className="garage-scene-label"><span>0{GAME_CARS.findIndex((item) => item.id === car.id) + 1} / {car.nickname}</span><span>Drag to look around · Scroll to zoom</span></div>
     <aside className="garage-panel" aria-label="Car selection and customization">
       <div className="car-options">{GAME_CARS.map((item) => <button key={item.id} aria-pressed={car.id === item.id} className={car.id === item.id ? 'selected' : ''} onClick={() => selectCar(item.id)}><span className="car-option-number">{item.number}</span><span><strong>{item.name}</strong><small>{item.nickname}</small></span><i>{car.id === item.id ? '✓' : '↗'}</i></button>)}</div>
-      <div className="car-story"><span className="ww-eyebrow">YOUR PARTNER IN THE NONSENSE</span><h2>{car.nickname}.</h2><p>{car.description}</p></div>
+      <div className="car-story"><Art name="steering-wheel" className="garage-panel-mark" /><span className="ww-eyebrow">DRIVER PROFILE / {car.nickname.toUpperCase()}</span><h2>{car.nickname}.</h2><p>{car.description}</p></div>
       <dl className="car-stats"><div><dt>Top speed</dt><dd>{Math.round(car.topSpeed * 3.6)}<small> km/h</small></dd><span><i style={{ width: `${car.topSpeed / 55 * 100}%` }} /></span></div><div><dt>Acceleration</dt><dd>{car.acceleration}<small> m/s²</small></dd><span><i style={{ width: `${car.acceleration / 18 * 100}%` }} /></span></div><div><dt>Grip response</dt><dd>{car.grip}<small> / 12</small></dd><span><i style={{ width: `${car.grip / 12 * 100}%` }} /></span></div></dl>
-      <fieldset className="paint-picker"><legend>A little color goes a long way <span>{PAINTS.find((item) => item.hex === paint)?.name}</span></legend><div>{PAINTS.map((item) => <button key={item.hex} aria-label={`Paint ${item.name}`} aria-pressed={paint === item.hex} style={{ backgroundColor: item.hex }} onClick={() => setPaint(item.hex)}>{paint === item.hex ? <span>✓</span> : null}</button>)}</div></fieldset>
-      <StartButton>Take it for a spin</StartButton><p className="garage-footnote">Three roads. Three very different feelings.</p>
+      <fieldset className="paint-picker"><legend>BODY FINISH <span>{PAINTS.find((item) => item.hex === paint)?.name}</span></legend><div>{PAINTS.map((item) => <button key={item.hex} aria-label={`Paint ${item.name}`} aria-pressed={paint === item.hex} style={{ backgroundColor: item.hex }} onClick={() => setPaint(item.hex)}>{paint === item.hex ? <span>✓</span> : null}</button>)}</div></fieldset>
+      <StartButton>Start engine</StartButton><p className="garage-footnote">Selected automatically for your next drive.</p>
     </aside>
   </main>;
 }
 
 function TrackMap({ live = false }: { live?: boolean }) {
   const map = mapById(useGame((state) => state.selectedMap));
-  const x = useGame((state) => live ? state.telemetry.x : START.point.x); const z = useGame((state) => live ? state.telemetry.z : START.point.z);
+  const x = useGame((state) => live ? state.telemetry.x : START.point.x);
+  const z = useGame((state) => live ? state.telemetry.z : START.point.z);
   const checkpoint = useGame((state) => live ? state.telemetry.checkpoint : 0);
-  const jungle = map.id === 'jungle';
-  if (map.mode === 'ascent') return <SnowTrackMap x={x} z={z} live={live} checkpoint={checkpoint} />;
-  return <svg viewBox="0 0 200 200" className="track-map" role="img" aria-label={live ? `Live ${map.name} minimap showing your position` : `${map.name} circuit map with eight gates`}>
-    {jungle && <g fill={map.theme.leaf} opacity=".28">{[[24,28],[49,18],[89,38],[147,28],[172,69],[23,145],[54,177],[112,156],[159,174]].map(([cx,cy],i) => <circle key={i} cx={cx} cy={cy} r={i % 2 ? 11 : 15} />)}</g>}
-    <path d={jungle ? 'M19 89q37 25 74 4t88 8' : 'M10 96q50-17 90 5t90-5'} fill="none" stroke={jungle ? map.theme.water : '#88bfc6'} opacity={jungle ? .78 : .92} strokeWidth={live ? 16 : 20} strokeLinecap="round" />
-    <path d={jungle ? 'M19 89q37 25 74 4t88 8' : 'M10 96q50-17 90 5t90-5'} fill="none" stroke="#ffffff" opacity=".28" strokeWidth={live ? 3 : 4} strokeDasharray="8 10" strokeLinecap="round" />
-    <path d={MAP_PATH} fill="none" stroke={map.theme.ink} opacity=".22" strokeWidth={live ? 11 : 13} strokeLinejoin="round" />
-    <path d={MAP_PATH} fill="none" stroke={map.theme.road} strokeWidth={live ? 8.5 : 9.5} strokeLinejoin="round" />
-    <path d={MAP_PATH} fill="none" stroke={map.theme.paper} strokeWidth="1.2" strokeDasharray="3 4" />
-    {CHECKPOINTS.map(({ point }, index) => { const p = trackMapPoint(point.x, point.z); return <circle key={index} cx={p.x} cy={p.y} r={live ? 3 : 4.8} fill={index === 0 ? map.theme.accent : index <= checkpoint ? map.theme.leaf : map.theme.paper} stroke={map.theme.ink} strokeWidth="1.2" />; })}
-    {live ? <><circle cx={trackMapPoint(x, z).x} cy={trackMapPoint(x, z).y} r="7.5" fill={map.theme.accent} opacity=".28" /><circle cx={trackMapPoint(x, z).x} cy={trackMapPoint(x, z).y} r="4.6" fill={map.theme.accent} stroke={map.theme.paper} strokeWidth="2" /></> : <><text x="112" y="181" fontSize="6" fontWeight="700" fill={map.theme.ink}>START / FINISH</text><text x="13" y="100" fontSize="5" fill={map.theme.ink} transform="rotate(-6 13 100)">{jungle ? 'CANOPY CREEK' : 'RIVER CROSSING'}</text></>}
-  </svg>;
+  return <RouteMap mapId={map.id} compact={live} live={live} x={x} z={z} checkpoint={checkpoint} showTelemetry={!live} />;
 }
 
 function Valley() {
   const map = mapById(useGame((state) => state.selectedMap)); const jungle = map.id === 'jungle';
   if (map.mode === 'ascent') return <SnowMapPage />;
   return <main className="sheet-page valley-page"><div className="map-page-top"><BackButton label="Back to the start" /><MapSelector /></div><div className="valley-layout"><div className="map-art-column"><div className="valley-art"><Art name={jungle ? 'jungle-tree' : 'mountain-range'} className="map-mountain" /><TrackMap /><Art name={jungle ? 'jungle-tree' : 'pine-tree'} className="map-pine" /><Art name={jungle ? 'giraffe' : 'mountain-goat'} className="map-goat" /><span className="map-tag">{jungle ? 'PLEASE DO NOT RACE THE WILDLIFE.' : 'YOU ARE HERE FOR A GOOD TIME.'}</span></div>{jungle && <div className="jungle-field-notes"><p className="ww-eyebrow">THE LOCALS / KEEP A RESPECTFUL DISTANCE</p><div className="wildlife-line">{['lion','giraffe','deer','python','horse','wolf'].map((animal) => <figure key={animal}><Art name={animal} alt={`Cartoon ${animal}`} /><figcaption>{animal}</figcaption></figure>)}</div><div className="jungle-crew"><span>YOUR<br /><b>ROAD CREW</b></span>{['waqar','imran','tatheer'].map((name) => <figure key={name}><Art name={name} alt={`${name.toUpperCase()} cartoon character`} /><figcaption>{name.toUpperCase()}</figcaption></figure>)}</div></div>}</div><div className="valley-copy"><PageTitle eyebrow={jungle ? 'MAP 02 / A ROAD THROUGH THE GREEN.' : 'MAP 01 / PLENTY OF WAYS TO MISBEHAVE.'}>{jungle ? <>Canopy<br /><em>Run.</em></> : <>The alpine<br /><em>loop.</em></>}</PageTitle><p>{map.description}</p><div className="track-facts"><div><strong>{(TRACK_LENGTH / 1000).toFixed(2)}<small>km</small></strong><span>PER LOOP</span></div><div><strong>08</strong><span>GATES EACH LAP</span></div><div><strong>{String(map.laps).padStart(2, '0')}</strong><span>{map.laps === 1 ? 'LAP' : 'LAPS'} TO MAKE IT COUNT</span></div></div><ul className="valley-features"><li><Art name={jungle ? 'stop-station' : 'wooden-bridge'} /><span><strong>{jungle ? 'A roadside breather' : 'Two river crossings'}</strong>{jungle ? 'Find the ranger stop station tucked beside the road. The racing line stays clear.' : 'Keep it on the timber. The river is not a shortcut.'}</span></li><li><Art name={jungle ? 'boost-ramp' : 'jump-ramp'} /><span><strong>A little extra airtime</strong>Drive forward over the {jungle ? 'marigold' : 'orange'} on-road boost ramp for a speed surge and a short flight back onto the circuit.</span></li><li><Art name={jungle ? 'waqar' : 'eagle-soaring'} /><span><strong>{jungle ? 'Trees. Then more trees.' : 'A road through the village'}</strong>{jungle ? 'A close, leafy canopy, tiny clearings, six animal characters, and WAQAR, IMRAN, and TATHEER along the route.' : 'Colorful houses, cafe awnings, a railway station and a roadside fuel stop. The longer loop runs between them.'}</span></li></ul><div className="map-race-kit"><Art name="finish-flag" /><Art name="checkpoint" /><Art name={jungle ? 'lap-badge' : 'track-minimap'} /><Art name="winner-trophy" /><span>{map.laps} {map.laps === 1 ? 'lap' : 'laps'}. Ordered gates.<br />One finish worth earning.</span></div><StartButton>Meet me at the start</StartButton></div></div></main>;
-}
-
-function SnowTrackMap({ x, z, live, checkpoint }: { x: number; z: number; live: boolean; checkpoint: number }) {
-  const player = trackMapPoint(x, z), finish = trackMapPoint(CHECKPOINTS[CHECKPOINTS.length - 1].point.x, CHECKPOINTS[CHECKPOINTS.length - 1].point.z);
-  return <svg viewBox="0 0 200 200" className="track-map" role="img" aria-label={live ? 'Live Frostbite Ascent minimap from base camp to summit' : 'Frostbite Ascent route with fifteen checkpoints and a summit finish'}>
-    <path d="m11 74 28-27 26 27 33-54 39 54 27-32 27 32v112H11z" fill="#cee1ec" />
-    <path d="m39 47 14 14h-28zm59-27 18 28h-36zm66 22 14 16h-28z" fill="#eef6fa" opacity=".75" />
-    <path d={MAP_PATH} fill="none" stroke="#263d52" opacity=".2" strokeWidth={live ? 8 : 9.5} strokeLinejoin="round" strokeLinecap="round" />
-    <path d={MAP_PATH} fill="none" stroke="#496b7d" strokeWidth={live ? 5.8 : 6.8} strokeLinejoin="round" strokeLinecap="round" />
-    <path d={MAP_PATH} fill="none" stroke="#f3f8fb" strokeWidth="1.15" strokeDasharray="2 3" />
-    {CHECKPOINTS.map(({ point }, i) => { const p = trackMapPoint(point.x, point.z); return <circle key={i} cx={p.x} cy={p.y} r={live ? 2.3 : 3.2} fill={i <= checkpoint ? '#d47762' : '#f3f8fb'} stroke="#263d52" strokeWidth=".9" />; })}
-    <path d={`M${finish.x} ${finish.y}v-11l12 3-12 4`} fill="#d47762" stroke="#263d52" strokeWidth="1.2" />
-    {live ? <><circle cx={player.x} cy={player.y} r="6.5" fill="#d47762" opacity=".28" /><circle cx={player.x} cy={player.y} r="3.9" fill="#d47762" stroke="#f3f8fb" strokeWidth="1.6" /></> : <><text x="17" y="192" fontSize="6" fontWeight="700" fill="#263d52">BASE CAMP</text><text x={Math.min(147, finish.x + 16)} y="18" fontSize="6" fontWeight="700" fill="#263d52">SUMMIT</text></>}
-  </svg>;
 }
 
 function SnowMapPage() {

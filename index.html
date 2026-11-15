@@ -3,15 +3,18 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="referrer" content="strict-origin-when-cross-origin" />
-    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' 'wasm-unsafe-eval'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' data: https://fonts.gstatic.com; img-src 'self' data: blob:; media-src 'self' blob:; connect-src 'self' blob: ws://127.0.0.1:4175 ws://localhost:4175; worker-src 'self' blob:; child-src 'self' blob:; frame-src 'self'; object-src 'none'; base-uri 'self'; form-action 'self'" />
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' 'wasm-unsafe-eval'; style-src 'self' 'unsafe-inline'; font-src 'self' data:; img-src 'self' data: blob:; media-src 'self' blob:; connect-src 'self' blob: ws://127.0.0.1:4175 ws://localhost:4175; worker-src 'self' blob:; child-src 'self' blob:; frame-src 'self'; object-src 'none'; base-uri 'self'; form-action 'self'" />
     <script>if(new URLSearchParams(location.search).get('native')==='1'||new URLSearchParams(location.search).get('mobile')==='1')document.documentElement.classList.add('windway-native-boot');</script>
     <link rel="icon" type="image/svg+xml" href="./branding/windway-mark.svg" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
-    <meta name="theme-color" content="#f7f3e7" />
-    <title>Windway — Your road. Your pace.</title>
-    <meta name="description" content="Your road. Your pace. Explore mountain bends, jungle roads, and a snowy summit in Windway. Choose your car and find your next favorite drive." />
-    <meta property="og:title" content="Windway — Your road. Your pace." />
-    <meta property="og:description" content="Mountain bends, jungle roads, and a snowy summit. A stylized driving escape by Waqar Ahmed, playable in your browser." />
+    <meta name="color-scheme" content="dark" />
+    <meta name="theme-color" content="#090e12" />
+    <title>Windway — Take the unforgettable way.</title>
+    <meta name="description" content="Three extraordinary roads. Two precision machines. Race an alpine circuit, a jungle run, and a frozen summit in Windway, a cinematic 3D driving experience by Waqar Ahmed." />
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="Windway" />
+    <meta property="og:title" content="Windway — Take the unforgettable way." />
+    <meta property="og:description" content="Pick your line through alpine bends, jungle canopy, and a frozen summit. A cinematic 3D driving experience, playable in your browser." />
     <meta property="og:url" content="https://waqar-743.github.io/WindWay/" />
     <meta property="og:image" content="https://waqar-743.github.io/WindWay/branding/windway-hero-jungle.jpg" />
     <meta property="og:image:width" content="1672" />
@@ -19,17 +22,17 @@
     <meta name="twitter:card" content="summary_large_image" />
     <link rel="canonical" href="https://waqar-743.github.io/WindWay/" />
     <style>
-      #initial-loader{position:fixed;inset:0;display:grid;place-content:center;gap:16px;padding:28px;background:radial-gradient(circle at 50% 28%,#fffcf2 0%,#f6f1e3 58%,#eae3cf 100%);color:#1f382e;text-align:center;font-family:'Outfit','Trebuchet MS',Arial,sans-serif}#initial-loader>.boot-logo{width:72px;height:72px;margin:auto;filter:drop-shadow(0 8px 18px rgba(31,56,46,0.14))}#initial-loader>strong{font-size:24px;letter-spacing:-0.04em;font-weight:800}.boot-road{position:relative;width:min(320px,78vw);height:54px;margin-top:10px;overflow:hidden;border-radius:8px;border-bottom:2px solid #1f382e;background:linear-gradient(180deg,rgba(31,56,46,0.03),rgba(31,56,46,0.08)),repeating-linear-gradient(90deg,#1f382e55 0 15px,transparent 15px 30px) bottom 4px left/100% 2px no-repeat}.boot-car{position:absolute;inset:0;animation:boot-drive 2.1s cubic-bezier(0.32,0.12,0.55,0.92) infinite}.boot-car img{position:absolute;left:0;bottom:4px;width:96px;height:40px;filter:drop-shadow(0 4px 6px rgba(0,0,0,0.18))}#boot-label{max-width:320px;font-size:12px;line-height:1.6;color:#4a5d52;font-weight:500}#boot-retry{min-height:46px;padding:12px 20px;border:1.5px solid #1f382e;border-radius:999px;background:#e57646;color:#fffaf0;font:inherit;font-size:13px;font-weight:600;cursor:pointer;box-shadow:0 3px 0 #1f382e}#boot-error{max-width:320px;font-size:12px;line-height:1.7}#boot-error a{color:#a54e32}#boot-retry:focus-visible,#boot-error a:focus-visible{outline:3px solid #a54e32;outline-offset:4px}@keyframes boot-drive{from{transform:translateX(-100px)}to{transform:translateX(100%)}}@media(prefers-reduced-motion:reduce){.boot-car{animation:none;transform:translateX(calc(50% - 48px))}}
-      .windway-native-boot body,.windway-native-boot #initial-loader{background:#0b141b!important;color:#edf3f2}.windway-native-boot .boot-road{border-color:#b8c9cf;background:repeating-linear-gradient(90deg,#b8c9cf55 0 15px,transparent 15px 30px) bottom 3px left/100% 2px no-repeat}.windway-native-boot #boot-retry{background:#dfba7a;border-color:#dfba7a;color:#14252e}.mobile-app-boot{position:fixed;inset:0;display:grid;place-items:center;background:#0b141b;color:#edf3f2;font:14px 'Outfit','Trebuchet MS',Arial,sans-serif}
+      #initial-loader{position:fixed;inset:0;display:grid;place-content:center;gap:17px;padding:32px;background:radial-gradient(ellipse at 50% 42%,#1a292b 0%,#0d1519 42%,#080d11 85%);color:#eef3ed;text-align:center;font-family:'Outfit','Trebuchet MS',Arial,sans-serif}#initial-loader:before{content:"";position:absolute;inset:0;pointer-events:none;opacity:.13;background-image:linear-gradient(#aec7ba22 1px,transparent 1px),linear-gradient(90deg,#aec7ba22 1px,transparent 1px);background-size:64px 64px;mask-image:linear-gradient(transparent,black 40%,transparent)}#initial-loader>*{position:relative}#initial-loader>.boot-logo{width:64px;height:64px;margin:auto;filter:drop-shadow(0 8px 24px #0008)}#initial-loader>strong{font-family:'Barlow Condensed','Arial Narrow',sans-serif;font-size:38px;line-height:1;letter-spacing:.18em;font-weight:800;padding-left:.18em}.boot-road{position:relative;width:min(320px,78vw);height:54px;margin-top:12px;overflow:hidden;border-radius:3px;border-bottom:1px solid #d5fc5866;background:linear-gradient(180deg,#d5fc5800,#d5fc5809),repeating-linear-gradient(90deg,#d5fc5880 0 15px,transparent 15px 30px) bottom 4px left/100% 1px no-repeat}.boot-car{position:absolute;inset:0;animation:boot-drive 2.1s cubic-bezier(0.32,0.12,0.55,0.92) infinite}.boot-car img{position:absolute;left:0;bottom:4px;width:96px;height:40px;filter:brightness(1.3) saturate(.7) drop-shadow(0 4px 12px #d5fc5840)}#boot-label{max-width:320px;font-size:10px;line-height:1.6;letter-spacing:.12em;text-transform:uppercase;color:#9aaca5;font-weight:500}#boot-retry{min-height:46px;padding:12px 20px;border:1px solid #d5fc58;border-radius:5px;background:#d5fc58;color:#0d1712;font:inherit;font-size:12px;font-weight:700;cursor:pointer;box-shadow:0 0 24px #d5fc581f}#boot-error{max-width:320px;font-size:12px;line-height:1.7}#boot-error a{color:#d5fc58}#boot-retry:focus-visible,#boot-error a:focus-visible{outline:2px solid #d5fc58;outline-offset:4px}@keyframes boot-drive{from{transform:translateX(-100px)}to{transform:translateX(100%)}}@media(prefers-reduced-motion:reduce){.boot-car{animation:none;transform:translateX(calc(50% - 48px))}}
+      .windway-native-boot body,.windway-native-boot #initial-loader{background:#0b141b!important;color:#edf3f2}.windway-native-boot .boot-road{border-color:#d5fc5866}.windway-native-boot #boot-retry{background:#d5fc58;border-color:#d5fc58;color:#14252e}.mobile-app-boot{position:fixed;inset:0;display:grid;place-items:center;background:#0b141b;color:#edf3f2;font:14px 'Outfit','Trebuchet MS',Arial,sans-serif}
     </style>
   </head>
-  <body style="margin:0;background:#f7f3e7;overflow:hidden">
+  <body style="margin:0;background:#090e12;overflow:hidden">
     <div id="root">
       <div id="initial-loader" role="status" aria-live="polite">
         <img class="boot-logo" src="./branding/windway-mark.svg" width="70" height="70" alt="" />
         <strong>WINDWAY</strong>
         <div class="boot-road" aria-hidden="true"><span class="boot-car"><img src="./branding/f1-loading-car.svg" width="96" height="40" alt="" /></span></div>
-        <span id="boot-label">Finding the long way. Loading Windway…</span>
+        <span id="boot-label">Road systems initializing. Loading Windway…</span>
         <button id="boot-retry" type="button" hidden onclick="window.location.reload()">Reload Windway</button>
         <p id="boot-error" hidden>The website files could not load. Try a refresh, or <a href="https://waqar-743.github.io/WindWay/">open Windway’s current address</a>.</p>
         <noscript><p>Enable JavaScript to explore Windway and play. <a href="https://github.com/Waqar-743/WindWay">Visit the project on GitHub</a>.</p></noscript>

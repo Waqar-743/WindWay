@@ -1,0 +1,566 @@
+.route-map {
+  --route-accent: #ed925d;
+  --route-accent-rgb: 237, 146, 93;
+  --route-muted: #84929c;
+  --route-line: rgba(166, 188, 201, .16);
+  --route-panel: #0c1319;
+  --route-text: #eef3f5;
+  display: flex;
+  flex-direction: column;
+  inline-size: 100%;
+  min-inline-size: 0;
+  margin: 0;
+  overflow: hidden;
+  color: var(--route-text);
+  border: 1px solid rgba(155, 181, 197, .17);
+  border-radius: 20px;
+  background: var(--route-panel);
+  box-shadow: 0 20px 60px rgba(0, 0, 0, .24), inset 0 1px 0 rgba(255, 255, 255, .025);
+  font-family: Inter, "Segoe UI", Helvetica, Arial, sans-serif;
+  isolation: isolate;
+}
+
+.route-map--jungle {
+  --route-accent: #57cda0;
+  --route-accent-rgb: 87, 205, 160;
+}
+
+.route-map--snow {
+  --route-accent: #86d9ee;
+  --route-accent-rgb: 134, 217, 238;
+}
+
+.route-map__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 24px;
+  padding: 23px 26px 21px;
+  border-bottom: 1px solid var(--route-line);
+  background: linear-gradient(110deg, rgba(255, 255, 255, .025), transparent 58%);
+}
+
+.route-map__heading {
+  display: flex;
+  flex-direction: column;
+  min-inline-size: 0;
+}
+
+.route-map__eyebrow,
+.route-map__code span,
+.route-map__telemetry dt {
+  color: var(--route-muted);
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: .18em;
+  line-height: 1.4;
+}
+
+.route-map__heading > strong {
+  margin-block: 5px 4px;
+  overflow: hidden;
+  font-size: clamp(21px, 2.4vw, 29px);
+  font-weight: 570;
+  letter-spacing: -.035em;
+  line-height: 1.12;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.route-map__region {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  color: #a3afb7;
+  font-size: 11px;
+  line-height: 1.4;
+}
+
+.route-map__region i {
+  inline-size: 2px;
+  block-size: 2px;
+  border-radius: 50%;
+  background: var(--route-accent);
+}
+
+.route-map__code {
+  display: flex;
+  flex: 0 0 auto;
+  flex-direction: column;
+  align-items: flex-end;
+  padding-inline-start: 22px;
+  border-inline-start: 1px solid var(--route-line);
+}
+
+.route-map__code strong {
+  margin-block: 4px;
+  color: var(--route-accent);
+  font-family: "SFMono-Regular", Consolas, "Liberation Mono", monospace;
+  font-size: 17px;
+  font-weight: 600;
+  letter-spacing: .075em;
+}
+
+.route-map__code small {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  color: #9aa9b2;
+  font-size: 8px;
+  font-weight: 700;
+  letter-spacing: .15em;
+}
+
+.route-map__code small i {
+  inline-size: 5px;
+  block-size: 5px;
+  border-radius: 50%;
+  background: var(--route-accent);
+  box-shadow: 0 0 8px rgba(var(--route-accent-rgb), .6);
+}
+
+.route-map__svg {
+  display: block;
+  inline-size: 100%;
+  block-size: auto;
+  aspect-ratio: 1;
+  background: #080e13;
+  text-rendering: geometricPrecision;
+  shape-rendering: geometricPrecision;
+}
+
+.route-map__grid {
+  color: rgba(155, 181, 196, .12);
+}
+
+.route-map__graticule {
+  fill: none;
+  stroke: rgba(140, 167, 181, .035);
+  stroke-width: .28;
+}
+
+.route-map__contours {
+  fill: none;
+  stroke: #86a0ad;
+  stroke-width: .24;
+  opacity: .12;
+}
+
+.route-map__terrain {
+  pointer-events: none;
+}
+
+.route-map__place,
+.route-map__water-label {
+  fill: #91a1a8;
+  font-size: 2.4px;
+  font-weight: 650;
+  letter-spacing: .42px;
+  opacity: .52;
+}
+
+.route-map__water-label {
+  fill: #78a9b6;
+  font-size: 2.1px;
+  letter-spacing: .3px;
+  opacity: .7;
+}
+
+.route-map__water {
+  fill: none;
+  stroke: #1a4958;
+  stroke-width: 12;
+  opacity: .52;
+}
+
+.route-map__water-line {
+  fill: none;
+  stroke: #73aebe;
+  stroke-width: .3;
+  stroke-dasharray: 2.5 2;
+  opacity: .25;
+}
+
+.route-map__mountains,
+.route-map__snow-ridges {
+  fill: rgba(105, 131, 143, .035);
+  stroke: #79929e;
+  stroke-width: .35;
+  stroke-linejoin: round;
+  opacity: .3;
+}
+
+.route-map__mountains path + path,
+.route-map__snow-ridges path + path {
+  fill: rgba(183, 204, 213, .045);
+  opacity: .8;
+}
+
+.route-map__tree {
+  fill: rgba(98, 135, 110, .2);
+  stroke: #769180;
+  stroke-width: .25;
+  opacity: .48;
+}
+
+.route-map__canopy {
+  fill: rgba(44, 116, 88, .1);
+  stroke: rgba(84, 159, 126, .24);
+  stroke-width: .25;
+}
+
+.route-map__canopy path {
+  fill: none;
+  opacity: .5;
+}
+
+.route-map__reserve {
+  fill: none;
+  stroke: #538872;
+  stroke-width: .35;
+  stroke-dasharray: 1.2 2.2;
+  opacity: .28;
+}
+
+.route-map__terrain--jungle .route-map__water {
+  stroke: #155344;
+  opacity: .63;
+}
+
+.route-map__terrain--jungle .route-map__water-line {
+  stroke: #6db7a7;
+}
+
+.route-map__snow-ridges {
+  fill: rgba(131, 179, 198, .045);
+  stroke: #84aabd;
+  opacity: .34;
+}
+
+.route-map__snow-ridges path:nth-child(3) {
+  opacity: .5;
+}
+
+.route-map__ice-fields {
+  fill: rgba(111, 189, 216, .06);
+  stroke: rgba(136, 207, 229, .3);
+  stroke-width: .25;
+}
+
+.route-map__ice-fields path + path {
+  fill: none;
+}
+
+.route-map__road-glow {
+  stroke: var(--route-accent);
+  stroke-width: 11.5;
+  opacity: .18;
+}
+
+.route-map__road-casing {
+  stroke: #03070a;
+  stroke-width: 10.5;
+}
+
+.route-map__road-shoulder {
+  stroke: #77858d;
+  stroke-width: 8.9;
+  opacity: .55;
+}
+
+.route-map__road-surface {
+  stroke-width: 7.7;
+}
+
+.route-map__road-edge {
+  stroke: rgba(225, 236, 240, .28);
+  stroke-width: 6.5;
+}
+
+.route-map__road-surface + .route-map__road-edge {
+  stroke: #1a242b;
+  stroke-width: 6.3;
+  opacity: .28;
+}
+
+.route-map__road-centre {
+  stroke: #dbe5e6;
+  stroke-width: .55;
+  stroke-dasharray: 2.1 2.5;
+  opacity: .75;
+}
+
+.route-map--snow .route-map__road-centre {
+  stroke: #bce4ef;
+}
+
+.route-map__direction path {
+  fill: var(--route-accent);
+  stroke: #0a1015;
+  stroke-width: .5;
+  stroke-linejoin: round;
+}
+
+.route-map__checkpoints circle {
+  fill: #101920;
+  stroke: #d2dde1;
+  stroke-width: .62;
+}
+
+.route-map__checkpoints text {
+  fill: #eef3f5;
+  font-family: "SFMono-Regular", Consolas, monospace;
+  font-size: 2.5px;
+  font-weight: 700;
+  letter-spacing: -.14px;
+  pointer-events: none;
+}
+
+.route-map__start-halo,
+.route-map__endpoint-ring {
+  fill: #0a1117;
+  stroke: var(--route-accent);
+  stroke-width: .75;
+}
+
+.route-map__start-halo {
+  fill: rgba(var(--route-accent-rgb), .14);
+}
+
+.route-map__grid-base {
+  fill: #eef3f5;
+  stroke: #091016;
+  stroke-width: .35;
+}
+
+.route-map__grid-dark {
+  fill: #111920;
+}
+
+.route-map__grid-light {
+  fill: #eef3f5;
+}
+
+.route-map__flag {
+  fill: var(--route-accent);
+  stroke: #e4f2f6;
+  stroke-width: .65;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.route-map__endpoint-label rect {
+  fill: #0a1117;
+  stroke: rgba(var(--route-accent-rgb), .55);
+  stroke-width: .35;
+}
+
+.route-map__endpoint-label text {
+  fill: #f0f5f6;
+  font-size: 3px;
+  font-weight: 650;
+  letter-spacing: .13px;
+  text-transform: uppercase;
+}
+
+.route-map__compass {
+  fill: none;
+  stroke: #82949e;
+  stroke-width: .35;
+  opacity: .85;
+}
+
+.route-map__compass > circle:first-child {
+  fill: rgba(7, 13, 18, .82);
+  stroke: rgba(149, 174, 188, .33);
+}
+
+.route-map__compass > circle:nth-child(2) {
+  stroke-dasharray: .6 1.4;
+  opacity: .6;
+}
+
+.route-map__compass-north {
+  fill: var(--route-accent);
+  stroke: var(--route-accent);
+}
+
+.route-map__compass text {
+  fill: var(--route-accent);
+  stroke: none;
+  font-family: "SFMono-Regular", Consolas, monospace;
+  font-size: 3.3px;
+  font-weight: 700;
+  text-anchor: middle;
+}
+
+.route-map__map-meta {
+  fill: #91a3ad;
+  stroke: #91a3ad;
+  stroke-width: .3;
+  opacity: .78;
+}
+
+.route-map__map-meta text {
+  stroke: none;
+  font-family: "SFMono-Regular", Consolas, monospace;
+  font-size: 2.8px;
+  font-weight: 600;
+  letter-spacing: .45px;
+}
+
+.route-map__scale {
+  fill: #9aabb4;
+  stroke: #899ba5;
+  stroke-width: .35;
+  opacity: .8;
+}
+
+.route-map__scale text {
+  stroke: none;
+  font-family: "SFMono-Regular", Consolas, monospace;
+  font-size: 2.35px;
+  letter-spacing: .35px;
+}
+
+.route-map__frame {
+  fill: none;
+  stroke: rgba(var(--route-accent-rgb), .48);
+  stroke-width: .45;
+}
+
+.route-map__telemetry {
+  border-top: 1px solid var(--route-line);
+  background: #0c1319;
+}
+
+.route-map__telemetry dl {
+  display: grid;
+  grid-template-columns: .82fr 1.1fr 1.08fr;
+  margin: 0;
+}
+
+.route-map__telemetry dl > div {
+  min-inline-size: 0;
+  padding: 18px 25px 19px;
+}
+
+.route-map__telemetry dl > div + div {
+  border-inline-start: 1px solid var(--route-line);
+}
+
+.route-map__telemetry dd {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  margin: 6px 0 0;
+  overflow: hidden;
+  color: #e5ecef;
+  font-size: 14px;
+  font-weight: 540;
+  line-height: 1.25;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.route-map__telemetry dd small {
+  color: #71828d;
+  font-family: "SFMono-Regular", Consolas, monospace;
+  font-size: 8px;
+  font-weight: 600;
+  letter-spacing: .1em;
+}
+
+.route-map--compact {
+  display: block;
+  inline-size: 100%;
+  block-size: auto;
+  aspect-ratio: 1;
+  border-radius: 14px;
+  box-shadow: 0 12px 35px rgba(0, 0, 0, .22);
+}
+
+.route-map--compact .route-map__svg {
+  block-size: 100%;
+}
+
+.route-map--compact .route-map__place,
+.route-map--compact .route-map__water-label {
+  display: none;
+}
+
+.route-map--compact .route-map__contours {
+  opacity: .1;
+}
+
+.route-map--compact .route-map__endpoint-label text {
+  font-size: 3.2px;
+  font-weight: 700;
+}
+
+.route-map--compact .route-map__endpoint-label rect {
+  fill: rgba(7, 13, 18, .94);
+}
+
+@media (max-width: 520px) {
+  .route-map__header {
+    gap: 14px;
+    padding: 19px 18px 17px;
+  }
+
+  .route-map__eyebrow {
+    font-size: 7px;
+    letter-spacing: .14em;
+  }
+
+  .route-map__region {
+    gap: 6px;
+    font-size: 9px;
+  }
+
+  .route-map__code {
+    padding-inline-start: 13px;
+  }
+
+  .route-map__code strong {
+    font-size: 14px;
+  }
+
+  .route-map__telemetry dl > div {
+    padding: 14px 13px 15px;
+  }
+
+  .route-map__telemetry dt {
+    font-size: 7px;
+    letter-spacing: .12em;
+  }
+
+  .route-map__telemetry dd {
+    font-size: 11px;
+  }
+
+  .route-map__telemetry dd small {
+    font-size: 6px;
+    letter-spacing: .05em;
+  }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .route-map,
+  .route-map__svg {
+    transition: border-color 180ms ease, box-shadow 180ms ease;
+  }
+}
+
+@media (prefers-contrast: more) {
+  .route-map__contours,
+  .route-map__terrain {
+    opacity: .75;
+  }
+
+  .route-map__road-centre,
+  .route-map__checkpoints circle {
+    opacity: 1;
+    stroke: #fff;
+  }
+}

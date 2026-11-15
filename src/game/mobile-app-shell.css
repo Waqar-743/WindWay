@@ -1,8 +1,30 @@
-body.windway-app { margin: 0; overflow: hidden; background: #0b141b; }
-.wwa { --app-ink: #edf3f2; --app-muted: #a9bec7; --app-accent: #dfba7a; --app-line: #d5edf02b; position: fixed; inset: 0; display: flex; flex-direction: column; isolation: isolate; overflow: hidden; color: var(--app-ink); background: #0b141b; font-family: 'Trebuchet MS', Arial, sans-serif; font-size: 14px; line-height: 1.45; -webkit-tap-highlight-color: transparent; }
+body.windway-app { margin: 0; overflow: hidden; background: #080e12; }
+.wwa {
+  --app-ink: #f0f4ef;
+  --app-muted: #99aaa6;
+  --app-accent: #d5fc58;
+  --route-accent: #f08b5b;
+  --app-line: #c1d7ce24;
+  --app-panel: #10181b;
+  --app-display: 'Barlow Condensed', Impact, sans-serif;
+  position: fixed;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  isolation: isolate;
+  overflow: hidden;
+  color: var(--app-ink);
+  background: #080e12;
+  font-family: 'Outfit', Arial, sans-serif;
+  font-size: 14px;
+  line-height: 1.45;
+  -webkit-tap-highlight-color: transparent;
+}
+.wwa-map-jungle { --route-accent: #6bdeb1; }
+.wwa-map-snow { --route-accent: #8bdcff; }
 .wwa *, .wwa *::before, .wwa *::after { box-sizing: border-box; }
 .wwa button, .wwa input { font: inherit; }
-.wwa button { cursor: pointer; color: inherit; }
+.wwa button { cursor: pointer; color: inherit; touch-action: manipulation; }
 .wwa button:disabled { cursor: default; opacity: .36; }
 .wwa button, .wwa a, .wwa input { outline-offset: 4px; }
 .wwa :is(button, a, input):focus-visible { outline: 2px solid var(--app-accent); }
@@ -10,180 +32,347 @@ body.windway-app { margin: 0; overflow: hidden; background: #0b141b; }
 .wwa button:active:not(:disabled) { transform: translateY(1px); }
 .wwa svg { width: 24px; height: 24px; flex: 0 0 auto; }
 .wwa h1, .wwa h2, .wwa p { margin: 0; }
-.wwa-scenery { position: absolute; z-index: -2; inset: 0; pointer-events: none; background: #1a303a; }
-.wwa-scenery > svg { width: 100%; height: 100%; opacity: .55; }
-.wwa-scenery::after { content: ''; position: absolute; inset: 0; background: linear-gradient(90deg, #0b141bef 0%, #0b141ba8 36%, #0b141b25 80%), linear-gradient(0deg, #0b141bf2, #0b141b22 55%, #0b141b4a); }
-.wwa:not(.wwa-page-home) .wwa-scenery > svg { opacity: .2; }
-.wwa-scenery-jungle { filter: hue-rotate(-12deg); }
-.wwa-header { position: relative; z-index: 4; flex: 0 0 auto; display: grid; grid-template-columns: 1fr auto 1fr; align-items: center; gap: 16px; min-height: 92px; padding: max(18px, env(safe-area-inset-top)) max(32px, env(safe-area-inset-right)) 16px max(32px, env(safe-area-inset-left)); }
-.wwa-brand { display: flex; align-items: center; gap: 12px; width: fit-content; }
-.wwa-brand > svg { width: 30px; height: 30px; color: var(--app-accent); }
-.wwa-brand > span { font-size: 22px; letter-spacing: 4px; font-weight: 700; line-height: 1.2; }
-.wwa-brand small { display: block; margin-top: 5px; color: var(--app-muted); font-size: 7px; letter-spacing: 2px; font-weight: 400; }
-.wwa-header-label { color: var(--app-muted); font-size: 9px; letter-spacing: 2px; white-space: nowrap; }
-.wwa-header-tools { justify-self: end; display: flex; gap: 8px; }
-.wwa-icon-button { display: grid; place-items: center; width: 44px; height: 44px; padding: 10px; background: #13242b90; border: 1px solid #d5edf020; border-radius: 10px; transition: background .2s, border-color .2s; }
-.wwa-icon-button:hover { background: #263b44d9; border-color: #d5edf060; }
-.wwa-back { display: flex; align-items: center; gap: 10px; width: fit-content; min-height: 44px; padding: 10px 12px 10px 0; border: 0; background: none; font-size: 13px; }
-.wwa-back > svg { width: 20px; }
-.wwa-kicker { display: block; color: var(--app-accent); font-size: 9px; line-height: 1.4; letter-spacing: 1.9px; font-weight: 700; text-transform: uppercase; }
+.wwa h1, .wwa h2 { font-family: var(--app-display); text-transform: uppercase; }
+.wwa kbd, .wwa-header-label, .wwa-kicker, .wwa-title-code, .wwa-stage-status, .wwa-choice-number, .wwa-help-tag, .wwa-help-number, .wwa-record-route small, .wwa-footnote { font-family: 'JetBrains Mono', monospace; }
+
+.wwa-scenery { position: absolute; z-index: -2; inset: 0; pointer-events: none; background: #0a1519; }
+.wwa-scenery > svg { width: 100%; height: 100%; opacity: .58; }
+.wwa-scenery::after { content: ''; position: absolute; inset: 0; background: linear-gradient(90deg, #080e12fa 0%, #080e12dc 33%, #080e1245 76%), linear-gradient(0deg, #080e12 0%, #080e122e 58%, #080e1266); }
+.wwa:not(.wwa-page-home) .wwa-scenery > svg { opacity: .11; }
+.wwa:not(.wwa-page-home) .wwa-scenery::after { background: linear-gradient(90deg, #080e12fa, #080e12db), linear-gradient(0deg, #080e12, transparent); }
+.wwa-scenery-jungle { filter: saturate(.9) brightness(.8); }
+.wwa-header { position: relative; z-index: 4; flex: 0 0 auto; display: grid; grid-template-columns: 1fr auto 1fr; align-items: center; gap: 18px; min-height: 86px; padding: max(18px, env(safe-area-inset-top)) max(34px, env(safe-area-inset-right)) 15px max(34px, env(safe-area-inset-left)); border-bottom: 1px solid var(--app-line); }
+.wwa-brand { display: flex; align-items: center; gap: 11px; width: fit-content; }
+.wwa-brand > svg { width: 31px; height: 31px; color: var(--app-accent); }
+.wwa-brand > span { font-family: var(--app-display); font-size: 28px; letter-spacing: .07em; font-weight: 800; line-height: 1; }
+.wwa-brand small { display: block; margin-top: 6px; color: var(--app-muted); font: 400 6px 'JetBrains Mono', monospace; letter-spacing: .13em; }
+.wwa-header-label { display: flex; align-items: center; gap: 8px; color: var(--app-muted); font-size: 7px; letter-spacing: .13em; white-space: nowrap; }
+.wwa-header-label i { width: 4px; height: 4px; border-radius: 50%; background: var(--app-accent); box-shadow: 0 0 10px #d5fc5890; }
+.wwa-header-tools { justify-self: end; display: flex; gap: 7px; }
+.wwa-icon-button { display: grid; place-items: center; width: 44px; height: 44px; padding: 11px; background: #111a1dbb; border: 1px solid var(--app-line); border-radius: 3px; transition: background .2s, border-color .2s; }
+.wwa-icon-button:hover { background: #23322f; border-color: #d5fc5860; }
+.wwa-icon-button svg { width: 19px; height: 19px; }
+.wwa-back { display: flex; align-items: center; gap: 9px; width: fit-content; min-height: 44px; padding: 10px 12px 10px 0; border: 0; background: none; color: var(--app-muted); font-size: 12px; }
+.wwa-back:hover { color: var(--app-accent); }
+.wwa-back > svg { width: 19px; }
+.wwa-kicker { display: block; color: var(--app-accent); font-size: 8px; line-height: 1.5; letter-spacing: .15em; font-weight: 500; text-transform: uppercase; }
+.wwa-kicker i { display: inline-block; width: 15px; height: 1px; margin: 0 8px 3px 0; background: currentColor; }
+
 .wwa-lobby { position: relative; flex: 1 1 auto; min-height: 0; padding: 0 48px 20px; display: flex; flex-direction: column; justify-content: center; }
-.wwa-lobby-copy { position: relative; z-index: 2; width: min(510px, 50%); margin-bottom: 158px; padding-top: 8px; pointer-events: none; }
-.wwa-lobby-copy h1 { margin-top: 16px; font-size: clamp(44px, 6.3vw, 90px); line-height: .98; letter-spacing: -.065em; font-weight: 700; }
-.wwa-lobby-copy h1 em { font-style: normal; color: #c9d7da; }
-.wwa-lobby-copy > p:not(.wwa-save-caption) { display: flex; flex-wrap: wrap; align-items: center; gap: 10px; margin-top: 22px; color: #d6e2e4; font-size: 13px; }
-.wwa-lobby-copy > p > span { width: 3px; height: 3px; border-radius: 50%; background: #9eb6bd; }
-.wwa-start-actions { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 30px; pointer-events: auto; }
-.wwa-button { display: inline-flex; align-items: center; justify-content: center; gap: 9px; min-height: 52px; padding: 14px 24px; border: 1px solid var(--app-line); border-radius: 10px; background: #14262fbf; color: var(--app-ink); font-size: 13px; font-weight: 700; line-height: 1.2; white-space: nowrap; transition: background .2s, border-color .2s, transform .15s; }
-.wwa-button > svg { width: 21px; height: 21px; }
-.wwa .wwa-primary { background: var(--app-accent); color: #13232b; border-color: var(--app-accent); box-shadow: inset 0 1px 0 #fff3d140; }
-.wwa .wwa-primary:hover { background: #edcc97; border-color: #edcc97; }
-.wwa-button:not(.wwa-primary):not(:disabled):hover { background: #2a414be0; border-color: #d5edf066; }
-.wwa-save-caption { margin-top: 13px !important; color: var(--app-muted); font-size: 11px; line-height: 1.6; }
-.wwa-showroom { position: absolute; inset: 0 -3% 90px 32%; pointer-events: none; }
+.wwa-lobby-copy { position: relative; z-index: 2; width: min(510px, 49%); margin-bottom: 147px; padding-top: 10px; pointer-events: none; }
+.wwa-lobby-copy h1 { margin-top: 15px; font-size: clamp(54px, 7.2vw, 100px); line-height: .84; letter-spacing: -.025em; font-weight: 800; }
+.wwa-lobby-copy h1 em { font-style: normal; color: var(--route-accent); }
+.wwa-lobby-selection { display: flex; gap: 17px; align-items: center; margin-top: 23px; color: #d9e3de; font-size: 11px; }
+.wwa-lobby-selection > span { display: grid; gap: 4px; }
+.wwa-lobby-selection small { color: var(--app-muted); font: 7px 'JetBrains Mono', monospace; letter-spacing: .17em; }
+.wwa-lobby-selection > i { width: 1px; height: 29px; background: var(--app-line); }
+.wwa-start-actions { display: flex; flex-wrap: wrap; gap: 9px; margin-top: 25px; pointer-events: auto; }
+.wwa .wwa-button { display: inline-flex; align-items: center; justify-content: center; gap: 9px; min-height: 50px; padding: 14px 22px; border: 1px solid var(--app-line); border-radius: 3px; background: #111c20d9; color: var(--app-ink); font-size: 12px; font-weight: 600; line-height: 1.2; white-space: nowrap; transition: background .2s, border-color .2s, transform .15s; }
+.wwa-button > svg { width: 20px; height: 20px; }
+.wwa .wwa-primary { min-width: 174px; background: var(--app-accent); color: #111b0d; border-color: var(--app-accent); box-shadow: 0 15px 35px #d5fc5812; }
+.wwa .wwa-primary:hover { background: #e3ff91; border-color: #e3ff91; }
+.wwa-button:not(.wwa-primary):not(:disabled):hover { background: #243530; border-color: #d5fc5855; }
+.wwa-button-code { margin-left: 16px; font: 8px 'JetBrains Mono', monospace; opacity: .55; }
+.wwa-save-caption { margin-top: 11px !important; color: var(--app-muted); font-size: 10px; line-height: 1.6; }
+.wwa-lobby-stage { position: absolute; inset: 0 0 129px 40%; pointer-events: none; }
+.wwa-stage-grid { position: absolute; inset: 2% 0 0; opacity: .21; background-image: linear-gradient(#9ed2c234 1px, transparent 1px), linear-gradient(90deg, #9ed2c234 1px, transparent 1px); background-size: 45px 45px; mask-image: radial-gradient(ellipse at 57% 65%, #000 12%, transparent 70%); transform: perspective(330px) rotateX(50deg) translateY(20%); transform-origin: center 60%; }
+.wwa-stage-status { position: absolute; top: 35px; right: 40px; left: 20%; z-index: 1; display: flex; justify-content: space-between; gap: 20px; padding-bottom: 9px; border-bottom: 1px solid var(--app-line); color: var(--app-muted); font-size: 7px; letter-spacing: .1em; }
+.wwa-stage-status span:last-child { color: var(--route-accent); }
+.wwa-car-caption { position: absolute; right: 40px; bottom: 24px; z-index: 1; max-width: 320px; padding-left: 14px; border-left: 2px solid var(--route-accent); text-align: left; pointer-events: none; }
+.wwa-car-caption > span { display: block; color: var(--route-accent); font: 8px 'JetBrains Mono', monospace; text-transform: uppercase; letter-spacing: .12em; }
+.wwa-car-caption > strong { display: block; margin-top: 5px; font-family: var(--app-display); font-size: 28px; font-weight: 600; text-transform: uppercase; }
+.wwa-car-caption > small { display: block; color: var(--app-muted); font-size: 9px; margin-top: 4px; }
+.wwa-stage-index { position: absolute; right: 32px; top: 63px; color: #e8f1e70c; font: 800 clamp(120px, 20vw, 265px)/.9 var(--app-display); letter-spacing: -.035em; }
+.wwa-stage-index small { display: block; text-align: right; margin-right: 10px; color: #d5fc5840; font: 8px 'JetBrains Mono', monospace; letter-spacing: .2em; }
+.wwa-showroom { position: absolute; inset: 22px 0 54px; pointer-events: none; }
 .wwa-showroom > div { position: absolute !important; inset: 0; }
 .wwa-showroom canvas { width: 100% !important; height: 100% !important; }
 .wwa-showroom-interactive { pointer-events: auto; touch-action: none; }
 .wwa-preview-fallback { position: absolute; top: 45%; left: 50%; width: 180px; height: 180px; transform: translate(-50%, -65%) rotate(-25deg); object-fit: contain; opacity: .4; pointer-events: none; }
-.wwa-preview-note { position: absolute; top: 52%; left: 60%; width: min(240px, 70%); transform: translate(-50%, -50%); color: var(--app-muted); text-align: center; font-size: 11px; pointer-events: none; }
-.wwa-showroom .wwa-preview-note { left: 50%; }
+.wwa-preview-note { position: absolute; top: 50%; left: 50%; width: min(240px, 70%); transform: translate(-50%, -50%); color: var(--app-muted); text-align: center; font: 9px 'JetBrains Mono', monospace; letter-spacing: .1em; pointer-events: none; }
 .wwa-preview-hint { position: absolute; right: 0; left: 0; bottom: 10px; color: var(--app-muted); font-size: 10px; text-align: center; pointer-events: none; }
-.wwa-car-caption { position: absolute; right: 52px; bottom: 168px; z-index: 1; text-align: right; pointer-events: none; }
-.wwa-car-caption > span { display: block; color: var(--app-accent); font-size: 9px; text-transform: uppercase; letter-spacing: 1.5px; }
-.wwa-car-caption > strong { display: block; font-size: 20px; letter-spacing: -.4px; margin-top: 5px; }
-.wwa-car-caption > small { display: block; color: var(--app-muted); font-size: 11px; margin-top: 4px; }
-.wwa-lobby-dock { position: absolute; z-index: 3; bottom: 48px; right: 48px; left: 48px; display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 10px; }
-.wwa-lobby-dock > button { display: flex; align-items: center; gap: 14px; min-height: 82px; padding: 16px 20px; border: 1px solid var(--app-line); border-radius: 12px; text-align: left; background: #14262fbd; box-shadow: inset 0 1px 0 #e6f4f60a; transition: background .2s, border-color .2s, transform .15s; }
-.wwa-lobby-dock > button:hover { border-color: #dfba7aa8; background: #2a3d43ed; transform: translateY(-3px); }
-.wwa-lobby-dock > button > svg { width: 27px; height: 27px; color: #c5d6da; }
-.wwa-lobby-dock strong { display: block; font-size: 13px; }
-.wwa-lobby-dock small { display: block; margin-top: 4px; color: var(--app-muted); font-size: 10px; line-height: 1.3; }
-.wwa-about-link { position: absolute; bottom: 12px; left: 48px; padding: 5px 0; border: 0; background: none; color: #9bb1bc; font-size: 9px !important; letter-spacing: .8px; }
-.wwa-content { flex: 1 1 auto; width: 100%; max-width: 1200px; min-height: 0; margin: 0 auto; padding: 16px 40px 36px; overflow-y: auto; overscroll-behavior: contain; scrollbar-width: thin; scrollbar-color: #627c85 transparent; animation: wwa-enter .24s ease-out; }
-.wwa-title { padding-bottom: 28px; }
-.wwa-title > h1 { margin-top: 8px; font-size: clamp(30px, 3.6vw, 44px); font-weight: 700; line-height: 1.12; letter-spacing: -1.5px; }
-.wwa-intro { color: var(--app-muted); max-width: 660px; margin: -10px 0 26px !important; font-size: 13px; line-height: 1.7; }
+.wwa-lobby-dock { position: absolute; z-index: 3; bottom: 42px; right: 48px; left: 48px; display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 8px; }
+.wwa-lobby-dock > button { display: flex; align-items: center; gap: 10px; min-height: 68px; padding: 14px 15px; border: 1px solid var(--app-line); border-radius: 3px; text-align: left; background: #0e171be8; transition: background .2s, border-color .2s, transform .15s; }
+.wwa-lobby-dock > button:hover { border-color: #d5fc585e; background: #1c2c28; transform: translateY(-3px); }
+.wwa-dock-index { color: #71877c; font: 7px 'JetBrains Mono', monospace; }
+.wwa-lobby-dock > button > svg { width: 22px; height: 22px; color: var(--route-accent); }
+.wwa-lobby-dock strong { display: block; font-size: 11px; font-weight: 500; }
+.wwa-lobby-dock small { display: block; margin-top: 4px; color: var(--app-muted); font-size: 8px; line-height: 1.3; }
+.wwa-about-link { position: absolute; bottom: 8px; left: 48px; padding: 4px 0; border: 0; background: none; color: var(--app-muted); font: 7px 'JetBrains Mono', monospace !important; letter-spacing: .05em; }
+.wwa-about-link:hover { color: var(--app-accent); }
+
+.wwa-content { flex: 1 1 auto; width: 100%; max-width: 1240px; min-height: 0; margin: 0 auto; padding: 26px 42px 40px; overflow-y: auto; overscroll-behavior: contain; scrollbar-width: thin; scrollbar-color: #62766d transparent; animation: wwa-enter .24s ease-out; }
+.wwa-title { display: flex; align-items: flex-end; justify-content: space-between; gap: 20px; padding-bottom: 28px; }
+.wwa-title > h1 { margin-top: 7px; font-size: clamp(43px, 5vw, 66px); font-weight: 700; line-height: .95; letter-spacing: -.015em; }
+.wwa-title-code { padding-bottom: 6px; color: #74887e; font-size: 8px; letter-spacing: .12em; }
+.wwa-intro { color: var(--app-muted); max-width: 660px; margin: -10px 0 26px !important; font-size: 12px; line-height: 1.7; }
 .wwa-road-list { display: flex; flex-direction: column; gap: 12px; }
-.wwa-road-choice { display: grid; grid-template-columns: 30px 108px minmax(0, 1fr) 48px; align-items: center; gap: 24px; width: 100%; min-height: 168px; padding: 24px; border: 1px solid var(--app-line); border-radius: 14px; background: #162831ba; text-align: left; transition: background .2s, border-color .2s; }
-.wwa .is-selected { border-color: #dfba7aba; background: #2b3c3dcc; box-shadow: inset 3px 0 0 var(--app-accent); }
-.wwa-road-choice:hover, .wwa-car-choice:hover, .wwa-crew-choice:hover { background: #2b3e46e0; }
-.wwa-choice-number { color: #8da5af; font: 12px monospace; }
-.wwa-road-choice > img { object-fit: contain; width: 108px; height: 108px; opacity: .9; }
-.wwa-road-info { display: flex; flex-direction: column; min-width: 0; }
-.wwa-road-info > strong { font-size: 23px; letter-spacing: -.7px; margin: 5px 0 8px; }
-.wwa-choice-description { color: var(--app-muted); font-size: 12px; line-height: 1.7; max-width: 630px; }
-.wwa-route-facts { display: flex; flex-wrap: wrap; gap: 7px 20px; margin-top: 13px; color: #d8e4e5; font-size: 10px; }
-.wwa-selection-marker { justify-self: end; color: var(--app-accent); font-size: 11px; }
-.wwa-selection-marker > svg { width: 28px; height: 28px; padding: 4px; border: 1px solid #dfba7a70; border-radius: 50%; }
-.wwa-action-bar { z-index: 3; flex: 0 0 auto; display: flex; align-items: center; justify-content: space-between; gap: 20px; min-height: 94px; padding: 16px max(32px, env(safe-area-inset-right)) max(16px, env(safe-area-inset-bottom)) max(32px, env(safe-area-inset-left)); border-top: 1px solid var(--app-line); background: #101f28ed; }
+.wwa-road-choice { --route-accent: #f08b5b; position: relative; display: grid; grid-template-columns: 190px minmax(0, 1fr); gap: 14px 25px; width: 100%; min-height: 178px; padding: 0; border: 1px solid var(--app-line); border-radius: 3px; background: #0f171be8; text-align: left; overflow: hidden; transition: background .2s, border-color .2s; }
+.wwa-route-jungle { --route-accent: #6bdeb1; }
+.wwa-route-snow { --route-accent: #8bdcff; }
+.wwa .is-selected { border-color: var(--route-accent, var(--app-accent)); background: #17211eee; box-shadow: inset 3px 0 0 var(--route-accent, var(--app-accent)); }
+.wwa-route-art { position: relative; grid-row: 1 / 4; min-height: 176px; overflow: hidden; border-right: 1px solid var(--app-line); background: radial-gradient(ellipse at 55% 50%, #96bba72a, #111c20); }
+.wwa-route-jungle .wwa-route-art { background: radial-gradient(ellipse at 55% 50%, #4fa58025, #111c20); }
+.wwa-route-snow .wwa-route-art { background: radial-gradient(ellipse at 55% 50%, #8bdcff24, #111c20); }
+.wwa-route-art > img { display: block; object-fit: contain; width: 100%; height: 100%; min-height: 176px; padding: 22px 13px 0; opacity: .84; filter: saturate(.85); transition: transform .35s; }
+.wwa-road-choice:hover .wwa-route-art > img { transform: scale(1.04); }
+.wwa-choice-number { position: absolute; z-index: 1; top: 13px; left: 14px; color: var(--route-accent); font-size: 13px; }
+.wwa-choice-number small { display: block; margin-top: 5px; color: var(--app-muted); font-size: 6px; letter-spacing: .05em; }
+.wwa-route-scan { position: absolute; inset: 0; pointer-events: none; background: repeating-linear-gradient(0deg, transparent 0 3px, #d6e8e806 3px 4px); }
+.wwa-road-info { display: flex; flex-direction: column; min-width: 0; padding: 23px 100px 0 0; }
+.wwa-road-info .wwa-kicker { color: var(--route-accent); font-size: 7px; }
+.wwa-road-info > strong { font-family: var(--app-display); font-size: 32px; line-height: 1; font-weight: 600; text-transform: uppercase; margin: 7px 0 9px; }
+.wwa-choice-description { color: var(--app-muted); font-size: 11px; line-height: 1.65; max-width: 630px; }
+.wwa-route-facts { grid-column: 2; display: flex; flex-wrap: wrap; gap: 6px 15px; padding: 0 20px 16px 0; color: #aebdb5; font: 8px 'JetBrains Mono', monospace; }
+.wwa-route-facts > span { padding-right: 14px; border-right: 1px solid var(--app-line); }
+.wwa-route-facts > span:last-child { border: 0; }
+.wwa-selection-marker { position: absolute; top: 24px; right: 22px; display: flex; align-items: center; gap: 6px; color: var(--route-accent); font-size: 8px; }
+.wwa-selection-marker > svg { width: 21px; height: 21px; padding: 3px; border: 1px solid var(--route-accent); border-radius: 50%; }
+.wwa-road-choice:hover { background: #1b2825; }
+.wwa-action-bar { z-index: 3; flex: 0 0 auto; display: flex; align-items: center; justify-content: space-between; gap: 20px; min-height: 83px; padding: 14px max(34px, env(safe-area-inset-right)) max(14px, env(safe-area-inset-bottom)) max(34px, env(safe-area-inset-left)); border-top: 1px solid var(--app-line); background: #0c1418f5; }
 .wwa-action-bar > div:first-child { min-width: 0; }
-.wwa-action-bar strong { display: block; margin-top: 6px; font-size: 12px; font-weight: 400; color: #d6e2e4; }
-.wwa-action-bar strong > span { color: #75929e; margin: 0 6px; }
-.wwa-footer-actions { display: flex; gap: 10px; }
+.wwa-action-bar strong { display: block; margin-top: 5px; font-size: 11px; font-weight: 400; color: #c9d5ce; }
+.wwa-action-bar strong > span { color: #627a70; margin: 0 6px; }
+.wwa-footer-actions { display: flex; gap: 8px; }
+
 .wwa-garage { display: grid; grid-template-columns: minmax(280px, .9fr) minmax(300px, 1.2fr); gap: 30px; }
-.wwa-car-selection { display: flex; flex-direction: column; gap: 12px; }
-.wwa-car-choice { position: relative; display: flex; gap: 16px; align-items: flex-start; padding: 20px; width: 100%; border: 1px solid var(--app-line); border-radius: 12px; background: #162831ba; text-align: left; }
+.wwa-car-selection { display: flex; flex-direction: column; gap: 10px; }
+.wwa-car-choice { position: relative; display: flex; gap: 15px; align-items: flex-start; padding: 20px; width: 100%; border: 1px solid var(--app-line); border-radius: 3px; background: #10191cdd; text-align: left; }
 .wwa-car-choice > span:nth-child(2) { min-width: 0; }
-.wwa-car-choice small, .wwa-crew-choice small { display: block; color: var(--app-accent); font-size: 9px; letter-spacing: .8px; text-transform: uppercase; }
-.wwa-car-choice strong { display: block; margin: 6px 0 8px; font-size: 19px; letter-spacing: -.5px; }
-.wwa-car-choice > span > span, .wwa-crew-choice > span > span { display: block; color: var(--app-muted); font-size: 12px; line-height: 1.7; }
-.wwa-car-choice > svg { position: absolute; right: 12px; top: 12px; width: 16px; height: 16px; color: var(--app-accent); }
-.wwa-paint { margin: 16px 0 0; border: 0; padding: 0; min-width: 0; }
-.wwa-paint > legend { width: 100%; margin-bottom: 14px; font-size: 13px; font-weight: 700; }
-.wwa-paint > legend > span { float: right; color: var(--app-muted); font-size: 11px; font-weight: 400; }
-.wwa-paint > div { display: flex; flex-wrap: wrap; gap: 10px; }
-.wwa-paint button { display: grid; place-items: center; height: 44px; width: 44px; background: var(--paint); border: 3px solid #162831; border-radius: 10px; outline: 1px solid #d5edf030; color: #12232b; }
-.wwa-paint button.is-selected { outline: 2px solid var(--app-accent); border: 3px solid #14242d; box-shadow: none; background: var(--paint); }
+.wwa-car-choice > .wwa-choice-number { position: static; flex-shrink: 0; }
+.wwa-car-choice small, .wwa-crew-choice small { display: block; color: var(--app-accent); font-size: 7px; letter-spacing: .1em; text-transform: uppercase; }
+.wwa-car-choice strong { display: block; margin: 6px 0 8px; font-family: var(--app-display); font-size: 27px; font-weight: 600; text-transform: uppercase; }
+.wwa-car-choice > span > span, .wwa-crew-choice > span > span { display: block; color: var(--app-muted); font-size: 10px; line-height: 1.7; }
+.wwa-car-choice > svg { position: absolute; right: 14px; top: 14px; width: 16px; height: 16px; color: var(--app-accent); }
+.wwa-paint { margin: 9px 0 0; border: 0; padding: 0; min-width: 0; }
+.wwa-paint > legend { width: 100%; margin-bottom: 14px; font-size: 11px; font-weight: 500; }
+.wwa-paint > legend > span { float: right; color: var(--app-muted); font-size: 10px; font-weight: 400; }
+.wwa-paint > div { display: flex; flex-wrap: wrap; gap: 9px; }
+.wwa-paint button { display: grid; place-items: center; height: 44px; width: 44px; background: var(--paint); border: 3px solid #111b1f; border-radius: 3px; outline: 1px solid var(--app-line); color: #122016; }
+.wwa-paint button.is-selected { outline: 2px solid var(--app-accent); outline-offset: 2px; }
 .wwa-paint button[title='Dark pine'] { color: #edf3f2; }
 .wwa-paint p { margin-top: 12px; color: var(--app-muted); font-size: 10px; }
-.wwa-garage-stage { position: relative; min-height: 365px; border-radius: 16px; background: radial-gradient(ellipse at 60% 60%, #6d8d9940, #263b4215 65%); }
-.wwa-garage-stage .wwa-showroom { inset: -20px -20px 80px; }
-.wwa-car-specs { position: absolute; bottom: 0; width: 100%; padding: 20px 12px; border-top: 1px solid var(--app-line); display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
-.wwa-car-specs > span { color: var(--app-muted); font-size: 10px; }
-.wwa-car-specs strong { display: block; color: var(--app-ink); margin-top: 8px; font: 19px monospace; }
-.wwa-car-specs small { font: 10px 'Trebuchet MS', Arial, sans-serif; }
+.wwa-garage-stage { position: relative; min-height: 370px; border: 1px solid var(--app-line); border-radius: 3px; background: radial-gradient(ellipse at 55% 50%, #96b9a322, #121c20 65%); overflow: hidden; }
+.wwa-garage-stage .wwa-showroom { inset: 6px -20px 73px; }
+.wwa-garage-live { position: absolute; z-index: 2; top: 17px; left: 19px; color: var(--app-accent); font: 7px 'JetBrains Mono', monospace; letter-spacing: .15em; }
+.wwa-car-specs { position: absolute; bottom: 0; width: 100%; padding: 17px 20px; border-top: 1px solid var(--app-line); background: #0b131771; display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
+.wwa-car-specs > span { color: var(--app-muted); font-size: 8px; }
+.wwa-car-specs strong { display: block; color: var(--app-ink); margin-top: 6px; font: 17px 'JetBrains Mono', monospace; }
+.wwa-car-specs small { font: 8px 'Outfit', sans-serif; }
+
 .wwa-settings { display: grid; grid-template-columns: 1fr 1fr; gap: 48px; }
-.wwa-settings h2 { padding: 0 0 16px; border-bottom: 1px solid var(--app-line); font-size: 17px; }
-.wwa-field { padding: 0; margin: 24px 0 30px; border: 0; min-width: 0; }
-.wwa-field legend { margin-bottom: 12px; font-size: 13px; font-weight: 700; }
-.wwa-segments { display: flex; width: fit-content; max-width: 100%; gap: 5px; padding: 4px; border: 1px solid var(--app-line); border-radius: 10px; background: #12232baa; }
-.wwa-segments button { flex: 1 1 auto; min-height: 42px; padding: 10px 18px; background: none; border: 0; border-radius: 6px; color: var(--app-muted); font-size: 11px; }
-.wwa-segments button[aria-pressed=true] { background: #dfba7a; color: #12232b; font-weight: 700; }
-.wwa-field p, .wwa-slider small { display: block; margin-top: 10px; max-width: 430px; color: var(--app-muted); font-size: 11px; line-height: 1.7; }
+.wwa-section-heading > span { color: var(--app-accent); font: 7px 'JetBrains Mono', monospace; letter-spacing: .14em; }
+.wwa-settings h2 { margin-top: 7px; padding: 0 0 14px; border-bottom: 1px solid var(--app-line); font-size: 28px; font-weight: 600; }
+.wwa-field { padding: 0; margin: 22px 0 28px; border: 0; min-width: 0; }
+.wwa-field legend { margin-bottom: 11px; font-size: 11px; font-weight: 500; }
+.wwa-segments { display: flex; width: fit-content; max-width: 100%; gap: 3px; padding: 3px; border: 1px solid var(--app-line); border-radius: 3px; background: #111a1e; }
+.wwa-segments button { flex: 1 1 auto; min-height: 44px; padding: 10px 18px; background: none; border: 0; border-radius: 2px; color: var(--app-muted); font-size: 11px; }
+.wwa-segments button[aria-pressed=true] { background: var(--app-accent); color: #13210d; font-weight: 700; }
+.wwa-field p, .wwa-slider small { display: block; margin-top: 10px; max-width: 430px; color: var(--app-muted); font-size: 10px; line-height: 1.7; }
 .wwa-slider { display: block; margin: 24px 0 28px; }
-.wwa-slider > span { display: flex; justify-content: space-between; align-items: center; gap: 12px; margin-bottom: 12px; font-size: 13px; font-weight: 700; }
-.wwa-slider strong { font: 12px monospace; color: var(--app-accent); }
+.wwa-slider > span { display: flex; justify-content: space-between; align-items: center; gap: 12px; margin-bottom: 12px; font-size: 11px; font-weight: 500; }
+.wwa-slider strong { font: 10px 'JetBrains Mono', monospace; color: var(--app-accent); }
 .wwa-slider input { display: block; width: 100%; min-height: 28px; accent-color: var(--app-accent); cursor: pointer; }
-.wwa-toggle { position: relative; display: flex; justify-content: space-between; align-items: center; gap: 20px; padding: 20px 0; border-bottom: 1px solid var(--app-line); cursor: pointer; }
-.wwa-toggle strong { font-size: 13px; }
-.wwa-toggle small { display: block; margin-top: 5px; color: var(--app-muted); font-size: 11px; }
+.wwa-toggle { position: relative; display: flex; justify-content: space-between; align-items: center; gap: 20px; padding: 18px 0; border-bottom: 1px solid var(--app-line); cursor: pointer; }
+.wwa-toggle strong { font-size: 11px; font-weight: 500; }
+.wwa-toggle small { display: block; margin-top: 5px; color: var(--app-muted); font-size: 10px; }
 .wwa-toggle input { position: absolute; right: 0; width: 44px; height: 30px; opacity: 0; cursor: pointer; }
-.wwa-switch { flex: 0 0 auto; position: relative; width: 42px; height: 25px; border: 1px solid #8da5af66; border-radius: 20px; background: #1a2e38; pointer-events: none; }
-.wwa-switch::after { content: ''; position: absolute; top: 4px; left: 4px; width: 15px; height: 15px; border-radius: 50%; background: #9aafb8; transition: transform .2s; }
-.wwa-toggle input:checked + .wwa-switch { border-color: var(--app-accent); background: #dfba7a30; }
+.wwa-switch { flex: 0 0 auto; position: relative; width: 42px; height: 25px; border: 1px solid #7e958977; border-radius: 2px; background: #1b2729; pointer-events: none; }
+.wwa-switch::after { content: ''; position: absolute; top: 4px; left: 4px; width: 15px; height: 15px; border-radius: 1px; background: #91a39d; transition: transform .2s; }
+.wwa-toggle input:checked + .wwa-switch { border-color: var(--app-accent); background: #d5fc5816; }
 .wwa-toggle input:checked + .wwa-switch::after { transform: translateX(17px); background: var(--app-accent); }
 .wwa-toggle input:focus-visible + .wwa-switch { outline: 2px solid var(--app-accent); outline-offset: 4px; }
 .wwa-crew-list { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; }
-.wwa-crew-choice { position: relative; display: flex; align-items: center; gap: 20px; padding: 24px; border: 1px solid var(--app-line); border-radius: 12px; background: #162831ba; text-align: left; }
-.wwa-crew-choice > img { width: 88px; height: 100px; object-fit: contain; flex: 0 0 auto; }
-.wwa-crew-choice > svg { position: absolute; right: 14px; top: 14px; width: 18px; height: 18px; color: var(--app-accent); }
-.wwa-crew-choice strong { display: block; margin: 5px 0 8px; font-size: 22px; }
-.wwa-help-controls { display: flex; flex-wrap: wrap; gap: 14px 28px; margin-bottom: 30px; padding: 20px; border: 1px solid var(--app-line); border-radius: 10px; background: #14262fc0; }
+.wwa-crew-choice { position: relative; display: flex; align-items: center; gap: 17px; padding: 18px; border: 1px solid var(--app-line); border-radius: 3px; background: #10191ce8; text-align: left; }
+.wwa-crew-portrait { position: relative; flex: 0 0 88px; height: 105px; overflow: hidden; background: radial-gradient(ellipse at center, #8496882b, transparent); border: 1px solid var(--app-line); }
+.wwa-crew-portrait > span { position: absolute; z-index: 1; top: 7px; left: 7px; color: #93a89d; font: 5px 'JetBrains Mono', monospace; }
+.wwa-crew-portrait > img { width: 100%; height: 100%; object-fit: contain; filter: saturate(.65); }
+.wwa-crew-choice > svg { position: absolute; right: 14px; top: 14px; width: 16px; height: 16px; color: var(--app-accent); }
+.wwa-crew-choice strong { display: block; margin: 5px 0 8px; font-family: var(--app-display); font-size: 25px; font-weight: 600; text-transform: uppercase; }
+.wwa-crew-choice:hover { background: #1c2826; }
+.wwa-help-controls { display: flex; flex-wrap: wrap; gap: 10px 25px; margin-bottom: 19px; padding: 16px 20px; border: 1px solid var(--app-line); border-radius: 3px; background: #111b1ee8; }
 .wwa-help-controls > span { display: flex; align-items: center; gap: 5px; color: var(--app-muted); font-size: 10px; }
-.wwa kbd { display: inline-grid; place-items: center; min-width: 24px; height: 24px; padding: 0 5px; border: 1px solid #d5edf044; border-radius: 4px; background: #ecf7ff08; color: #edf3f2; font: 10px monospace; }
-.wwa-help-steps { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 0 38px; }
-.wwa-help-steps article { position: relative; display: flex; align-items: flex-start; gap: 16px; padding: 24px 0; border-top: 1px solid var(--app-line); }
-.wwa-help-steps article > svg { color: var(--app-accent); width: 24px; height: 24px; margin-top: 2px; }
-.wwa-help-number { position: absolute; right: 0; top: 24px; color: #8199a3; font: 10px monospace; }
-.wwa-help-steps h2 { padding-right: 26px; margin-bottom: 10px; font-size: 15px; }
-.wwa-help-steps p { color: var(--app-muted); font-size: 12px; line-height: 1.8; }
+.wwa kbd { display: inline-grid; place-items: center; min-width: 25px; height: 25px; padding: 0 5px; border: 1px solid #c9ddcf30; border-radius: 3px; background: #ecf7ff08; color: var(--app-ink); font-size: 9px; }
+.wwa-help-steps { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 0 36px; }
+.wwa-help-steps article { position: relative; display: flex; align-items: flex-start; gap: 15px; padding: 21px 0; border-top: 1px solid var(--app-line); }
+.wwa-help-steps article > svg { color: var(--route-accent); width: 22px; height: 22px; margin-top: 2px; }
+.wwa-help-number { position: absolute; right: 0; top: 21px; color: #728579; font-size: 8px; }
+.wwa-help-tag { color: #81988b; font-size: 6px; letter-spacing: .13em; }
+.wwa-help-steps h2 { padding-right: 26px; margin: 5px 0 8px; font-size: 24px; font-weight: 600; }
+.wwa-help-steps p { color: var(--app-muted); font-size: 10px; line-height: 1.8; }
 .wwa-records { display: flex; flex-direction: column; gap: 24px; }
-.wwa-records h2 { display: flex; justify-content: space-between; align-items: center; gap: 15px; padding-bottom: 13px; border-bottom: 1px solid var(--app-line); font-size: 17px; }
-.wwa-records h2 > span { color: var(--app-accent); font-size: 10px; font-weight: 400; }
-.wwa-records section > div { display: flex; align-items: center; justify-content: space-between; gap: 20px; padding: 18px 0; border-bottom: 1px solid #d5edf012; font-size: 12px; }
-.wwa-records strong { color: var(--app-accent); font: 17px monospace; }
-.wwa-records strong > small { font: 11px 'Trebuchet MS', Arial, sans-serif; color: #8da5af; }
-.wwa-footnote { margin-top: 24px !important; color: #8da5af; font-size: 10px; }
-.wwa-about { display: grid; grid-template-columns: .8fr 1.3fr; gap: 60px; padding-bottom: 20px; }
-.wwa-about-mark { padding: 30px 0; }
+.wwa-records h2 { display: flex; justify-content: space-between; align-items: center; gap: 15px; padding-bottom: 10px; border-bottom: 1px solid var(--app-line); font-size: 28px; font-weight: 600; }
+.wwa-records h2 > span { color: var(--route-accent); font-size: 8px; font-weight: 400; }
+.wwa-record-route > small { display: block; margin-bottom: 6px; color: var(--route-accent); font-size: 7px; letter-spacing: .12em; }
+.wwa-records section > div { display: flex; align-items: center; justify-content: space-between; gap: 20px; padding: 15px 0; border-bottom: 1px solid #d5edf012; font-size: 11px; }
+.wwa-records section > div > span { display: flex; align-items: center; gap: 12px; }
+.wwa-records section > div > span > small { color: #688072; font: 8px 'JetBrains Mono', monospace; }
+.wwa-records strong { color: var(--app-accent); font: 15px 'JetBrains Mono', monospace; }
+.wwa-records strong > small { font: 10px 'Outfit', sans-serif; color: var(--app-muted); }
+.wwa-footnote { margin-top: 24px !important; color: #8da097; font-size: 7px; letter-spacing: .08em; }
+.wwa-about { display: grid; grid-template-columns: .8fr 1.3fr; gap: 55px; padding-bottom: 20px; }
+.wwa-about-mark { padding: 24px 0; }
 .wwa-about-mark > svg { color: var(--app-accent); width: 60px; height: 60px; }
-.wwa-about-mark > strong { display: block; font-size: 28px; letter-spacing: 4px; margin: 20px 0 8px; }
-.wwa-about-mark > span { display: block; color: var(--app-muted); font-size: 12px; }
-.wwa-about h2 { font-size: 17px; margin: 20px 0 12px; }
-.wwa-about p { font-size: 12px; color: var(--app-muted); line-height: 1.9; margin-bottom: 20px; }
+.wwa-about-mark > strong { display: block; font-family: var(--app-display); font-size: 45px; letter-spacing: .08em; margin: 17px 0 6px; }
+.wwa-about-mark > span { display: block; color: var(--app-muted); font-size: 11px; }
+.wwa-about-mark > small { display: block; margin-top: 23px; color: #647b70; font: 6px 'JetBrains Mono', monospace; letter-spacing: .13em; }
+.wwa-about h2 { font-size: 27px; font-weight: 600; margin: 10px 0; }
+.wwa-about p { font-size: 11px; color: var(--app-muted); line-height: 1.9; margin-bottom: 18px; }
 .wwa-about a { color: var(--app-accent); text-underline-offset: 4px; }
-.wwa-credit-link { display: inline-block; padding: 12px 0; font-size: 12px; }
-.wwa-notice { position: absolute; z-index: 10; left: 50%; bottom: 110px; transform: translateX(-50%); display: flex; gap: 16px; align-items: center; width: min(500px, calc(100% - 32px)); padding: 14px 16px; border: 1px solid #dfba7a60; border-radius: 10px; background: #263943f5; color: #e5ecec; font-size: 12px; box-shadow: 0 8px 32px #07131d66; }
+.wwa-about section > .wwa-kicker:not(:first-child) { margin-top: 26px; }
+.wwa-credit-link { display: inline-block; padding: 12px 0; font-size: 11px; }
+.wwa-notice { position: absolute; z-index: 10; left: 50%; bottom: 100px; transform: translateX(-50%); display: flex; gap: 16px; align-items: center; width: min(500px, calc(100% - 32px)); padding: 14px 16px; border: 1px solid #d5fc5850; border-radius: 3px; background: #17241ef5; color: #e5ecec; font-size: 12px; box-shadow: 0 8px 32px #07131d66; }
 .wwa-notice button { align-self: flex-start; margin-left: auto; min-width: 32px; min-height: 32px; border: 0; background: none; font-size: 22px; }
 .wwa-game, .wwa-game > iframe { position: absolute; inset: 0; width: 100%; height: 100%; border: 0; background: #0b141b; }
-.wwa-game-overlay { position: absolute; inset: 0; display: grid; place-items: center; padding: 24px; background: #0b141bf5; }
+.wwa-game-overlay { position: absolute; inset: 0; display: grid; place-items: center; padding: 24px; background: #090f13f5; }
 .wwa-game-loading { width: min(390px, 100%); max-height: 100%; overflow: auto; padding: 16px; text-align: center; }
-.wwa-game-loading > svg { width: 60px; height: 60px; color: var(--app-accent); margin-bottom: 22px; }
-.wwa-game-loading h1 { margin: 12px 0; font-size: 30px; letter-spacing: -1px; line-height: 1.1; }
-.wwa-game-loading p { color: var(--app-muted); font-size: 12px; line-height: 1.8; margin-bottom: 22px; }
+.wwa-loading-code { display: block; margin-bottom: 23px; color: var(--app-muted); font: 8px 'JetBrains Mono', monospace; letter-spacing: .15em; }
+.wwa-game-loading > svg { width: 57px; height: 57px; color: var(--app-accent); margin-bottom: 19px; }
+.wwa-game-loading h1 { margin: 12px 0; font-size: 39px; letter-spacing: -.01em; line-height: .95; }
+.wwa-game-loading p { color: var(--app-muted); font-size: 11px; line-height: 1.8; margin-bottom: 20px; }
 .wwa-game-loading .wwa-primary { width: 100%; }
-.wwa-text-button { min-height: 44px; padding: 12px; margin-top: 12px; background: none; border: 0; color: var(--app-muted); font-size: 12px; }
-.wwa-progress { height: 3px; width: 100%; overflow: hidden; background: #dfba7a20; border-radius: 4px; }
+.wwa-text-button { min-height: 44px; padding: 12px; margin-top: 12px; background: none; border: 0; color: var(--app-muted); font-size: 11px; }
+.wwa-progress { height: 2px; width: 100%; overflow: hidden; background: #d5fc581c; border-radius: 2px; }
 .wwa-progress > span { display: block; width: 35%; height: 100%; background: var(--app-accent); animation: wwa-load 1.4s ease-in-out infinite alternate; }
 @keyframes wwa-load { from { transform: translateX(-100%); } to { transform: translateX(300%); } }
 @keyframes wwa-enter { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: translateY(0); } }
-@media (min-width: 1600px) { .wwa-lobby { padding-left: max(64px, calc((100vw - 1440px) / 2)); } .wwa-lobby-dock { left: max(64px, calc((100vw - 1440px) / 2)); right: max(64px, calc((100vw - 1440px) / 2)); } }
-@media (max-width: 1024px) { .wwa-lobby { padding: 0 28px 20px; } .wwa-lobby-dock { left: 28px; right: 28px; gap: 8px; } .wwa-lobby-dock > button { gap: 10px; padding: 14px 12px; } .wwa-lobby-dock small { display: none; } .wwa-lobby-dock > button > svg { width: 23px; height: 23px; } .wwa-about-link { left: 28px; } .wwa-car-caption { right: 32px; } .wwa-content { padding-right: 28px; padding-left: 28px; } .wwa-road-choice { gap: 18px; } .wwa-garage { gap: 20px; } }
+
+@media (max-width: 1100px) {
+  .wwa-lobby { padding-inline: 28px; }
+  .wwa-lobby-dock { left: 28px; right: 28px; gap: 7px; }
+  .wwa-lobby-dock > button { gap: 8px; padding-inline: 11px; }
+  .wwa-lobby-dock small { display: none; }
+  .wwa-about-link { left: 28px; }
+  .wwa-content { padding-inline: 28px; }
+  .wwa-road-choice { grid-template-columns: 160px minmax(0, 1fr); gap: 15px 20px; }
+  .wwa-garage { gap: 20px; }
+}
+
 @media (max-width: 767px) {
-  .wwa-header { min-height: 76px; padding: 12px 20px; gap: 10px; } .wwa-brand > span { font-size: 19px; letter-spacing: 3px; } .wwa-brand > svg { width: 25px; height: 25px; } .wwa-brand small { font-size: 6px; letter-spacing: 1.5px; } .wwa-header-label { display: none; } .wwa-header { grid-template-columns: 1fr auto; }
-  .wwa-lobby { overflow-y: auto; justify-content: flex-start; padding: 12px 20px 18px; } .wwa-lobby-copy { width: 100%; margin: 0; padding-top: 12px; } .wwa-lobby-copy h1 { font-size: 56px; } .wwa-lobby-copy > p:not(.wwa-save-caption) { margin-top: 16px; font-size: 11px; } .wwa-start-actions { margin-top: 22px; }
-  .wwa-lobby > .wwa-showroom { position: relative; inset: auto; width: 100%; height: 230px; min-height: 230px; margin-top: -5px; } .wwa-car-caption { position: relative; inset: auto; margin: -16px 0 20px; text-align: left; } .wwa-car-caption > strong { font-size: 17px; } .wwa-car-caption > small { display: none; }
-  .wwa-lobby-dock { position: relative; inset: auto; display: flex; flex-direction: column; gap: 8px; } .wwa-lobby-dock > button { min-height: 58px; padding: 12px 16px; gap: 14px; } .wwa-lobby-dock > button > span { display: flex; justify-content: space-between; align-items: center; width: 100%; gap: 10px; } .wwa-lobby-dock small { display: block; margin: 0; text-align: right; } .wwa-lobby-dock strong { font-size: 12px; } .wwa-about-link { position: static; align-self: flex-start; padding-top: 18px; }
-  .wwa-content { padding: 12px 20px 28px; } .wwa-title { padding-bottom: 24px; } .wwa-title > h1 { font-size: 32px; letter-spacing: -1px; } .wwa-road-choice { grid-template-columns: 56px minmax(0, 1fr) 24px; gap: 14px; padding: 18px 16px; } .wwa-road-choice > .wwa-choice-number { display: none; } .wwa-road-choice > img { width: 56px; height: 66px; } .wwa-road-info > strong { font-size: 20px; } .wwa-road-choice .wwa-kicker { font-size: 7px; letter-spacing: .9px; } .wwa-choice-description { font-size: 11px; } .wwa-route-facts { gap: 5px 12px; font-size: 9px; } .wwa-selection-marker > span { display: none; }
-  .wwa-action-bar { min-height: 86px; padding: 12px 20px max(12px, env(safe-area-inset-bottom)); gap: 12px; } .wwa-action-bar > div:first-child { flex: 1; } .wwa-action-bar strong { font-size: 10px; } .wwa-action-bar strong > span { display: block; height: 2px; overflow: hidden; color: transparent; } .wwa-footer-actions .wwa-secondary { display: none; } .wwa-action-bar .wwa-primary { min-height: 48px; padding: 12px 18px; }
-  .wwa-garage, .wwa-settings, .wwa-crew-list, .wwa-help-steps, .wwa-about { grid-template-columns: minmax(0, 1fr); gap: 24px; } .wwa-garage-stage { min-height: 320px; grid-row: 1; } .wwa-garage-stage .wwa-showroom { inset: -20px -20px 75px; } .wwa-car-specs { padding: 16px 0; } .wwa-settings { gap: 16px; } .wwa-settings section { min-width: 0; } .wwa-crew-list { gap: 10px; } .wwa-crew-choice { padding: 20px; gap: 18px; } .wwa-crew-choice > img { width: 68px; height: 84px; } .wwa-help-steps { gap: 0; } .wwa-help-controls { padding: 15px; gap: 12px 18px; } .wwa-about { gap: 8px; } .wwa-about-mark { padding: 12px 0; }
+  .wwa-header { min-height: 70px; padding: max(12px, env(safe-area-inset-top)) 19px 11px; gap: 10px; grid-template-columns: 1fr auto; }
+  .wwa-brand > span { font-size: 25px; }
+  .wwa-brand > svg { width: 27px; }
+  .wwa-header-label { display: none; }
+  .wwa-icon-button { width: 44px; height: 44px; }
+  .wwa-lobby { display: block; overflow-y: auto; padding: 16px 19px 20px; }
+  .wwa-lobby-copy { width: 100%; margin: 0; padding: 0; }
+  .wwa-lobby-copy h1 { font-size: clamp(65px, 19vw, 87px); line-height: .85; }
+  .wwa-lobby-selection { margin-top: 18px; gap: 13px; font-size: 10px; }
+  .wwa-start-actions { margin-top: 20px; gap: 7px; }
+  .wwa .wwa-button { min-height: 48px; padding: 12px 17px; }
+  .wwa .wwa-primary { min-width: 166px; }
+  .wwa-lobby-stage { position: relative; inset: auto; width: 100%; height: 275px; margin-top: 10px; border-block: 1px solid var(--app-line); }
+  .wwa-stage-status { top: 15px; left: 0; right: 0; font-size: 6px; }
+  .wwa-stage-index { right: 3px; top: 35px; font-size: 150px; }
+  .wwa-showroom { inset: 10px -10px 42px; }
+  .wwa-car-caption { right: 0; bottom: 15px; max-width: 100%; border-left: 0; border-right: 2px solid var(--route-accent); padding: 0 10px 0 0; text-align: right; }
+  .wwa-car-caption > strong { font-size: 24px; }
+  .wwa-car-caption > small { display: none; }
+  .wwa-lobby-dock { position: relative; inset: auto; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 7px; margin-top: 15px; }
+  .wwa-lobby-dock > button { min-height: 64px; padding: 12px; gap: 9px; }
+  .wwa-dock-index { display: none; }
+  .wwa-lobby-dock strong { font-size: 11px; }
+  .wwa-lobby-dock small { display: block; margin-top: 4px; font-size: 8px; }
+  .wwa-about-link { position: static; align-self: flex-start; padding-top: 19px; min-height: 44px; }
+  .wwa-content { padding: 19px 19px 30px; }
+  .wwa-title { padding-bottom: 24px; }
+  .wwa-title > h1 { font-size: 47px; }
+  .wwa-title-code { display: none; }
+  .wwa-kicker { font-size: 7px; }
+  .wwa-road-choice { grid-template-columns: 94px minmax(0, 1fr); gap: 12px 14px; }
+  .wwa-route-art { min-height: 206px; }
+  .wwa-route-art > img { min-height: 206px; padding: 45px 0 16px; width: 120%; margin-left: -10%; }
+  .wwa-route-art .wwa-choice-number { top: 12px; left: 9px; font-size: 11px; }
+  .wwa-choice-number small { font-size: 5px; }
+  .wwa-road-info { padding: 20px 11px 0 0; }
+  .wwa-road-info .wwa-kicker { max-width: 20ch; font-size: 6px; }
+  .wwa-road-info > strong { font-size: 29px; line-height: .9; }
+  .wwa-choice-description { font-size: 10px; }
+  .wwa-route-facts { display: grid; grid-template-columns: 1fr 1fr; align-self: end; gap: 5px; padding: 0 10px 16px 0; font-size: 6px; }
+  .wwa-route-facts > span { padding: 0; border: 0; }
+  .wwa-selection-marker { position: static; grid-column: 2; grid-row: 3; padding-bottom: 12px; font-size: 7px; }
+  .wwa-selection-marker > svg { width: 16px; height: 16px; padding: 2px; }
+  .wwa-action-bar { min-height: 76px; padding: 11px 19px max(11px, env(safe-area-inset-bottom)); gap: 10px; }
+  .wwa-action-bar strong { font-size: 9px; }
+  .wwa-action-bar strong > span { display: inline; margin-inline: 3px; }
+  .wwa-footer-actions .wwa-secondary { display: none; }
+  .wwa-action-bar .wwa-primary { min-width: 138px; min-height: 48px; padding: 12px 15px; }
+  .wwa-action-bar .wwa-button-code { display: none; }
+  .wwa-garage, .wwa-settings, .wwa-crew-list, .wwa-help-steps, .wwa-about { grid-template-columns: minmax(0, 1fr); gap: 24px; }
+  .wwa-garage-stage { min-height: 320px; grid-row: 1; }
+  .wwa-garage-stage .wwa-showroom { inset: 6px -20px 82px; }
+  .wwa-car-specs { padding-inline: 14px; }
+  .wwa-settings { gap: 17px; }
+  .wwa-settings section { min-width: 0; }
+  .wwa-car-choice { padding: 17px 15px; }
+  .wwa-car-choice strong { font-size: 25px; }
+  .wwa-segments { display: flex; width: 100%; }
+  .wwa-segments button { padding-inline: 11px; }
+  .wwa-crew-choice { padding: 15px; gap: 15px; }
+  .wwa-crew-portrait { flex-basis: 74px; height: 98px; }
+  .wwa-help-steps { gap: 0; }
+  .wwa-help-controls { padding: 14px; gap: 10px 14px; }
+  .wwa-records h2 { font-size: 25px; }
+  .wwa-records h2 > span { font-size: 7px; }
+  .wwa-about { gap: 10px; }
+  .wwa-about-mark { padding: 5px 0 14px; border-bottom: 1px solid var(--app-line); }
 }
+
 @media (orientation: landscape) and (max-height: 620px) {
-  .wwa-header { min-height: 64px; padding: 8px max(20px, env(safe-area-inset-right)) 8px max(20px, env(safe-area-inset-left)); } .wwa-brand > span { font-size: 17px; letter-spacing: 3px; } .wwa-brand small { display: none; } .wwa-lobby { overflow: hidden; padding: 0 24px 12px; justify-content: flex-start; } .wwa-lobby-copy { width: 53%; margin-bottom: 0; padding-top: 8px; } .wwa-lobby-copy h1 { font-size: clamp(34px, 7.7vh, 48px); margin-top: 8px; } .wwa-lobby-copy > p:not(.wwa-save-caption) { margin-top: 12px; gap: 6px; font-size: 10px; } .wwa-start-actions { margin-top: 16px; gap: 8px; } .wwa-button { min-height: 46px; padding: 11px 17px; font-size: 12px; } .wwa-save-caption { font-size: 9px; margin-top: 8px !important; }
-  .wwa-lobby > .wwa-showroom { position: absolute; top: -12px; bottom: 48px; left: 36%; right: -4%; width: auto; height: auto; margin: 0; } .wwa-car-caption { display: none; } .wwa-lobby-dock { position: absolute; bottom: 12px; left: 24px; right: 24px; display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 7px; } .wwa-lobby-dock > button { min-height: 48px; padding: 10px 12px; gap: 8px; } .wwa-lobby-dock strong { font-size: 10px; } .wwa-lobby-dock small { display: none; } .wwa-lobby-dock > button > svg { width: 20px; height: 20px; } .wwa-about-link { position: absolute; top: 8px; bottom: auto; left: auto; right: 24px; font-size: 8px !important; padding: 4px; z-index: 3; }
-  .wwa-content { padding-top: 8px; } .wwa-title { padding-bottom: 20px; } .wwa-title > h1 { font-size: 29px; } .wwa-action-bar { min-height: 74px; padding-top: 10px; padding-bottom: 10px; } .wwa-action-bar > div:first-child { display: block; } .wwa-footer-actions .wwa-secondary { display: inline-flex; } .wwa-action-bar strong > span { display: inline; margin: 0 4px; color: #75929e; } .wwa-garage { grid-template-columns: minmax(240px, 1fr) minmax(240px, 1fr); gap: 20px; } .wwa-garage-stage { grid-row: auto; min-height: 300px; } .wwa-garage-stage .wwa-showroom { inset: -30px -20px 60px; } .wwa-car-specs strong { font-size: 15px; } .wwa-game-loading { padding: 6px; } .wwa-game-loading > svg { width: 36px; height: 36px; margin-bottom: 10px; } .wwa-game-loading h1 { font-size: 26px; }
+  .wwa-header { min-height: 62px; padding: 8px max(22px, env(safe-area-inset-right)) 8px max(22px, env(safe-area-inset-left)); }
+  .wwa-brand > span { font-size: 23px; }
+  .wwa-brand small { display: none; }
+  .wwa-lobby { overflow: hidden; padding: 0 24px 12px; }
+  .wwa-lobby-copy { width: 52%; margin-bottom: 0; padding-top: 10px; }
+  .wwa-lobby-copy h1 { font-size: clamp(43px, 10vh, 66px); margin-top: 8px; }
+  .wwa-lobby-selection { margin-top: 12px; font-size: 9px; }
+  .wwa-lobby-selection small { font-size: 6px; }
+  .wwa-start-actions { margin-top: 15px; }
+  .wwa .wwa-button { min-height: 44px; padding: 10px 15px; font-size: 10px; }
+  .wwa .wwa-primary { min-width: 150px; }
+  .wwa-save-caption { font-size: 8px; margin-top: 8px !important; }
+  .wwa-lobby-stage { position: absolute; inset: 0 0 61px 41%; width: auto; height: auto; margin: 0; border: 0; }
+  .wwa-stage-status { top: 13px; right: 22px; left: 20%; }
+  .wwa-stage-index { top: 40px; right: 20px; font-size: 150px; }
+  .wwa-showroom { inset: 0 -4% 7px; }
+  .wwa-car-caption { right: 22px; bottom: 4px; }
+  .wwa-car-caption > strong { font-size: 22px; }
+  .wwa-lobby-dock { position: absolute; bottom: 9px; left: 24px; right: 24px; display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 6px; margin: 0; }
+  .wwa-lobby-dock > button { min-height: 47px; padding: 8px 10px; gap: 7px; }
+  .wwa-lobby-dock strong { font-size: 9px; }
+  .wwa-lobby-dock small, .wwa-dock-index { display: none; }
+  .wwa-lobby-dock > button > svg { width: 18px; height: 18px; }
+  .wwa-about-link { position: absolute; top: 3px; bottom: auto; left: auto; right: 24px; padding: 4px; min-height: 24px; z-index: 3; font-size: 6px !important; }
+  .wwa-content { padding-block: 15px 24px; }
+  .wwa-title { padding-bottom: 20px; }
+  .wwa-title > h1 { font-size: 41px; }
+  .wwa-action-bar { min-height: 69px; padding-block: 9px; }
+  .wwa-footer-actions .wwa-secondary { display: inline-flex; }
+  .wwa-garage { grid-template-columns: minmax(230px, 1fr) minmax(240px, 1fr); gap: 20px; }
+  .wwa-garage-stage { grid-row: auto; min-height: 285px; }
+  .wwa-garage-stage .wwa-showroom { inset: 0 -20px 65px; }
+  .wwa-car-specs { padding-block: 13px; }
+  .wwa-car-specs strong { font-size: 14px; }
+  .wwa-game-loading { padding: 6px; }
+  .wwa-game-loading > svg { width: 36px; height: 36px; margin-bottom: 10px; }
+  .wwa-loading-code { margin-bottom: 10px; }
+  .wwa-game-loading h1 { font-size: 31px; }
 }
-@media (orientation: landscape) and (max-height: 390px) { .wwa-lobby-copy h1 { font-size: 32px; } .wwa-lobby-copy h1 br { display: none; } .wwa-lobby-copy h1 em::before { content: ' '; } .wwa-lobby-copy > p:not(.wwa-save-caption) { margin-top: 9px; } .wwa-start-actions { margin-top: 12px; } .wwa-save-caption { max-width: 340px; } .wwa-lobby-copy { width: 56%; } .wwa-lobby-dock > button { min-height: 44px; } }
-@media (max-width: 370px) { .wwa-header { padding-left: 16px; padding-right: 16px; } .wwa-lobby, .wwa-content { padding-left: 16px; padding-right: 16px; } .wwa-lobby-copy h1 { font-size: 48px; } .wwa-start-actions .wwa-button { padding: 13px 18px; } .wwa-segments button { padding-left: 12px; padding-right: 12px; } .wwa-road-choice { grid-template-columns: minmax(0, 1fr) 24px; } .wwa-road-choice > img { display: none; } }
+
+@media (max-width: 370px) {
+  .wwa-header { padding-inline: 15px; }
+  .wwa-lobby, .wwa-content { padding-inline: 15px; }
+  .wwa-lobby-copy h1 { font-size: 63px; }
+  .wwa-lobby-selection { font-size: 9px; gap: 9px; }
+  .wwa .wwa-button { padding-inline: 14px; }
+  .wwa .wwa-primary { min-width: 151px; }
+  .wwa-road-choice { grid-template-columns: 76px minmax(0, 1fr); gap: 12px; }
+  .wwa-route-art, .wwa-route-art > img { min-height: 220px; }
+  .wwa-road-info > strong { font-size: 26px; }
+  .wwa-action-bar { padding-inline: 15px; }
+  .wwa-action-bar > div:first-child .wwa-kicker { display: none; }
+  .wwa-action-bar strong { font-size: 8px; }
+}
+
 @media (prefers-reduced-motion: reduce) { .wwa *, .wwa *::before, .wwa *::after { animation: none !important; transition: none !important; } }
 .wwa-reduce-motion *, .wwa-reduce-motion *::before, .wwa-reduce-motion *::after { animation: none !important; transition: none !important; }

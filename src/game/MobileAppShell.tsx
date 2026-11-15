@@ -86,13 +86,21 @@ export default function MobileAppShell() {
   const selectedMap = APP_MAPS.find((map) => map.id === app.config.mapId) ?? APP_MAPS[0];
   const selectedCar = carById(app.config.carId), selectedCrew = APP_CREW.find((crew) => crew.id === app.config.character) ?? APP_CREW[0];
   const savedMap = APP_MAPS.find((map) => map.id === app.savedRun?.mapId);
-  const action = <button className="wwa-button wwa-primary" onClick={() => startDrive()}><AppIcon name="play" /><span>Start drive</span></button>;
-  return <main className={`wwa wwa-page-${page}${app.config.reducedMotion ? ' wwa-reduce-motion' : ''}`} data-app-page={session ? 'game' : page}>
+  const routeNumber = APP_MAPS.findIndex((map) => map.id === selectedMap.id) + 1;
+  const action = <button className="wwa-button wwa-primary" onClick={() => startDrive()}><AppIcon name="play" /><span>Start drive</span><span className="wwa-button-code" aria-hidden="true">GO</span></button>;
+  const menuItems = [
+    { page: 'maps', icon: 'road', title: 'Roads', detail: selectedMap.name },
+    { page: 'garage', icon: 'car', title: 'Garage', detail: 'Car & paint' },
+    { page: 'crew', icon: 'crew', title: 'Crew', detail: selectedCrew.name },
+    { page: 'records', icon: 'records', title: 'Records', detail: 'Your best times' },
+    { page: 'help', icon: 'help', title: 'How to play', detail: 'Controls & tips' },
+  ] as const;
+  return <main className={`wwa wwa-page-${page} wwa-map-${selectedMap.id}${app.config.reducedMotion ? ' wwa-reduce-motion' : ''}`} data-app-page={session ? 'game' : page}>
     {!session && <ScenicBackdrop mapId={app.config.mapId} />}
     {session ? <div className="wwa-game" aria-label="Windway driving game">
       <iframe key={session.id} ref={iframe} title="Windway drive" src={`${import.meta.env.BASE_URL}index.html?native=1&previewGame=1`} allow="autoplay; fullscreen" allowFullScreen onError={() => setGameError('The game could not open. Try again, or return to the lobby.')} />
       {(!gameReady || gameError) && <div className="wwa-game-overlay"><div className="wwa-game-loading" role={gameError ? 'alert' : 'status'}>
-        <AppIcon name={gameError ? 'help' : 'car'} /><span className="wwa-kicker">{gameError ? 'Drive interrupted' : 'Starting your drive'}</span>
+        <span className="wwa-loading-code">WW / DRIVE SYSTEM</span><AppIcon name={gameError ? 'help' : 'car'} /><span className="wwa-kicker">{gameError ? 'Drive interrupted' : 'Starting your drive'}</span>
         <h1>{gameError ? 'Let’s get you back on the road.' : 'Your starting line is ready.'}</h1><p>{gameError ?? 'Preparing the car, the road and your controls.'}</p>
         {!gameError && <div className="wwa-progress" aria-label="Loading game"><span /></div>}
         {gameError && <button className="wwa-button wwa-primary" onClick={() => { const old = sessionRef.current; setGameError(null); setGameReady(false); handshaken.current = null; if (old) setSession({ ...old, id: ++nextSession.current, resume: latestSessionSave.current ?? old.resume }); }}>Try again</button>}
@@ -100,22 +108,33 @@ export default function MobileAppShell() {
       </div></div>}
     </div> : <>
       <header className="wwa-header">
-        {page === 'home' ? <div className="wwa-brand"><AppIcon name="road" /><span>WINDWAY<small>THE LONG WAY HOME</small></span></div> : <button className="wwa-back" onClick={() => openPage('home')}><AppIcon name="back" /><span>Lobby</span></button>}
-        <span className="wwa-header-label">{page === 'home' ? 'FREE DRIVE' : `DRIVE / ${page.toUpperCase()}`}</span>
+        {page === 'home' ? <div className="wwa-brand"><AppIcon name="road" /><span>WINDWAY<small>INDEPENDENT DRIVING EXPERIENCE</small></span></div> : <button className="wwa-back" onClick={() => openPage('home')}><AppIcon name="back" /><span>Lobby</span></button>}
+        <span className="wwa-header-label"><i />{page === 'home' ? 'FREE DRIVE / LOCAL SESSION' : `DRIVE SYSTEM / ${page.toUpperCase()}`}</span>
         <div className="wwa-header-tools"><button className="wwa-icon-button" aria-label={fullscreen ? 'Leave full screen' : 'Enter full screen'} title="Full screen" onClick={() => { void toggleFullscreen(); }}><AppIcon name="fullscreen" /></button>{page !== 'settings' && <button className="wwa-icon-button" aria-label="Settings" title="Settings" onClick={() => openPage('settings')}><AppIcon name="settings" /></button>}</div>
       </header>
-      {page === 'home' ? <section className="wwa-lobby">
-        <div className="wwa-lobby-copy"><span className="wwa-kicker">{selectedMap.region}</span><h1 ref={heading} tabIndex={-1}>Your road.<br /><em>Your pace.</em></h1><p>{selectedMap.name}<span />{selectedCar.name}</p><div className="wwa-start-actions">{action}<button className="wwa-button wwa-continue" disabled={!app.savedRun} onClick={() => startDrive(true)}><AppIcon name="continue" /><span>Continue</span></button></div><p className="wwa-save-caption">{app.savedRun ? `${savedMap?.name ?? 'Saved drive'} · Gate ${app.savedRun.checkpoint + 1} · ${formatTime(app.savedRun.elapsed)}` : 'Hold the accelerator. Find your line. Pause anytime.'}</p></div>
-        <Suspense fallback={<div className="wwa-preview-note">Preparing your car…</div>}><MobileShowroom key={app.config.carId} carId={app.config.carId} paint={app.config.paint} /></Suspense>
-        <div className="wwa-car-caption"><span>{selectedCar.nickname}</span><strong>{selectedCar.name}</strong><small>{selectedMap.tagline}</small></div>
-        <nav className="wwa-lobby-dock" aria-label="Game menu">{([{ page: 'maps', icon: 'road', title: 'Roads', detail: selectedMap.name }, { page: 'garage', icon: 'car', title: 'Garage', detail: 'Car & paint' }, { page: 'crew', icon: 'crew', title: 'Crew', detail: selectedCrew.name }, { page: 'records', icon: 'records', title: 'Records', detail: 'Your best times' }, { page: 'help', icon: 'help', title: 'How to play', detail: 'Controls & tips' }] as const).map((item) => <button key={item.page} onClick={() => openPage(item.page)}><AppIcon name={item.icon} /><span><strong>{item.title}</strong><small>{item.detail}</small></span></button>)}</nav>
-        <button className="wwa-about-link" onClick={() => openPage('about')}>Windway / By Waqar Ahmed</button>
+      {page === 'home' ? <section className="wwa-lobby" aria-label="Drive lobby">
+        <div className="wwa-lobby-copy">
+          <span className="wwa-kicker"><i />DRIVER SELECT / ROUTE 0{routeNumber}</span>
+          <h1 ref={heading} tabIndex={-1}>FIND YOUR<br /><em>NEXT LINE.</em></h1>
+          <div className="wwa-lobby-selection"><span><small>ROUTE</small>{selectedMap.name}</span><i /><span><small>MACHINE</small>{selectedCar.name}</span></div>
+          <div className="wwa-start-actions">{action}<button className="wwa-button wwa-continue" disabled={!app.savedRun} onClick={() => startDrive(true)}><AppIcon name="continue" /><span>Continue</span></button></div>
+          <p className="wwa-save-caption">{app.savedRun ? `${savedMap?.name ?? 'Saved drive'} · Gate ${app.savedRun.checkpoint + 1} · ${formatTime(app.savedRun.elapsed)}` : 'Hold the accelerator. Find your line. Pause anytime.'}</p>
+        </div>
+        <div className="wwa-lobby-stage">
+          <div className="wwa-stage-grid" aria-hidden="true" />
+          <div className="wwa-stage-status" aria-hidden="true"><span>VEHICLE / {selectedCar.number}</span><span>LIVE CONFIGURATION</span></div>
+          <Suspense fallback={<div className="wwa-preview-note">Preparing your car…</div>}><MobileShowroom key={app.config.carId} carId={app.config.carId} paint={app.config.paint} /></Suspense>
+          <div className="wwa-car-caption"><span>{selectedCar.nickname}</span><strong>{selectedCar.name}</strong><small>{selectedMap.region} / {selectedMap.tagline}</small></div>
+          <span className="wwa-stage-index" aria-hidden="true">0{routeNumber}<small>/ 03</small></span>
+        </div>
+        <nav className="wwa-lobby-dock" aria-label="Game menu">{menuItems.map((item, index) => <button key={item.page} onClick={() => openPage(item.page)}><span className="wwa-dock-index">0{index + 1}</span><AppIcon name={item.icon} /><span><strong>{item.title}</strong><small>{item.detail}</small></span></button>)}</nav>
+        <button className="wwa-about-link" onClick={() => openPage('about')}>Windway / By Waqar Ahmed <span aria-hidden="true">↗</span></button>
       </section> : <>
         <section className="wwa-content" aria-labelledby="wwa-page-title" key={page}>
-          <div className="wwa-title"><span className="wwa-kicker">{page === 'maps' ? 'Three roads. All open.' : page === 'garage' ? 'Choose your machine' : page === 'records' ? 'Every clean lap counts' : 'Make the drive yours'}</span><h1 id="wwa-page-title" ref={heading} tabIndex={-1}>{pageNames[page]}</h1></div>
+          <div className="wwa-title"><div><span className="wwa-kicker">{page === 'maps' ? 'Route database / 01—03' : page === 'garage' ? 'Machine configuration / Live' : page === 'records' ? 'Local telemetry / Personal bests' : page === 'settings' ? 'System configuration / Driver' : page === 'crew' ? 'Driver support / Select crew' : page === 'help' ? 'Driver briefing / Start here' : 'Independent / Open project'}</span><h1 id="wwa-page-title" ref={heading} tabIndex={-1}>{pageNames[page]}</h1></div><span className="wwa-title-code" aria-hidden="true">WW / {page.toUpperCase()}</span></div>
           <MobileAppPages page={page} app={app} patch={patch} />
         </section>
-        <footer className="wwa-action-bar"><div><span className="wwa-kicker">READY TO DRIVE</span><strong>{selectedMap.name}<span> / </span>{selectedCar.name}</strong></div><div className="wwa-footer-actions">{page !== 'maps' && <button className="wwa-button wwa-secondary" onClick={() => openPage('maps')}><AppIcon name="road" />Roads</button>}{action}</div></footer>
+        <footer className="wwa-action-bar"><div><span className="wwa-kicker">READY / ROUTE 0{routeNumber}</span><strong>{selectedMap.name}<span> / </span>{selectedCar.name}</strong></div><div className="wwa-footer-actions">{page !== 'maps' && <button className="wwa-button wwa-secondary" onClick={() => openPage('maps')}><AppIcon name="road" />Roads</button>}{action}</div></footer>
       </>}
       {(storageWarning || notice) && <div className="wwa-notice" role="status">{notice || 'Browser storage is unavailable. You can still play; progress may not be saved.'}<button aria-label="Dismiss message" onClick={() => { setNotice(''); setStorageWarning(false); }}>×</button></div>}
     </>}
