@@ -5,7 +5,7 @@ import { seededRandom } from './track';
 
 const atmospheres = {
   alpine: { zenith: '#1d4f7f', midSky: '#5a9fc9', horizon: '#f2ddb8', glow: '#ffe0a8', ridge: '#5f7f88', ground: '#6a8a60', fog: '#e2eee9', near: 310, far: 1050 },
-  jungle: { zenith: '#123f52', midSky: '#3f7f7c', horizon: '#b9d0ad', glow: '#ffe0a0', ridge: '#1e4a35', ground: '#143526', fog: '#8fb59b', near: 105, far: 450 },
+  jungle: { zenith: '#123f52', midSky: '#3f7f7c', horizon: '#b9d0ad', glow: '#ffe0a0', ridge: '#1e4a35', ground: '#143526', fog: '#8fb59b', near: 135, far: 540 },
   snow: { zenith: '#1b4772', midSky: '#588bb4', horizon: '#cfe1ec', glow: '#ffe4c4', ridge: '#6b889e', ground: '#7892a4', fog: '#bdd2df', near: 380, far: 1950 },
 };
 

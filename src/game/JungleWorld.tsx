@@ -4,9 +4,10 @@ import { Billboard, useTexture } from '@react-three/drei';
 import { CuboidCollider, RigidBody } from '@react-three/rapier';
 import * as THREE from 'three';
 import { ROAD_WIDTH, TRACK_POINTS, nearestTrackPoint, seededRandom, trackFrame } from './track';
-import { CheckpointGates, JumpRamp, TrackSurface } from './World';
+import { CheckpointGates, Instances, JumpRamp, TrackSurface } from './World';
 import JungleVillage from './JungleVillage';
 import { buildJungleVillage } from './jungleSettlement';
+import { CurveChevrons, GlowInstances, ProgressMarkers, RailDressUp, RestStop, type RestStopPalette, type RoadPoint, type TrackFrame } from './RoadsideDetails';
 
 type Point = {
   position: [number, number, number];
@@ -832,10 +833,113 @@ function FlyingToucans({ offset = 0, radius = 78, height = 19, speed = 0.12, cen
   </group>;
 }
 
+const JUNGLE_SHELTER: RestStopPalette = {
+  wall: '#b89d6a', roof: LEAF, trim: '#6e5435', glow: '#ffd98a',
+  deck: '#8a6a45', post: '#5d4a3c', paper: MIST, accent: GOLD,
+};
+const SECTORS = Array.from({ length: 8 }, (_, index) => ({ small: 'CANOPY RUN', big: `S${index + 1}` }));
+
+/** Benches, lanterns, trail bollards and one ranger shelter line the verge,
+ *  searched clear of the river, station, village plots and wildlife clearings. */
+const JungleRoadside = memo(function JungleRoadside({ low }: { low: boolean }) {
+  const village = useMemo(() => buildJungleVillage(), []);
+  const station = useMemo(stationFrame, []);
+  const { furniture, shelter } = useMemo(() => {
+    const usable = (x: number, z: number) => Math.abs(z) > 33
+      && Math.hypot(x - station.x, z - station.z) > 18
+      && Math.hypot(x - 300, z) > 26
+      && village.every((site) => Math.hypot(x - site.position[0], z - site.position[2]) > 24)
+      && wildlife.every((animal) => {
+        const q = wildlifePosition(animal.progress, animal.side, animal.width);
+        return Math.hypot(x - q.x, z - q.z) > 6;
+      });
+    const seats: RoadPoint[] = [], slabs: RoadPoint[] = [], backs: RoadPoint[] = [];
+    const posts: RoadPoint[] = [], heads: RoadPoint[] = [], caps: RoadPoint[] = [];
+    const crates: RoadPoint[] = [], panels: RoadPoint[] = [], panelTops: RoadPoint[] = [];
+    const anchors = [0.1, 0.36, 0.62, 0.86];
+    const restCount = low ? 2 : 4;
+    let placed = 0;
+    for (const anchor of anchors) {
+      if (placed >= restCount) break;
+      for (let attempt = 0; attempt < 8; attempt++) {
+        const progress = (anchor + attempt * 0.016) % 1;
+        const frame = trackFrame(progress);
+        const side = (placed + attempt) % 2 ? 1 : -1;
+        const distance = ROAD_WIDTH / 2 + 5.2;
+        const p = frame.point.clone().addScaledVector(frame.right, side * distance);
+        if (!usable(p.x, p.z)) continue;
+        placed++;
+        const y = vergeHeight(frame.point.y, distance);
+        const face = Math.atan2(-side * frame.right.x, -side * frame.right.z);
+        const perpX = Math.cos(face), perpZ = -Math.sin(face);
+        seats.push({ position: [p.x, y + 0.62, p.z], scale: [1.7, 0.12, 0.55], rotation: face });
+        slabs.push({ position: [p.x, y + 0.29, p.z], scale: [1.45, 0.55, 0.45], rotation: face });
+        backs.push({ position: [p.x - Math.sin(face) * 0.3, y + 1.02, p.z - Math.cos(face) * 0.3], scale: [1.7, 0.55, 0.1], rotation: face });
+        const lx = p.x + perpX * 1.7, lz = p.z + perpZ * 1.7;
+        posts.push({ position: [lx, y + 1.175, lz], scale: [0.1, 2.35, 0.1], rotation: face });
+        heads.push({ position: [lx, y + 2.5, lz], scale: [0.26, 0.32, 0.26], rotation: face });
+        caps.push({ position: [lx, y + 2.72, lz], scale: [0.36, 0.2, 0.36], rotation: face });
+        const bx = p.x - perpX * 1.9, bz = p.z - perpZ * 1.9;
+        posts.push({ position: [bx, y + 0.75, bz], scale: [0.09, 1.5, 0.09], rotation: face });
+        panels.push({ position: [bx, y + 1.72, bz], scale: [1.05, 0.66, 0.07], rotation: face });
+        panelTops.push({ position: [bx, y + 2.12, bz], scale: [1.05, 0.13, 0.08], rotation: face });
+        crates.push({ position: [p.x + perpX * 0.9, y + 0.36, p.z + perpZ * 0.9], scale: [0.8, 0.72, 0.8], rotation: face + 0.4 });
+        break;
+      }
+    }
+    for (const start of [0.18, 0.44, 0.69, 0.93]) {
+      const side = start > 0.5 ? 1 : -1;
+      for (let k = 0; k < 4; k++) {
+        const progress = (start + k * 0.006) % 1;
+        const frame = trackFrame(progress);
+        const distance = ROAD_WIDTH / 2 + 2.1;
+        const p = frame.point.clone().addScaledVector(frame.right, side * distance);
+        if (!usable(p.x, p.z)) continue;
+        posts.push({ position: [p.x, vergeHeight(frame.point.y, distance) + 0.45, p.z], scale: [0.14, 0.9, 0.14], rotation: frame.yaw });
+      }
+    }
+    let shelter: { position: [number, number, number]; yaw: number; side: -1 | 1; deckTop: number } | null = null;
+    for (let attempt = 0; attempt < 20 && !shelter; attempt++) {
+      for (const side of [-1, 1] as const) {
+        const progress = (0.5 + attempt * 0.02) % 1;
+        const frame = trackFrame(progress);
+        const distance = ROAD_WIDTH / 2 + 5.5;
+        const p = frame.point.clone().addScaledVector(frame.right, side * distance);
+        if (!usable(p.x, p.z)) continue;
+        shelter = {
+          position: [p.x, vergeHeight(frame.point.y, distance), p.z],
+          yaw: frame.yaw, side,
+          deckTop: vergeHeight(frame.point.y, ROAD_WIDTH / 2 + 0.5) + 0.15,
+        };
+        break;
+      }
+    }
+    return { furniture: { seats, slabs, backs, posts, heads, caps, crates, panels, panelTops }, shelter };
+  }, [low, village, station]);
+  const { seats, slabs, backs, posts, heads, caps, crates, panels, panelTops } = furniture;
+  return <>
+    <Instances points={seats} kind="box" color="#a57f52" shadows={false} />
+    <Instances points={slabs} kind="box" color="#6e5435" shadows={false} />
+    <Instances points={backs} kind="box" color="#8a6a45" shadows={false} />
+    <Instances points={posts} kind="box" color="#5d4a3c" shadows={false} />
+    <Instances points={caps} kind="cone" color="#3c4a4f" shadows={false} />
+    <Instances points={crates} kind="box" color="#a8804e" shadows={false} />
+    <Instances points={panels} kind="box" color={MIST} shadows={false} />
+    <Instances points={panelTops} kind="box" color={GOLD} shadows={false} />
+    <GlowInstances points={heads} />
+    {shelter && <RestStop position={shelter.position} yaw={shelter.yaw} side={shelter.side} low={low} palette={JUNGLE_SHELTER} kind="shelter" deckTop={shelter.deckTop} />}
+  </>;
+});
+
 export default memo(function JungleWorld({ low }: { low: boolean }) {
   const sites = useMemo(() => buildJungleVillage(), []);
   const ground = useMemo(jungleGroundTexture, []);
   useEffect(() => () => ground.dispose(), [ground]);
+  const chevronGround = useMemo(() => (frame: TrackFrame, distance: number) => vergeHeight(frame.point.y, ROAD_WIDTH / 2 + distance), []);
+  const chevronBlocked = useMemo(() => {
+    const station = stationFrame();
+    return (x: number, z: number) => Math.abs(z) <= 33 || Math.hypot(x - station.x, z - station.z) <= 15 || Math.hypot(x - 300, z) <= 24;
+  }, []);
   // Batch only this selected map's small, actually visible SVG textures. This
   // avoids serial suspense requests without loading either car or the other map.
   const textures = useTexture(sceneArtwork);
@@ -854,6 +958,10 @@ export default memo(function JungleWorld({ low }: { low: boolean }) {
     <JungleCanopyBackdrop low={low} />
     <JungleVerge />
     <DenseJungle low={low} /><JungleVillage sites={sites} /><JungleRiver low={low} />
+    <RailDressUp snow={false} accent="#6bdeb1" low={low} />
+    <CurveChevrons accent="#6bdeb1" distance={1.6} boardY={1.8} groundY={chevronGround} blocked={chevronBlocked} />
+    <ProgressMarkers labels={SECTORS} accent="#6bdeb1" distance={2.0} groundY={chevronGround} />
+    <JungleRoadside low={low} />
     <JungleMist low={low} /><JungleLightShafts low={low} /><JunglePollen low={low} />
     <TrackSurface /><CheckpointGates /><JumpRamp /><StopStation low={low} />
     {wildlife.map((animal) => <JungleBillboard key={animal.name} {...animal} />)}
