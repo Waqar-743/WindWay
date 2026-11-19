@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256" fill="none">
+  <title>Arctic Polar Bear</title>
+  <desc>Stylized arctic polar bear standing on a snowy glacier ledge for Windway Frostbite Ascent.</desc>
+  <circle cx="128" cy="128" r="106" fill="#dcebf4"/>
+  <path d="M38 178c24-12 56-16 90-16s66 4 90 16c-18 32-52 54-90 54s-72-22-90-54Z" fill="#a8c9de"/>
+  <path d="M62 172c0-42 26-72 68-72 34 0 58 20 66 50l10 10c6 6 4 18-6 20h-16v14c0 6-5 10-11 10h-12c-6 0-10-4-10-10v-8H110v8c0 6-4 10-10 10H88c-6 0-11-4-11-10v-14H62v-8Z" fill="#f7fbfe" stroke="#22384a" stroke-width="8" stroke-linejoin="round"/>
+  <circle cx="152" cy="96" r="12" fill="#f7fbfe" stroke="#22384a" stroke-width="8"/>
+  <circle cx="184" cy="100" r="11" fill="#f7fbfe" stroke="#22384a" stroke-width="8"/>
+  <ellipse cx="172" cy="128" rx="34" ry="30" fill="#f7fbfe" stroke="#22384a" stroke-width="8"/>
+  <ellipse cx="188" cy="136" rx="16" ry="12" fill="#e2eff7"/>
+  <circle cx="194" cy="132" r="5.5" fill="#22384a"/>
+  <circle cx="164" cy="122" r="4.5" fill="#22384a"/>
+  <circle cx="182" cy="122" r="4.5" fill="#22384a"/>
+  <path d="M184 142c4 3 10 3 14 0" stroke="#22384a" stroke-width="5" stroke-linecap="round"/>
+  <path d="M98 118c-14 6-24 20-26 36" stroke="#c3dceb" stroke-width="7" stroke-linecap="round"/>
+  <circle cx="54" cy="146" r="10" fill="#f7fbfe" stroke="#22384a" stroke-width="7"/>
+</svg>
