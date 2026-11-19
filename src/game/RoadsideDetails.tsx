@@ -238,30 +238,56 @@ export const RailDressUp = memo(function RailDressUp({ snow, accent, low }: { sn
 /* Snowbanks                                                           */
 /* ------------------------------------------------------------------ */
 
-/** A plowed ridge of overlapping white blobs just beyond the rails. */
+/** Sculpted granite boulders, sparse snow drifts, and warm alpine timber snow-fences
+ *  give the mountain pass roadside texture and color contrast instead of solid white walls. */
 export const Snowbanks = memo(function Snowbanks({ low }: { low: boolean }) {
-  const banks = useMemo(() => {
+  const { rocks, drifts, fencePosts, fenceRails } = useMemo(() => {
     const random = seededRandom(4242);
-    const result: RoadPoint[] = [];
-    const stride = low ? 6 : 3;
+    const rocks: RoadPoint[] = [], drifts: RoadPoint[] = [];
+    const fencePosts: RoadPoint[] = [], fenceRails: RoadPoint[] = [];
+    const stride = low ? 10 : 6;
     const segmentLength = TRACK_LENGTH / TRACK_POINTS.length;
     for (let i = 0; i < TRACK_POINTS.length; i += stride) {
       const frame = TRACK_POINTS[i];
+      const halfW = roadHalfWidthAt(i / TRACK_POINTS.length);
       for (const side of [-1, 1]) {
-        if (random() < 0.25) continue;
-        const offset = roadHalfWidthAt(i / TRACK_POINTS.length) + 0.55 + random() * 0.7;
+        const roll = random();
+        if (roll < 0.36) continue;
+        const offset = halfW + 1.9 + random() * 2.4;
         const p = frame.point.clone().addScaledVector(frame.right, side * offset);
-        const height = 0.7 + random() * 0.9;
-        result.push({
-          position: [p.x, frame.point.y - 0.1 + height * 0.5, p.z],
-          scale: [2.6 + random() * 3.2, height, stride * segmentLength * 0.92],
-          rotation: frame.yaw,
-        });
+        if (roll < 0.64) {
+          // Dark slate alpine boulders with warm earthy rock contrast
+          const h = 0.75 + random() * 1.45;
+          rocks.push({
+            position: [p.x, frame.point.y - 0.25 + h * 0.42, p.z],
+            scale: [1.3 + random() * 1.9, h, 1.4 + random() * 2.1],
+            rotation: random() * Math.PI,
+          });
+        } else if (roll < 0.84) {
+          // Timber Nordic snow-fence sections along the outer pass edge
+          const fp = frame.point.clone().addScaledVector(frame.right, side * (halfW + 1.75));
+          fencePosts.push({ position: [fp.x, frame.point.y + 0.55, fp.z], scale: [0.16, 1.3, 0.16], rotation: frame.yaw });
+          fenceRails.push({ position: [fp.x, frame.point.y + 0.85, fp.z], scale: [0.1, 0.14, stride * segmentLength * 0.78], rotation: frame.yaw });
+          fenceRails.push({ position: [fp.x, frame.point.y + 0.45, fp.z], scale: [0.1, 0.14, stride * segmentLength * 0.78], rotation: frame.yaw });
+        } else {
+          // Occasional sculpted wind-blown snow drift (kept varied, not a solid wall)
+          const h = 0.48 + random() * 0.65;
+          drifts.push({
+            position: [p.x, frame.point.y - 0.15 + h * 0.4, p.z],
+            scale: [1.6 + random() * 1.8, h, 2.2 + random() * 2.4],
+            rotation: frame.yaw + (random() - 0.5) * 0.4,
+          });
+        }
       }
     }
-    return result;
+    return { rocks, drifts, fencePosts, fenceRails };
   }, [low]);
-  return <Instances points={banks} kind="rock" color="#eef4f8" colors={['#e8f1f7', '#f3f8fb', '#dfe9f1']} shadows={false} />;
+  return <>
+    <Instances points={rocks} kind="rock" color="#4d5d6b" colors={['#3e4d59', '#566775', '#687782', '#47545e']} shadows={false} />
+    <Instances points={drifts} kind="rock" color="#dceaf4" colors={['#d5e5f0', '#e6f1f8', '#c8dbe8']} shadows={false} />
+    <Instances points={fencePosts} kind="box" color="#634832" shadows={false} />
+    <Instances points={fenceRails} kind="box" color="#8c6848" colors={['#8c6848', '#78573b', '#9b7452']} shadows={false} />
+  </>;
 });
 
 /* ------------------------------------------------------------------ */

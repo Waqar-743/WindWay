@@ -821,13 +821,13 @@ export const TrackSurface = memo(() => {
   useEffect(() => () => { asphalt.dispose(); roughnessMap.dispose(); }, [asphalt, roughnessMap]);
   useEffect(() => () => { road.dispose(); shoulder.dispose(); leftLine.dispose(); rightLine.dispose(); tireTracks.forEach((geometry) => geometry.dispose()); outerStrips.forEach((geometry) => geometry.dispose()); kerbs.forEach((geometry) => geometry.dispose()); }, [road, shoulder, leftLine, rightLine, tireTracks, outerStrips, kerbs]);
   return <>
-    <mesh geometry={shoulder} receiveShadow><meshStandardMaterial color={snow ? '#aebfc9' : jungle ? '#46503e' : '#8e8878'} roughness={0.96} metalness={0} /></mesh>
-    <RigidBody type="fixed" colliders="trimesh" friction={0.8}><mesh geometry={road} receiveShadow><meshStandardMaterial color={snow ? '#465c6b' : jungle ? '#2a3531' : '#323940'} map={asphalt} bumpMap={asphalt} bumpScale={snow ? 0.025 : 0.044} roughnessMap={roughnessMap} roughness={snow ? 0.56 : 0.88} metalness={0.05} envMapIntensity={0.44} side={THREE.DoubleSide} /></mesh></RigidBody>
-    {tireTracks.map((geometry, index) => <mesh key={index} geometry={geometry}><meshBasicMaterial color={snow ? '#182d39' : '#0f1615'} transparent opacity={snow ? 0.12 : 0.22} depthWrite={false} /></mesh>)}
-    {outerStrips.map((geometry, index) => <mesh key={index} geometry={geometry}><meshBasicMaterial color={accent} transparent opacity={0.62} /></mesh>)}
-    <mesh geometry={leftLine}><meshBasicMaterial color="#eff2ea" /></mesh><mesh geometry={rightLine}><meshBasicMaterial color="#eff2ea" /></mesh>
+    <mesh geometry={shoulder} receiveShadow><meshStandardMaterial color={snow ? '#4b5b67' : jungle ? '#46503e' : '#8e8878'} roughness={0.94} metalness={0.04} /></mesh>
+    <RigidBody type="fixed" colliders="trimesh" friction={0.8}><mesh geometry={road} receiveShadow><meshStandardMaterial color={snow ? '#25303a' : jungle ? '#2a3531' : '#323940'} map={asphalt} bumpMap={asphalt} bumpScale={snow ? 0.036 : 0.044} roughnessMap={roughnessMap} roughness={snow ? 0.54 : 0.88} metalness={snow ? 0.08 : 0.05} envMapIntensity={snow ? 0.62 : 0.44} side={THREE.DoubleSide} /></mesh></RigidBody>
+    {tireTracks.map((geometry, index) => <mesh key={index} geometry={geometry}><meshBasicMaterial color={snow ? '#111a22' : '#0f1615'} transparent opacity={snow ? 0.24 : 0.22} depthWrite={false} /></mesh>)}
+    {outerStrips.map((geometry, index) => <mesh key={index} geometry={geometry}><meshBasicMaterial color={snow ? '#f08b5b' : accent} transparent opacity={snow ? 0.78 : 0.62} /></mesh>)}
+    <mesh geometry={leftLine}><meshBasicMaterial color="#f5f8f2" /></mesh><mesh geometry={rightLine}><meshBasicMaterial color="#f5f8f2" /></mesh>
     {kerbs.map((geometry, index) => <mesh key={index} geometry={geometry} receiveShadow><meshLambertMaterial vertexColors /></mesh>)}
-    <Instances points={marks} kind="box" color={snow ? '#e9f4f8' : jungle ? '#d6e8a7' : '#e8ddaf'} />
+    <Instances points={marks} kind="box" color={snow ? '#f7c95c' : jungle ? '#d6e8a7' : '#e8ddaf'} />
     <Instances points={delineators.posts} kind="box" color={GRAPHITE} shadows={false} />
     <Instances points={delineators.reflectors} kind="box" color={accent} colors={[accent, LIME]} shadows={false} />
     <Instances points={bridgePlanks} kind="box" color={jungle ? '#8b9564' : '#b98e60'} />
