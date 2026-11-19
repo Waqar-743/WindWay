@@ -8,7 +8,7 @@ import { SNOW_HURDLES, SNOW_ICE_ZONES } from './snowCourse';
 import { CheckpointGates, Instances, TrackSurface } from './World';
 import { useGame } from './store';
 import { worldSurfaceUV } from './surfaceDetail';
-import { CurveChevrons, ProgressMarkers, RailDressUp, RestStop, Snowbanks, type RestStopPalette, type TrackFrame } from './RoadsideDetails';
+import { CornerApexKit, CurveChevrons, GlowInstances, ProgressMarkers, RailDressUp, RestStop, Snowbanks, type RestStopPalette, type RoadPoint, type TrackFrame } from './RoadsideDetails';
 
 const snowArt = (name: string) => `${import.meta.env.BASE_URL}snow-pack/${name}.svg`;
 const signs = ['snowman', 'snowy-tree', 'arctic-fox', 'mountain-hut', 'summit-flag', 'ice-warning', 'slalom-gate'];
@@ -120,17 +120,31 @@ const SnowForest = memo(function SnowForest({ low }: { low: boolean }) {
 
 function IceAndHurdles() {
   const ice = useMemo(() => SNOW_ICE_ZONES.map(([from, to]) => ribbonGeometry(ROAD_WIDTH - 0.8, 0, 0.035, from, to)), []);
+  const iceBeacons = useMemo(() => {
+    const markers: RoadPoint[] = [];
+    for (const [from, to] of SNOW_ICE_ZONES) {
+      for (const p of [from, (from + to) / 2, to]) {
+        const frame = trackFrame(p);
+        for (const side of [-1, 1]) {
+          const pos = frame.point.clone().addScaledVector(frame.right, side * (ROAD_WIDTH / 2 + 0.5));
+          markers.push({ position: [pos.x, pos.y + 0.65, pos.z], scale: [0.16, 0.28, 0.16], rotation: frame.yaw });
+        }
+      }
+    }
+    return markers;
+  }, []);
   useEffect(() => () => ice.forEach((g) => g.dispose()), [ice]);
   return <>
-    {ice.map((geometry, i) => <mesh key={i} geometry={geometry} receiveShadow><meshStandardMaterial color="#76b8d6" roughness={0.12} metalness={0.28} envMapIntensity={0.85} transparent opacity={0.82} depthWrite={false} /></mesh>)}
+    {ice.map((geometry, i) => <mesh key={i} geometry={geometry} receiveShadow><meshStandardMaterial color="#7cc4e6" emissive="#2a7ca3" emissiveIntensity={0.18} roughness={0.08} metalness={0.35} envMapIntensity={1.15} transparent opacity={0.86} depthWrite={false} /></mesh>)}
+    <GlowInstances points={iceBeacons} color="#8bdcff" />
     <RigidBody type="fixed" colliders={false} name="barriers">
       {SNOW_HURDLES.map((hurdle) => <group key={hurdle.id}>
         <CuboidCollider position={hurdle.position} rotation={[0, hurdle.yaw, 0]} args={hurdle.halfExtents} friction={0} restitution={0} />
         <group position={hurdle.position} rotation={[0, hurdle.yaw, 0]}>
-          <mesh castShadow receiveShadow><boxGeometry args={[2.7, 1.5, 3.2]} /><meshLambertMaterial color="#e5f0f6" /></mesh>
+          <mesh castShadow receiveShadow><boxGeometry args={[2.7, 1.5, 3.2]} /><meshStandardMaterial color="#e5f0f6" roughness={0.62} metalness={0.05} /></mesh>
           <mesh position={[0, 0.78, 0]}><boxGeometry args={[2.85, 0.14, 3.35]} /><meshLambertMaterial color="#f9fcff" /></mesh>
-          <mesh position={[0, 0, -1.62]}><boxGeometry args={[2.35, 0.38, 0.06]} /><meshLambertMaterial color="#d47762" /></mesh>
-          <mesh position={[0, 0, 1.62]}><boxGeometry args={[2.35, 0.38, 0.06]} /><meshLambertMaterial color="#d47762" /></mesh>
+          <mesh position={[0, 0, -1.62]}><boxGeometry args={[2.35, 0.4, 0.06]} /><meshBasicMaterial color="#f06f56" toneMapped={false} /></mesh>
+          <mesh position={[0, 0, 1.62]}><boxGeometry args={[2.35, 0.4, 0.06]} /><meshBasicMaterial color="#f06f56" toneMapped={false} /></mesh>
         </group>
       </group>)}
     </RigidBody>
@@ -198,6 +212,7 @@ export default memo(function SnowWorld({ low }: { low: boolean }) {
     <Snowbanks low={low} />
     <RailDressUp snow accent="#8bdcff" low={low} />
     <CurveChevrons accent="#8bdcff" distance={1.0} boardY={2.05} groundY={chevronGround} />
+    <CornerApexKit accent="#8bdcff" low={low} groundY={chevronGround} />
     <ProgressMarkers labels={KILOMETRES} accent="#8bdcff" distance={1.0} groundY={chevronGround} />
     {lodges.map((lodge, index) => <RestStop key={index} position={lodge.position} yaw={lodge.yaw} side={lodge.side} low={low} palette={SNOW_LODGE} kind="lodge" deckTop={lodge.deckTop} />)}
     <TrackSurface /><IceAndHurdles /><CheckpointGates />

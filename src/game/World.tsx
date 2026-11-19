@@ -9,9 +9,10 @@ import { art } from './config';
 import { useGame } from './store';
 import { BRIDGE_DECK_SEGMENTS, BRIDGE_SUPPORTS, TRACK_BARRIERS } from './trackBarriers';
 import { currentMap } from './maps';
-import { surfaceTexture, worldSurfaceUV } from './surfaceDetail';
+import { surfaceTexture, roadRoughnessTexture, worldSurfaceUV } from './surfaceDetail';
 import AlpineTown from './AlpineTown';
 import { buildAlpineTown, isTownLot, type TownSite } from './alpineVillage';
+import { CornerApexKit, CurveChevrons, ProgressMarkers, RailDressUp, type TrackFrame } from './RoadsideDetails';
 
 const INK = '#30483d';
 const LIME = '#d5fc58';
@@ -664,19 +665,29 @@ function CharacterSign({ name, position }: { name: string; position: [number, nu
 
 function gateLabelTexture(label: string, accent: string, finish: boolean) {
   const canvas = document.createElement('canvas');
-  canvas.width = 512; canvas.height = 128;
+  canvas.width = 1024; canvas.height = 256;
   const context = canvas.getContext('2d')!;
-  context.fillStyle = GRAPHITE; context.fillRect(0, 0, 512, 128);
-  context.fillStyle = '#2c3438'; context.fillRect(8, 8, 496, 112);
-  context.fillStyle = accent; context.fillRect(0, 0, 10, 128); context.fillRect(0, 120, 512, 8);
-  context.fillStyle = LIME; context.fillRect(28, 25, 5, 28);
-  context.fillStyle = '#aeb8b5'; context.font = '600 20px Arial'; context.textAlign = 'left';
-  context.fillText('WINDWAY / RACE CONTROL', 48, 45);
-  context.fillStyle = '#f3f5ef'; context.font = '700 45px Arial';
-  context.fillText(finish ? 'START / FINISH' : label, 28, 96);
-  if (finish) for (let y = 0; y < 4; y++) for (let x = 0; x < 4; x++) {
-    context.fillStyle = (x + y) % 2 ? '#f3f5ef' : GRAPHITE;
-    context.fillRect(432 + x * 16, 24 + y * 16, 16, 16);
+  context.fillStyle = '#12191e'; context.fillRect(0, 0, 1024, 256);
+  context.fillStyle = '#1b242a'; context.fillRect(14, 14, 996, 228);
+  context.fillStyle = accent; context.fillRect(0, 0, 18, 256); context.fillRect(0, 240, 1024, 16);
+  context.fillStyle = LIME; context.fillRect(52, 46, 10, 56);
+  context.fillStyle = '#9db0a8'; context.font = '600 36px "JetBrains Mono", Arial, sans-serif'; context.textAlign = 'left';
+  context.fillText('WINDWAY / RACE CONTROL', 84, 86);
+  context.fillStyle = '#f5f7f1'; context.font = '800 94px "Barlow Condensed", Arial, sans-serif';
+  context.fillText(finish ? 'START / FINISH' : label, 52, 194);
+  if (finish) {
+    for (let y = 0; y < 4; y++) for (let x = 0; x < 4; x++) {
+      context.fillStyle = (x + y) % 2 ? '#f3f5ef' : '#12191e';
+      context.fillRect(844 + x * 34, 48 + y * 34, 34, 34);
+    }
+  } else {
+    context.fillStyle = accent;
+    for (let i = 0; i < 3; i++) {
+      const cx = 820 + i * 54;
+      context.beginPath();
+      context.moveTo(cx, 72); context.lineTo(cx + 30, 128); context.lineTo(cx, 184); context.lineTo(cx + 16, 128);
+      context.closePath(); context.fill();
+    }
   }
   const texture = new THREE.CanvasTexture(canvas);
   texture.colorSpace = THREE.SRGBColorSpace;
@@ -686,10 +697,13 @@ function gateLabelTexture(label: string, accent: string, finish: boolean) {
 
 export function CheckpointGates() {
   const checkpoint = useGame((state) => state.telemetry.checkpoint);
+  const status = useGame((state) => state.status);
+  const countdown = useGame((state) => state.countdown);
+  const elapsed = useGame((state) => state.telemetry.elapsed);
   const { theme, id } = currentMap;
   const accent = ROUTE_ACCENTS[id];
   const gateWidth = ROAD_WIDTH + 2.2;
-  const labels = useMemo(() => CHECKPOINTS.map((_, index) => gateLabelTexture(`CP ${String(index + 1).padStart(2, '0')}`, ROUTE_ACCENTS[currentMap.id], TRACK_CLOSED ? index === 0 : index === CHECKPOINTS.length - 1)), [id, accent]);
+  const labels = useMemo(() => CHECKPOINTS.map((_, index) => gateLabelTexture(`SECTOR ${String(index + 1).padStart(2, '0')}`, ROUTE_ACCENTS[currentMap.id], TRACK_CLOSED ? index === 0 : index === CHECKPOINTS.length - 1)), [id, accent]);
   useEffect(() => () => labels.forEach((texture) => texture.dispose()), [labels]);
   const overheads = useRef<(THREE.Group | null)[]>([]);
   const cameraWorld = useMemo(() => new THREE.Vector3(), []);
@@ -702,36 +716,54 @@ export function CheckpointGates() {
       // Distance to the actual bar bounds, including the finish checker panels.
       // A checkpoint respawn can put the chase camera just behind this beam;
       // at that distance it would cover the racing line across the entire view.
-      const dx = Math.max(0, Math.abs(cameraLocal.x) - (gateWidth + 0.5) / 2);
-      const dy = Math.max(0, Math.abs(cameraLocal.y) - 0.375);
-      const dz = Math.max(0, -0.35 - cameraLocal.z, cameraLocal.z - 0.37);
+      const dx = Math.max(0, Math.abs(cameraLocal.x) - (gateWidth + 0.6) / 2);
+      const dy = Math.max(0, Math.abs(cameraLocal.y) - 0.55);
+      const dz = Math.max(0, -0.45 - cameraLocal.z, cameraLocal.z - 0.48);
       overhead.visible = dx * dx + dy * dy + dz * dz > 16;
     }
   });
   return <group>{CHECKPOINTS.map(({ point, yaw }, index) => {
     const active = index === (TRACK_CLOSED ? (checkpoint + 1) % CHECKPOINTS.length : Math.min(CHECKPOINTS.length - 1, checkpoint + 1));
+    const passed = index > 0 && index <= checkpoint;
     const finish = TRACK_CLOSED ? index === 0 : index === CHECKPOINTS.length - 1;
-    const color = active ? LIME : accent;
+    const isStartLine = index === 0;
+    const color = active ? LIME : passed ? '#5d7a6e' : accent;
     return <group key={index} position={point} rotation={[0, yaw, 0]}>
       {[-gateWidth / 2, gateWidth / 2].map((x) => <group key={x} position={[x, 0, 0]}>
-        <mesh position={[0, 0.14, 0]} castShadow><boxGeometry args={[0.96, 0.28, 1.04]} /><meshStandardMaterial color={GRAPHITE} roughness={0.7} metalness={0.35} /></mesh>
-        <mesh position={[0, 2.7, 0]} castShadow><boxGeometry args={[0.62, 5.4, 0.78]} /><meshStandardMaterial color={GRAPHITE} roughness={0.58} metalness={0.42} /></mesh>
-        <mesh position={[0, 2.76, 0.401]}><boxGeometry args={[0.34, 4.68, 0.025]} /><meshStandardMaterial color={color} emissive={color} emissiveIntensity={active ? 0.24 : 0.035} roughness={0.4} metalness={0.15} /></mesh>
-        {[1.4, 3.6].map((y) => <mesh key={y} position={[0, y, 0.425]}><boxGeometry args={[0.48, 0.1, 0.04]} /><meshBasicMaterial color={theme.paper} /></mesh>)}
-        <mesh position={[0, 5.03, 0]}><boxGeometry args={[0.66, 0.12, 0.82]} /><meshBasicMaterial color={active ? LIME : accent} /></mesh>
+        <mesh position={[0, 0.2, 0]} castShadow><boxGeometry args={[1.15, 0.4, 1.24]} /><meshStandardMaterial color="#192126" roughness={0.72} metalness={0.35} /></mesh>
+        <mesh position={[0, 0.44, 0]}><boxGeometry args={[1.02, 0.1, 1.1]} /><meshBasicMaterial color={color} /></mesh>
+        <mesh position={[0, 2.85, 0]} castShadow><boxGeometry args={[0.64, 5.5, 0.82]} /><meshStandardMaterial color={GRAPHITE} roughness={0.52} metalness={0.48} /></mesh>
+        <mesh position={[x > 0 ? -0.34 : 0.34, 4.95, 0]} rotation={[0, 0, x > 0 ? 0.45 : -0.45]}><boxGeometry args={[0.18, 1.35, 0.52]} /><meshStandardMaterial color="#2a353c" roughness={0.5} metalness={0.45} /></mesh>
+        <mesh position={[0, 2.86, 0.422]}><boxGeometry args={[0.3, 4.7, 0.025]} /><meshStandardMaterial color={color} emissive={color} emissiveIntensity={active ? 0.5 : 0.08} roughness={0.35} metalness={0.15} /></mesh>
+        <mesh position={[0, 2.86, -0.422]}><boxGeometry args={[0.3, 4.7, 0.025]} /><meshStandardMaterial color={color} emissive={color} emissiveIntensity={active ? 0.5 : 0.08} roughness={0.35} metalness={0.15} /></mesh>
+        {[1.4, 3.6].map((y) => <mesh key={y} position={[0, y, 0.44]}><boxGeometry args={[0.5, 0.1, 0.04]} /><meshBasicMaterial color={theme.paper} /></mesh>)}
+        <mesh position={[0, 5.15, 0]}><boxGeometry args={[0.72, 0.14, 0.88]} /><meshBasicMaterial color={color} /></mesh>
       </group>)}
-      <group ref={(group) => { overheads.current[index] = group; }} position={[0, 5.4, 0]}>
-        <mesh castShadow><boxGeometry args={[gateWidth + 0.5, 0.75, 0.7]} /><meshStandardMaterial color={GRAPHITE} roughness={0.55} metalness={0.45} /></mesh>
+      <group ref={(group) => { overheads.current[index] = group; }} position={[0, 5.55, 0]}>
+        <mesh castShadow><boxGeometry args={[gateWidth + 0.65, 0.82, 0.78]} /><meshStandardMaterial color="#182026" roughness={0.48} metalness={0.52} /></mesh>
+        <mesh position={[0, 0.52, 0]}><boxGeometry args={[gateWidth + 0.25, 0.12, 0.44]} /><meshStandardMaterial color="#28343c" roughness={0.48} metalness={0.55} /></mesh>
         {[-1, 1].map((side) => <group key={side}>
-          <mesh position={[0, 0.28, side * 0.356]}><boxGeometry args={[gateWidth - 0.6, 0.08, 0.018]} /><meshBasicMaterial color={color} /></mesh>
-          <mesh position={[0, -0.015, side * 0.37]} rotation={[0, side < 0 ? Math.PI : 0, 0]}><planeGeometry args={[4.9, 0.56]} /><meshBasicMaterial map={labels[index]} toneMapped={false} /></mesh>
+          <mesh position={[0, 0.34, side * 0.398]}><boxGeometry args={[gateWidth - 0.5, 0.085, 0.02]} /><meshBasicMaterial color={color} /></mesh>
+          <mesh position={[0, -0.35, side * 0.398]}><boxGeometry args={[gateWidth - 0.5, 0.055, 0.02]} /><meshBasicMaterial color={active ? LIME : '#3c4d54'} /></mesh>
+          <mesh position={[0, -0.01, side * 0.412]} rotation={[0, side < 0 ? Math.PI : 0, 0]}><planeGeometry args={[5.3, 0.64]} /><meshBasicMaterial map={labels[index]} toneMapped={false} /></mesh>
         </group>)}
-        {[-1, 1].map((side) => <mesh key={side} position={[side * (gateWidth / 2 - 0.35), 0, 0]}><boxGeometry args={[0.55, 0.75, 0.7]} /><meshStandardMaterial color={color} emissive={color} emissiveIntensity={active ? 0.2 : 0.025} roughness={0.45} /></mesh>)}
+        {[-1, 1].map((side) => <mesh key={side} position={[side * (gateWidth / 2 - 0.35), 0, 0]}><boxGeometry args={[0.58, 0.84, 0.8]} /><meshStandardMaterial color={color} emissive={color} emissiveIntensity={active ? 0.35 : 0.05} roughness={0.4} /></mesh>)}
         {finish && [-1, 1].map((side) => Array.from({ length: 16 }, (_, i) => {
-          // Leave a clean centre plaque while retaining the familiar checker beam.
-          if (i >= 6 && i <= 9) return null;
-          return <mesh key={`${side}-${i}`} position={[(i - 7.5) * gateWidth / 16, -0.08, side * 0.368]} rotation={[0, side < 0 ? Math.PI : 0, 0]}><planeGeometry args={[gateWidth / 16 - 0.03, 0.43]} /><meshBasicMaterial color={i % 2 ? theme.paper : theme.ink} side={THREE.DoubleSide} /></mesh>;
+          if (i >= 5 && i <= 10) return null;
+          return <mesh key={`${side}-${i}`} position={[(i - 7.5) * gateWidth / 16, -0.04, side * 0.408]} rotation={[0, side < 0 ? Math.PI : 0, 0]}><planeGeometry args={[gateWidth / 16 - 0.03, 0.46]} /><meshBasicMaterial color={i % 2 ? theme.paper : theme.ink} side={THREE.DoubleSide} /></mesh>;
         }))}
+        {isStartLine && <group position={[0, -0.58, 0]}>
+          {[-2.2, -1.1, 0, 1.1, 2.2].map((lx, podIdx) => {
+            const litRed = status === 'countdown' && ((countdown === 3 && podIdx < 2) || (countdown === 2 && podIdx < 4) || (countdown === 1));
+            const litGreen = status === 'running' && elapsed < 2.2;
+            const podColor = litGreen ? LIME : litRed ? '#ff3b30' : '#232c31';
+            return <group key={lx} position={[lx, 0, 0]}>
+              <mesh><boxGeometry args={[0.56, 0.34, 0.38]} /><meshStandardMaterial color="#10161a" roughness={0.5} metalness={0.5} /></mesh>
+              <mesh position={[0, 0, 0.2]}><circleGeometry args={[0.11, 12]} /><meshBasicMaterial color={podColor} toneMapped={false} /></mesh>
+              <mesh position={[0, 0, -0.2]} rotation={[0, Math.PI, 0]}><circleGeometry args={[0.11, 12]} /><meshBasicMaterial color={podColor} toneMapped={false} /></mesh>
+            </group>;
+          })}
+        </group>}
       </group>
     </group>;
   })}</group>;
@@ -743,6 +775,7 @@ export const TrackSurface = memo(() => {
   const accent = ROUTE_ACCENTS[id];
   const gl = useThree((state) => state.gl);
   const asphalt = useMemo(() => surfaceTexture('asphalt', gl.capabilities.getMaxAnisotropy()), [gl]);
+  const roughnessMap = useMemo(() => roadRoughnessTexture(gl.capabilities.getMaxAnisotropy()), [gl]);
   const road = useMemo(() => worldSurfaceUV(ribbonGeometry(ROAD_WIDTH), 5), []);
   const shoulder = useMemo(() => ribbonGeometry(ROAD_WIDTH + 3, 0, -0.09), []);
   const leftLine = useMemo(() => ribbonGeometry(0.24, -ROAD_WIDTH / 2 + 0.4, 0.035), []);
@@ -785,14 +818,14 @@ export const TrackSurface = memo(() => {
   const bridgeCaps = useMemo(() => TRACK_BARRIERS.filter(({ kind }) => kind === 'bridge').map(({ position, yaw, halfExtents }) => ({ position: [position[0], position[1] + halfExtents[1] + 0.06, position[2]] as [number, number, number], rotation: yaw, scale: [0.72, 0.12, halfExtents[2] * 2] as [number, number, number] })), []);
   const roadsideWalls = useMemo(() => TRACK_BARRIERS.filter(({ kind }) => kind === 'roadside').map(({ position, yaw, halfExtents }) => ({ position, rotation: yaw, scale: halfExtents.map((value) => value * 2) as [number, number, number] })), []);
   const roadsideStripes = useMemo(() => TRACK_BARRIERS.filter(({ kind }) => kind === 'roadside').map(({ position, yaw, halfExtents }) => ({ position: [position[0], position[1] + 0.1, position[2]] as [number, number, number], rotation: yaw, scale: [0.72, 0.28, halfExtents[2] * 2 + 0.05] as [number, number, number] })), []);
-  useEffect(() => () => asphalt.dispose(), [asphalt]);
+  useEffect(() => () => { asphalt.dispose(); roughnessMap.dispose(); }, [asphalt, roughnessMap]);
   useEffect(() => () => { road.dispose(); shoulder.dispose(); leftLine.dispose(); rightLine.dispose(); tireTracks.forEach((geometry) => geometry.dispose()); outerStrips.forEach((geometry) => geometry.dispose()); kerbs.forEach((geometry) => geometry.dispose()); }, [road, shoulder, leftLine, rightLine, tireTracks, outerStrips, kerbs]);
   return <>
     <mesh geometry={shoulder} receiveShadow><meshStandardMaterial color={snow ? '#aebfc9' : jungle ? '#46503e' : '#8e8878'} roughness={0.96} metalness={0} /></mesh>
-    <RigidBody type="fixed" colliders="trimesh" friction={0.8}><mesh geometry={road} receiveShadow><meshStandardMaterial color={snow ? '#405461' : jungle ? '#293330' : '#30363b'} map={asphalt} bumpMap={asphalt} bumpScale={snow ? 0.022 : 0.038} roughness={snow ? 0.52 : 0.86} metalness={0.035} envMapIntensity={0.32} side={THREE.DoubleSide} /></mesh></RigidBody>
-    {tireTracks.map((geometry, index) => <mesh key={index} geometry={geometry}><meshBasicMaterial color={snow ? '#182d39' : '#111817'} transparent opacity={snow ? 0.1 : 0.18} depthWrite={false} /></mesh>)}
-    {outerStrips.map((geometry, index) => <mesh key={index} geometry={geometry}><meshBasicMaterial color={accent} transparent opacity={0.58} /></mesh>)}
-    <mesh geometry={leftLine}><meshBasicMaterial color="#edf0e8" /></mesh><mesh geometry={rightLine}><meshBasicMaterial color="#edf0e8" /></mesh>
+    <RigidBody type="fixed" colliders="trimesh" friction={0.8}><mesh geometry={road} receiveShadow><meshStandardMaterial color={snow ? '#465c6b' : jungle ? '#2a3531' : '#323940'} map={asphalt} bumpMap={asphalt} bumpScale={snow ? 0.025 : 0.044} roughnessMap={roughnessMap} roughness={snow ? 0.56 : 0.88} metalness={0.05} envMapIntensity={0.44} side={THREE.DoubleSide} /></mesh></RigidBody>
+    {tireTracks.map((geometry, index) => <mesh key={index} geometry={geometry}><meshBasicMaterial color={snow ? '#182d39' : '#0f1615'} transparent opacity={snow ? 0.12 : 0.22} depthWrite={false} /></mesh>)}
+    {outerStrips.map((geometry, index) => <mesh key={index} geometry={geometry}><meshBasicMaterial color={accent} transparent opacity={0.62} /></mesh>)}
+    <mesh geometry={leftLine}><meshBasicMaterial color="#eff2ea" /></mesh><mesh geometry={rightLine}><meshBasicMaterial color="#eff2ea" /></mesh>
     {kerbs.map((geometry, index) => <mesh key={index} geometry={geometry} receiveShadow><meshLambertMaterial vertexColors /></mesh>)}
     <Instances points={marks} kind="box" color={snow ? '#e9f4f8' : jungle ? '#d6e8a7' : '#e8ddaf'} />
     <Instances points={delineators.posts} kind="box" color={GRAPHITE} shadows={false} />
@@ -812,22 +845,46 @@ export const TrackSurface = memo(() => {
     <group position={startFrame.point} rotation={[0, startFrame.yaw, 0]}>
       {[-1, 1].map((row) => Array.from({ length: 16 }, (_, index) => <mesh key={`${row}-${index}`} position={[(index - 7.5) * ROAD_WIDTH / 16, 0.045, row * 0.225]} rotation={[-Math.PI / 2, 0, 0]}><planeGeometry args={[ROAD_WIDTH / 16, 0.45]} /><meshBasicMaterial color={(index + (row > 0 ? 1 : 0)) % 2 ? theme.paper : theme.ink} /></mesh>))}
       {[-1, 1].map((side) => <mesh key={side} position={[0, 0.043, side * 0.52]} rotation={[-Math.PI / 2, 0, 0]}><planeGeometry args={[ROAD_WIDTH, 0.075]} /><meshBasicMaterial color={LIME} /></mesh>)}
+      {/* Pole-position starting grid box behind the line */}
+      {TRACK_CLOSED && <group position={[0, 0.042, -6.4]}>
+        <mesh position={[0, 0, 2.3]} rotation={[-Math.PI / 2, 0, 0]}><planeGeometry args={[3.2, 0.14]} /><meshBasicMaterial color={LIME} /></mesh>
+        {[-1.53, 1.53].map((gx) => <mesh key={gx} position={[gx, 0, 1.4]} rotation={[-Math.PI / 2, 0, 0]}><planeGeometry args={[0.14, 1.8]} /><meshBasicMaterial color="#eff2ea" transparent opacity={0.85} /></mesh>)}
+      </group>}
     </group>
   </>;
 });
 
 export function JumpRamp() {
   const geometry = useMemo(jumpRampGeometry, []);
+  useEffect(() => () => geometry.dispose(), [geometry]);
+  const glowRefs = useRef<(THREE.MeshBasicMaterial | null)[]>([]);
+  useFrame(({ clock }) => {
+    const t = clock.elapsedTime * 5;
+    glowRefs.current.forEach((mat, i) => {
+      if (!mat) return;
+      const wave = 0.55 + 0.45 * Math.sin(t - i * 0.9);
+      mat.opacity = 0.5 + wave * 0.5;
+    });
+  });
   return <group>
-    <RigidBody type="fixed" colliders="trimesh"><mesh geometry={geometry} castShadow><meshLambertMaterial color={currentMap.theme.accent} side={THREE.DoubleSide} flatShading /></mesh></RigidBody>
-    {JUMP_STRIPES.map(({ position, yaw, slope }, i) => <group key={i} position={position} rotation={[0, yaw, 0]}><mesh rotation={[-Math.PI / 2 - slope, 0, 0]}><planeGeometry args={[BOOST_JUMP.width - 0.5, 0.4]} /><meshBasicMaterial color={currentMap.id === 'jungle' ? currentMap.theme.ink : '#f7d674'} side={THREE.DoubleSide} /></mesh></group>)}
+    <RigidBody type="fixed" colliders="trimesh"><mesh geometry={geometry} castShadow><meshStandardMaterial color={currentMap.theme.accent} roughness={0.45} metalness={0.18} side={THREE.DoubleSide} flatShading /></mesh></RigidBody>
+    {JUMP_STRIPES.map(({ position, yaw, slope }, i) => <group key={i} position={position} rotation={[0, yaw, 0]}>
+      <mesh rotation={[-Math.PI / 2 - slope, 0, 0]}>
+        <planeGeometry args={[BOOST_JUMP.width - 0.5, 0.44]} />
+        <meshBasicMaterial ref={(m) => { glowRefs.current[i] = m; }} color={currentMap.id === 'jungle' ? '#fff4b0' : LIME} transparent opacity={0.92} toneMapped={false} side={THREE.DoubleSide} />
+      </mesh>
+    </group>)}
   </group>;
 }
+
+const ALPINE_SECTORS = Array.from({ length: 8 }, (_, index) => ({ small: 'ALPINE LOOP', big: `S${index + 1}` }));
 
 export default memo(function World({ low }: { low: boolean }) {
   const sites = useMemo(buildAlpineTown, []);
   const ground = useMemo(alpineGroundTexture, []);
   useEffect(() => () => ground.dispose(), [ground]);
+  const chevronGround = useMemo(() => (frame: TrackFrame, distance: number) => alpineVergeHeight(frame.point.y, ROAD_WIDTH / 2 + distance), []);
+  const roadsideBlocked = useMemo(() => (x: number, z: number) => Math.abs(z) <= 34 || isTownLot(x, z, sites, 1.5), [sites]);
   const rocks = useMemo(() => {
     const random = seededRandom(418); const points = [];
     for (let i = 0; i < 100; i++) { const x = (random() - 0.5) * 900; const z = (random() - 0.5) * 800; const s = 1 + random() * 3; if (Math.abs(z) > 32 && nearestTrackPoint(x, z).distance > 23 && !isTownLot(x, z, sites)) points.push({ position: [x, s * 0.3, z] as [number, number, number], scale: [s, s * 0.65, s * 0.8] as [number, number, number], rotation: random() * Math.PI }); }
@@ -842,6 +899,10 @@ export default memo(function World({ low }: { low: boolean }) {
     <Mountains /><Forest low={low} sites={sites} /><Instances points={rocks} kind="rock" color="#6d8176" colors={['#5b706b', '#839080', '#778578']} />
     <AlpineMeadow low={low} sites={sites} />
     <AlpineRiver low={low} /><ValleyMist low={low} /><AlpineLightShafts low={low} /><AlpinePollen low={low} /><Butterflies low={low} />
+    <RailDressUp snow={false} accent="#f08b5b" low={low} />
+    <CurveChevrons accent="#f08b5b" distance={1.75} boardY={1.85} groundY={chevronGround} blocked={roadsideBlocked} />
+    <CornerApexKit accent="#f08b5b" low={low} groundY={chevronGround} blocked={roadsideBlocked} />
+    <ProgressMarkers labels={ALPINE_SECTORS} accent="#f08b5b" distance={2.1} groundY={chevronGround} />
     <TrackSurface /><CheckpointGates /><AlpineTown sites={sites} low={low} /><JumpRamp />
     <HotAirBalloon position={[160, 4, 200]} color="#d87958" />
     {!low && <HotAirBalloon position={[80, 14, 255]} scale={0.7} color="#547e8a" offset={2.4} />}

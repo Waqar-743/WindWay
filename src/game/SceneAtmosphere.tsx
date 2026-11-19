@@ -4,9 +4,9 @@ import * as THREE from 'three';
 import { seededRandom } from './track';
 
 const atmospheres = {
-  alpine: { zenith: '#1d4f7f', midSky: '#5a9fc9', horizon: '#f2ddb8', glow: '#ffe0a8', ridge: '#5f7f88', ground: '#6a8a60', fog: '#e2eee9', near: 310, far: 1050 },
-  jungle: { zenith: '#123f52', midSky: '#3f7f7c', horizon: '#b9d0ad', glow: '#ffe0a0', ridge: '#1e4a35', ground: '#143526', fog: '#8fb59b', near: 135, far: 540 },
-  snow: { zenith: '#1b4772', midSky: '#588bb4', horizon: '#cfe1ec', glow: '#ffe4c4', ridge: '#6b889e', ground: '#7892a4', fog: '#bdd2df', near: 380, far: 1950 },
+  alpine: { zenith: '#164575', midSky: '#4f97c8', horizon: '#f5dcb4', glow: '#ffdf9e', ridge: '#587882', ground: '#638458', fog: '#dfece6', near: 320, far: 1120 },
+  jungle: { zenith: '#0e374a', midSky: '#357774', horizon: '#b8d4ac', glow: '#ffe19e', ridge: '#1a4531', ground: '#123123', fog: '#89b396', near: 145, far: 570 },
+  snow: { zenith: '#153e6a', midSky: '#4e84b2', horizon: '#d6e7f2', glow: '#ffe1be', ridge: '#607f98', ground: '#708b9e', fog: '#c1d6e3', near: 390, far: 2100 },
 };
 
 /** A local panoramic sky doubles as the car's reflection source. No HDR download
@@ -16,131 +16,170 @@ export default function SceneAtmosphere({ mapId }: { mapId: keyof typeof atmosph
   const palette = atmospheres[mapId];
   const sky = useMemo(() => {
     const canvas = document.createElement('canvas');
-    canvas.width = 1024; canvas.height = 512;
+    canvas.width = 1536; canvas.height = 768;
+    const w = canvas.width, h = canvas.height;
     const context = canvas.getContext('2d')!;
-    const gradient = context.createLinearGradient(0, 0, 0, canvas.height);
+    const gradient = context.createLinearGradient(0, 0, 0, h);
     gradient.addColorStop(0, palette.zenith);
     gradient.addColorStop(0.28, palette.midSky);
     gradient.addColorStop(0.46, palette.horizon);
     gradient.addColorStop(0.51, palette.glow);
     gradient.addColorStop(0.57, palette.ground);
     gradient.addColorStop(1, palette.ground);
-    context.fillStyle = gradient; context.fillRect(0, 0, canvas.width, canvas.height);
+    context.fillStyle = gradient; context.fillRect(0, 0, w, h);
 
-    // Subtle studio reflection band in the upper sky for rich automotive body highlights
-    const studioHighlight = context.createLinearGradient(0, 48, 0, 130);
+    // Dual studio reflection ribbons in the upper sky for crisp F1 body-panel highlights
+    const studioHighlight = context.createLinearGradient(0, h * 0.08, 0, h * 0.26);
     studioHighlight.addColorStop(0, 'rgba(255,252,242,0)');
-    studioHighlight.addColorStop(0.5, 'rgba(255,252,242,0.16)');
+    studioHighlight.addColorStop(0.45, 'rgba(255,253,245,0.22)');
+    studioHighlight.addColorStop(0.65, 'rgba(255,248,232,0.12)');
     studioHighlight.addColorStop(1, 'rgba(255,252,242,0)');
     context.fillStyle = studioHighlight;
-    context.fillRect(0, 48, canvas.width, 82);
+    context.fillRect(0, h * 0.08, w, h * 0.18);
 
     const random = seededRandom(mapId === 'snow' ? 814 : mapId === 'jungle' ? 509 : 218);
-    // Soft, high cloud bands with sunlit undersides have no geometry or additional draw calls.
-    for (let i = 0; i < 28; i++) {
-      const x = random() * canvas.width, y = 135 + random() * 88;
-      const width = 32 + random() * 105, height = 3.5 + random() * 7.5;
+    // Layered cirrus & cumulus cloud puffs with warm lit rims and zero extra draw calls.
+    for (let i = 0; i < 42; i++) {
+      const x = random() * w, y = h * (0.22 + random() * 0.19);
+      const width = 48 + random() * 165, height = 5 + random() * 14;
       context.save(); context.translate(x, y); context.scale(width, height);
-      const cloud = context.createRadialGradient(0, -0.15, 0, 0, 0, 1);
-      cloud.addColorStop(0, 'rgba(255,252,245,0.28)');
-      cloud.addColorStop(0.55, 'rgba(240,246,245,0.14)');
-      cloud.addColorStop(1, 'rgba(230,240,239,0)');
+      const cloud = context.createRadialGradient(0, -0.2, 0, 0, 0, 1);
+      cloud.addColorStop(0, 'rgba(255,253,246,0.34)');
+      cloud.addColorStop(0.5, 'rgba(242,248,247,0.16)');
+      cloud.addColorStop(1, 'rgba(225,238,238,0)');
       context.fillStyle = cloud; context.fillRect(-1, -1, 2, 2); context.restore();
     }
 
     // Distant horizon mountain silhouette band for grounded reflections and sky depth
     context.save();
     context.beginPath();
-    const horizonY = 264;
+    const horizonY = h * 0.515;
     context.moveTo(0, horizonY);
-    for (let x = 0; x <= canvas.width; x += 16) {
-      const wave = Math.sin(x * 0.018) * 10 + Math.cos(x * 0.043) * 6 + Math.sin(x * 0.006) * 8;
-      context.lineTo(x, horizonY - 12 - wave);
+    for (let x = 0; x <= w; x += 20) {
+      const wave = Math.sin(x * 0.012) * 15 + Math.cos(x * 0.029) * 9 + Math.sin(x * 0.004) * 12;
+      context.lineTo(x, horizonY - 18 - wave);
     }
-    context.lineTo(canvas.width, horizonY + 18);
-    context.lineTo(0, horizonY + 18);
+    context.lineTo(w, horizonY + 26);
+    context.lineTo(0, horizonY + 26);
     context.closePath();
     context.fillStyle = palette.ridge;
-    context.globalAlpha = 0.45;
+    context.globalAlpha = 0.48;
     context.fill();
     context.restore();
 
-    // Alpine gets a second, higher range with snow caps for a deeper horizon.
+    // Alpine gets a majestic second range with sunlit snow caps.
     if (mapId === 'alpine') {
       context.save();
       context.beginPath();
-      context.moveTo(0, 262);
-      for (let x = 0; x <= canvas.width; x += 24) {
-        const wave = Math.sin(x * 0.012) * 18 + Math.cos(x * 0.031) * 10 + Math.sin(x * 0.007) * 12;
-        context.lineTo(x, 238 - wave);
+      context.moveTo(0, h * 0.51);
+      for (let x = 0; x <= w; x += 28) {
+        const wave = Math.sin(x * 0.0085) * 28 + Math.cos(x * 0.022) * 15 + Math.sin(x * 0.005) * 18;
+        context.lineTo(x, h * 0.465 - wave);
       }
-      context.lineTo(canvas.width, 276);
-      context.lineTo(0, 276);
+      context.lineTo(w, h * 0.54);
+      context.lineTo(0, h * 0.54);
       context.closePath();
-      context.fillStyle = '#8fa9b4';
-      context.globalAlpha = 0.5;
+      context.fillStyle = '#89a5b2';
+      context.globalAlpha = 0.54;
       context.fill();
-      context.globalAlpha = 0.75;
-      context.fillStyle = '#eef3f2';
-      for (let i = 0; i < 9; i++) {
-        const x = (i + 0.5) / 9 * canvas.width;
-        const peakY = 238 - (Math.sin(x * 0.012) * 18 + Math.cos(x * 0.031) * 10 + Math.sin(x * 0.007) * 12);
+      context.globalAlpha = 0.82;
+      context.fillStyle = '#f2f6f5';
+      for (let i = 0; i < 11; i++) {
+        const x = (i + 0.5) / 11 * w;
+        const peakY = h * 0.465 - (Math.sin(x * 0.0085) * 28 + Math.cos(x * 0.022) * 15 + Math.sin(x * 0.005) * 18);
         context.beginPath();
-        context.moveTo(x - 26, peakY + 22);
+        context.moveTo(x - 36, peakY + 32);
         context.lineTo(x, peakY);
-        context.lineTo(x + 26, peakY + 22);
+        context.lineTo(x + 36, peakY + 32);
         context.closePath();
         context.fill();
       }
-      const haze = context.createLinearGradient(0, 240, 0, 286);
+      const haze = context.createLinearGradient(0, h * 0.47, 0, h * 0.56);
       haze.addColorStop(0, 'rgba(255,240,214,0)');
-      haze.addColorStop(0.5, 'rgba(255,240,214,0.22)');
+      haze.addColorStop(0.5, 'rgba(255,240,214,0.26)');
       haze.addColorStop(1, 'rgba(255,240,214,0)');
       context.fillStyle = haze;
-      context.fillRect(0, 240, canvas.width, 46);
+      context.fillRect(0, h * 0.47, w, h * 0.09);
       context.restore();
     }
 
-    // The jungle horizon is a layered canopy rather than bare mountains. The
-    // silhouette also gives the car's reflections a believable green edge.
+    // Snow gets dramatic serrated glacial peaks with crisp alpenglow ridge lighting.
+    if (mapId === 'snow') {
+      context.save();
+      context.beginPath();
+      context.moveTo(0, h * 0.515);
+      for (let x = 0; x <= w; x += 24) {
+        const ridge = Math.abs(Math.sin(x * 0.0075)) * 42 + Math.cos(x * 0.019) * 16 + Math.sin(x * 0.037) * 8;
+        context.lineTo(x, h * 0.468 - ridge);
+      }
+      context.lineTo(w, h * 0.545);
+      context.lineTo(0, h * 0.545);
+      context.closePath();
+      context.fillStyle = '#7b99b2';
+      context.globalAlpha = 0.62;
+      context.fill();
+      context.globalAlpha = 0.85;
+      context.fillStyle = '#f4f9fc';
+      for (let i = 0; i < 12; i++) {
+        const x = (i + 0.45) / 12 * w;
+        const ridge = Math.abs(Math.sin(x * 0.0075)) * 42 + Math.cos(x * 0.019) * 16 + Math.sin(x * 0.037) * 8;
+        const peakY = h * 0.468 - ridge;
+        context.beginPath();
+        context.moveTo(x - 32, peakY + 34);
+        context.lineTo(x, peakY);
+        context.lineTo(x + 32, peakY + 34);
+        context.closePath();
+        context.fill();
+      }
+      const alpenglow = context.createLinearGradient(0, h * 0.45, 0, h * 0.55);
+      alpenglow.addColorStop(0, 'rgba(255,222,196,0)');
+      alpenglow.addColorStop(0.5, 'rgba(255,226,204,0.24)');
+      alpenglow.addColorStop(1, 'rgba(200,226,242,0)');
+      context.fillStyle = alpenglow;
+      context.fillRect(0, h * 0.45, w, h * 0.1);
+      context.restore();
+    }
+
+    // The jungle horizon is a layered canopy rather than bare mountains.
     if (mapId === 'jungle') {
       context.save();
       context.beginPath();
-      const canopyY = 258;
+      const canopyY = h * 0.505;
       context.moveTo(0, canopyY);
-      for (let x = 0; x <= canvas.width; x += 8) {
-        const wave = Math.sin(x * 0.021) * 8 + Math.cos(x * 0.047) * 5 + Math.sin(x * 0.009) * 6;
-        context.lineTo(x, canopyY - 18 - wave);
+      for (let x = 0; x <= w; x += 12) {
+        const wave = Math.sin(x * 0.015) * 12 + Math.cos(x * 0.032) * 8 + Math.sin(x * 0.006) * 9;
+        context.lineTo(x, canopyY - 26 - wave);
       }
-      context.lineTo(canvas.width, canopyY + 24);
-      context.lineTo(0, canopyY + 24);
+      context.lineTo(w, canopyY + 36);
+      context.lineTo(0, canopyY + 36);
       context.closePath();
-      context.fillStyle = '#1c4a35';
-      context.globalAlpha = 0.72;
+      context.fillStyle = '#18442f';
+      context.globalAlpha = 0.74;
       context.fill();
-      for (let i = 0; i < 18; i++) {
-        const x = (i + 0.5) / 18 * canvas.width + Math.sin(i * 2.3) * 18;
-        const radius = 18 + (i % 4) * 8;
+      for (let i = 0; i < 22; i++) {
+        const x = (i + 0.5) / 22 * w + Math.sin(i * 2.3) * 24;
+        const radius = 26 + (i % 4) * 12;
         context.beginPath();
-        context.arc(x, canopyY - 22 - (i % 3) * 6, radius, Math.PI, 0);
+        context.arc(x, canopyY - 30 - (i % 3) * 9, radius, Math.PI, 0);
         context.fill();
       }
-      const haze = context.createLinearGradient(0, 228, 0, 276);
-      haze.addColorStop(0, 'rgba(205,228,208,0)');
-      haze.addColorStop(0.5, 'rgba(205,228,208,0.2)');
-      haze.addColorStop(1, 'rgba(205,228,208,0)');
+      const haze = context.createLinearGradient(0, h * 0.44, 0, h * 0.54);
+      haze.addColorStop(0, 'rgba(205,232,208,0)');
+      haze.addColorStop(0.5, 'rgba(205,232,208,0.24)');
+      haze.addColorStop(1, 'rgba(205,232,208,0)');
       context.fillStyle = haze;
-      context.fillRect(0, 228, canvas.width, 48);
+      context.fillRect(0, h * 0.44, w, h * 0.1);
       context.restore();
     }
 
-    const glow = context.createRadialGradient(608, 96, 1, 608, 96, 128);
-    glow.addColorStop(0, 'rgba(255,248,220,0.95)');
-    glow.addColorStop(0.14, 'rgba(255,230,175,0.48)');
-    glow.addColorStop(0.45, 'rgba(255,212,148,0.14)');
+    const sunX = w * 0.59, sunY = h * 0.19;
+    const glow = context.createRadialGradient(sunX, sunY, 2, sunX, sunY, 195);
+    glow.addColorStop(0, 'rgba(255,250,226,0.98)');
+    glow.addColorStop(0.14, 'rgba(255,232,178,0.52)');
+    glow.addColorStop(0.45, 'rgba(255,212,148,0.16)');
     glow.addColorStop(1, 'rgba(255,212,148,0)');
-    context.fillStyle = glow; context.fillRect(480, 0, 256, 224);
-    context.beginPath(); context.arc(608, 96, 6, 0, Math.PI * 2); context.fillStyle = '#fff8df'; context.fill();
+    context.fillStyle = glow; context.fillRect(sunX - 200, 0, 400, 360);
+    context.beginPath(); context.arc(sunX, sunY, 9, 0, Math.PI * 2); context.fillStyle = '#fff9e4'; context.fill();
     const texture = new THREE.CanvasTexture(canvas);
     texture.mapping = THREE.EquirectangularReflectionMapping;
     texture.colorSpace = THREE.SRGBColorSpace;

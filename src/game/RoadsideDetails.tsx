@@ -62,18 +62,19 @@ function TexturedBoards({ points, texture }: { points: RoadPoint[]; texture: THR
 
 function chevronTexture(direction: 1 | -1, accent: string) {
   const canvas = document.createElement('canvas');
-  canvas.width = 256; canvas.height = 128;
+  canvas.width = 512; canvas.height = 256;
   const context = canvas.getContext('2d')!;
-  context.fillStyle = '#232e33'; context.fillRect(0, 0, 256, 128);
-  context.strokeStyle = accent; context.lineWidth = 7; context.strokeRect(4, 4, 248, 120);
-  context.fillStyle = '#f3f5ef';
+  context.fillStyle = '#141c21'; context.fillRect(0, 0, 512, 256);
+  context.fillStyle = accent; context.fillRect(0, 0, 512, 16); context.fillRect(0, 240, 512, 16);
+  context.strokeStyle = 'rgba(255,255,255,0.16)'; context.lineWidth = 4; context.strokeRect(10, 22, 492, 212);
   for (let i = 0; i < 3; i++) {
-    const x = 58 + i * 62;
+    const x = 116 + i * 128;
+    context.fillStyle = i === 1 ? accent : '#f5f7f2';
     context.beginPath();
-    context.moveTo(x - 15 * direction, 26);
-    context.lineTo(x + 15 * direction, 64);
-    context.lineTo(x - 15 * direction, 102);
-    context.lineTo(x + 2 * direction, 64);
+    context.moveTo(x - 32 * direction, 54);
+    context.lineTo(x + 34 * direction, 128);
+    context.lineTo(x - 32 * direction, 202);
+    context.lineTo(x + 6 * direction, 128);
     context.closePath(); context.fill();
   }
   const texture = new THREE.CanvasTexture(canvas);
@@ -327,3 +328,133 @@ export function RestStop({ position, yaw, side, low, palette, kind = 'shelter', 
     {!low && <pointLight position={[-s * 3.6, floor + 2.6, -2.4]} color="#ffcf7a" intensity={1.0} distance={16} decay={2} />}
   </group>;
 }
+
+/* ------------------------------------------------------------------ */
+/* Corner apex rumble blocks & braking distance boards                 */
+/* ------------------------------------------------------------------ */
+
+function brakeBoardAtlas(accent: string) {
+  const labels = ['100', '50'];
+  const canvas = document.createElement('canvas');
+  canvas.width = 512; canvas.height = 256;
+  const ctx = canvas.getContext('2d')!;
+  labels.forEach((text, i) => {
+    const x = i * 256;
+    ctx.fillStyle = '#f2f5ee'; ctx.fillRect(x, 0, 256, 256);
+    ctx.fillStyle = '#141d21'; ctx.fillRect(x + 10, 10, 236, 236);
+    ctx.fillStyle = accent; ctx.fillRect(x + 10, 10, 236, 22);
+    ctx.fillStyle = '#f5f7f2';
+    ctx.font = '800 108px "Barlow Condensed", Arial, sans-serif';
+    ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
+    ctx.fillText(text, x + 128, 128);
+    ctx.fillStyle = accent;
+    ctx.font = '700 28px "JetBrains Mono", Arial, sans-serif';
+    ctx.fillText('METRES', x + 128, 206);
+  });
+  const texture = new THREE.CanvasTexture(canvas);
+  texture.colorSpace = THREE.SRGBColorSpace;
+  texture.anisotropy = 4;
+  return texture;
+}
+
+/** Sculpted corner apex curb blocks, glowing apex bollards and 100m/50m braking boards. */
+export const CornerApexKit = memo(function CornerApexKit({
+  accent, low, groundY, blocked,
+}: {
+  accent: string;
+  low: boolean;
+  groundY?: (frame: TrackFrame, distance: number) => number;
+  blocked?: (x: number, z: number) => boolean;
+}) {
+  const { curbAccent, curbPale, bollards, beacons, brakeGeom, brakeTexture, brakePosts } = useMemo(() => {
+    const curbAccent: RoadPoint[] = [], curbPale: RoadPoint[] = [];
+    const bollards: RoadPoint[] = [], beacons: RoadPoint[] = [];
+    const brakePlates: THREE.BufferGeometry[] = [], brakePosts: RoadPoint[] = [];
+    const total = TRACK_POINTS.length;
+    const segLen = TRACK_LENGTH / total;
+    const look = Math.max(3, Math.round(46 / segLen));
+    const minSpacing = Math.max(8, Math.round(75 / segLen));
+    let lastCorner = -minSpacing;
+
+    for (let i = 0; i < total; i += 2) {
+      const frame = TRACK_POINTS[i];
+      const aheadIdx = TRACK_CLOSED ? (i + look) % total : Math.min(total - 1, i + look);
+      const ahead = TRACK_POINTS[aheadIdx];
+      const dYaw = Math.atan2(Math.sin(ahead.yaw - frame.yaw), Math.cos(ahead.yaw - frame.yaw));
+      const absYaw = Math.abs(dYaw);
+      if (absYaw < 0.56) continue;
+
+      const progress = i / total;
+      const halfW = roadHalfWidthAt(progress);
+      // Inside apex side gets raised motorsport rumble blocks flush along edge
+      const insideSide = dYaw > 0 ? 1 : -1;
+      const outsideSide = -insideSide;
+      const apexP = frame.point.clone().addScaledVector(frame.right, insideSide * (halfW + 0.34));
+      if (!blocked || !blocked(apexP.x, apexP.z)) {
+        const target = (Math.floor(i / 2) % 2 === 0) ? curbAccent : curbPale;
+        target.push({
+          position: [apexP.x, frame.point.y + 0.065, apexP.z],
+          scale: [0.68, 0.13, Math.max(1.6, segLen * 1.95)],
+          rotation: frame.yaw,
+        });
+      }
+
+      // Place corner apex beacon bollard & braking distance boards once per distinct sharp corner
+      if (i - lastCorner >= minSpacing && absYaw >= 0.72) {
+        lastCorner = i;
+        const bollardOffset = halfW + 1.45;
+        const bp = frame.point.clone().addScaledVector(frame.right, insideSide * bollardOffset);
+        if (!blocked || !blocked(bp.x, bp.z)) {
+          const by = groundY ? groundY(frame, 1.45) : frame.point.y;
+          bollards.push({ position: [bp.x, by + 0.42, bp.z], scale: [0.16, 0.84, 0.16], rotation: frame.yaw });
+          beacons.push({ position: [bp.x, by + 0.86, bp.z], scale: [0.22, 0.16, 0.22], rotation: frame.yaw });
+        }
+
+        // Braking distance boards 90m and 48m ahead on outside of approach
+        if (!low) {
+          const distances = [{ metres: 90, cell: 0 }, { metres: 48, cell: 1 }];
+          for (const { metres, cell } of distances) {
+            const backSteps = Math.round(metres / segLen);
+            if (!TRACK_CLOSED && i - backSteps < 6) continue;
+            const bIdx = TRACK_CLOSED ? (i - backSteps + total) % total : i - backSteps;
+            const bFrame = TRACK_POINTS[bIdx];
+            const bProg = bIdx / total;
+            const bOffset = roadHalfWidthAt(bProg) + 2.15;
+            const pos = bFrame.point.clone().addScaledVector(bFrame.right, outsideSide * bOffset);
+            if (blocked && blocked(pos.x, pos.z)) continue;
+            const baseY = groundY ? groundY(bFrame, 2.15) : bFrame.point.y;
+            const plate = new THREE.PlaneGeometry(1.15, 1.15);
+            const uv = plate.attributes.uv;
+            for (let v = 0; v < uv.count; v++) uv.setXY(v, (cell + uv.getX(v)) / 2, uv.getY(v));
+            plate.applyMatrix4(new THREE.Matrix4().compose(
+              new THREE.Vector3(pos.x, baseY + 1.32, pos.z),
+              new THREE.Quaternion().setFromEuler(new THREE.Euler(0, bFrame.yaw + Math.PI, 0)),
+              new THREE.Vector3(1, 1, 1),
+            ));
+            brakePlates.push(plate);
+            brakePosts.push({ position: [pos.x, baseY + 0.42, pos.z], scale: [0.1, 0.84, 0.1], rotation: bFrame.yaw });
+          }
+        }
+      }
+    }
+
+    const brakeGeom = brakePlates.length ? mergeGeometries(brakePlates) : null;
+    brakePlates.forEach((p) => p.dispose());
+    const brakeTexture = brakeGeom ? brakeBoardAtlas(accent) : null;
+    return { curbAccent, curbPale, bollards, beacons, brakeGeom, brakeTexture, brakePosts };
+  }, [accent, low, groundY, blocked]);
+
+  useEffect(() => () => {
+    brakeGeom?.dispose();
+    brakeTexture?.dispose();
+  }, [brakeGeom, brakeTexture]);
+
+  return <group>
+    {curbAccent.length > 0 && <Instances points={curbAccent} kind="box" color={accent} shadows={false} />}
+    {curbPale.length > 0 && <Instances points={curbPale} kind="box" color="#eff3ec" shadows={false} />}
+    {bollards.length > 0 && <Instances points={bollards} kind="box" color="#1d282e" shadows={false} />}
+    {beacons.length > 0 && <GlowInstances points={beacons} colors={['#d5fc58', accent]} />}
+    {brakeGeom && brakeTexture && <mesh geometry={brakeGeom}><meshBasicMaterial map={brakeTexture} toneMapped={false} /></mesh>}
+    {brakePosts.length > 0 && <Instances points={brakePosts} kind="box" color="#34434a" shadows={false} />}
+  </group>;
+});

@@ -7,7 +7,7 @@ import { ROAD_WIDTH, TRACK_POINTS, nearestTrackPoint, seededRandom, trackFrame }
 import { CheckpointGates, Instances, JumpRamp, TrackSurface } from './World';
 import JungleVillage from './JungleVillage';
 import { buildJungleVillage } from './jungleSettlement';
-import { CurveChevrons, GlowInstances, ProgressMarkers, RailDressUp, RestStop, type RestStopPalette, type RoadPoint, type TrackFrame } from './RoadsideDetails';
+import { CornerApexKit, CurveChevrons, GlowInstances, ProgressMarkers, RailDressUp, RestStop, type RestStopPalette, type RoadPoint, type TrackFrame } from './RoadsideDetails';
 
 type Point = {
   position: [number, number, number];
@@ -960,6 +960,7 @@ export default memo(function JungleWorld({ low }: { low: boolean }) {
     <DenseJungle low={low} /><JungleVillage sites={sites} /><JungleRiver low={low} />
     <RailDressUp snow={false} accent="#6bdeb1" low={low} />
     <CurveChevrons accent="#6bdeb1" distance={1.6} boardY={1.8} groundY={chevronGround} blocked={chevronBlocked} />
+    <CornerApexKit accent="#eac35a" low={low} groundY={chevronGround} blocked={chevronBlocked} />
     <ProgressMarkers labels={SECTORS} accent="#6bdeb1" distance={2.0} groundY={chevronGround} />
     <JungleRoadside low={low} />
     <JungleMist low={low} /><JungleLightShafts low={low} /><JunglePollen low={low} />

@@ -83,13 +83,17 @@ function Showcase() {
   return <>
     <group position={[START.point.x, START.point.y + 0.04, START.point.z]} rotation={[0, START.yaw, 0]}>
       {page === 'garage' && <>
-        <mesh rotation={[-Math.PI / 2, 0, 0]} position={[0, 0.01, 0]} receiveShadow>
-          <ringGeometry args={[3.15, 3.35, 64]} />
-          <meshBasicMaterial color={paint} transparent opacity={0.65} side={THREE.DoubleSide} />
+        <mesh rotation={[-Math.PI / 2, 0, 0]} position={[0, 0.015, 0]} receiveShadow>
+          <ringGeometry args={[3.22, 3.44, 72]} />
+          <meshBasicMaterial color={paint} transparent opacity={0.85} side={THREE.DoubleSide} toneMapped={false} />
+        </mesh>
+        <mesh rotation={[-Math.PI / 2, 0, 0]} position={[0, 0.012, 0]}>
+          <ringGeometry args={[3.56, 3.62, 72]} />
+          <meshBasicMaterial color="#d5fc58" transparent opacity={0.48} side={THREE.DoubleSide} toneMapped={false} />
         </mesh>
         <mesh rotation={[-Math.PI / 2, 0, 0]} position={[0, 0.005, 0]} receiveShadow>
-          <circleGeometry args={[3.15, 64]} />
-          <meshStandardMaterial color="#1e2d28" roughness={0.45} metalness={0.25} transparent opacity={0.38} />
+          <circleGeometry args={[3.22, 72]} />
+          <meshStandardMaterial color="#162126" roughness={0.32} metalness={0.42} transparent opacity={0.56} />
         </mesh>
       </>}
       <CarVisual carId={selectedCar} paint={paint} onReady={ready} />
