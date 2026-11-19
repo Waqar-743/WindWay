@@ -12,7 +12,8 @@ import ViewerErrorBoundary from '../components/PanoramicViewer/ViewerErrorBounda
 import TrackLoader from './TrackLoader';
 import LandingStory from './LandingStory';
 import LevelSelector from './LevelSelector';
-import { checkpointCount } from './levels';
+import { checkpointCount, LEVELS } from './levels';
+import { computeTransmission, evaluateRunGrade } from './trackAnalysis';
 import MobileTouchControls, { MobileDriverBadge, MobileIcon } from './MobileTouchControls';
 import { installMobileBridge, isNativeGame } from './mobileBridge';
 import { RouteMap } from './RouteMap';
@@ -96,8 +97,10 @@ function TrackMap({ live = false }: { live?: boolean }) {
   const map = mapById(useGame((state) => state.selectedMap));
   const x = useGame((state) => live ? state.telemetry.x : START.point.x);
   const z = useGame((state) => live ? state.telemetry.z : START.point.z);
+  const yaw = useGame((state) => live ? state.telemetry.yaw : START.yaw);
+  const progress = useGame((state) => live ? state.telemetry.progress : 0);
   const checkpoint = useGame((state) => live ? state.telemetry.checkpoint : 0);
-  return <RouteMap mapId={map.id} compact={live} live={live} x={x} z={z} checkpoint={checkpoint} showTelemetry={!live} />;
+  return <RouteMap mapId={map.id} compact={live} live={live} x={x} z={z} yaw={yaw} progress={progress} checkpoint={checkpoint} showTelemetry={!live} />;
 }
 
 function Valley() {
@@ -172,11 +175,31 @@ function Results() {
   const result = useGame((state) => state.result); const car = carById(useGame((state) => state.selectedCar)); const reducedMotion = useGame((state) => state.settings.reducedMotion);
   if (!result) return null;
   const map = mapById(result.mapId); const jungle = map.id === 'jungle', snow = map.mode === 'ascent';
+  const grade = evaluateRunGrade(result.time, result.resets, result.mapId, result.level ?? 0);
+  const nextLevel = LEVELS.find((lvl) => lvl.id === (result.level ?? 0) + 1);
   return <main className="results-page"><section className="results-card">
     {!reducedMotion && <div className="confetti" aria-hidden="true">{Array.from({ length: 24 }, (_, i) => <i key={i} style={{ '--i': i, '--color': [map.theme.accent, map.theme.leaf, map.theme.paper, map.theme.water][i % 4] } as CSSProperties} />)}</div>}
-    <Art name="winner-trophy" className="results-trophy" /><span className="result-badge">{result.newBest ? 'A FRESH PERSONAL BEST' : snow ? 'SUMMIT CONQUERED' : jungle ? 'CANOPY CONQUERED' : 'VALLEY CONQUERED'}</span><h1 data-page-title tabIndex={-1}>{snow ? <>You took<br />the <em>high road.</em></> : <>Well, that<br />was <em>wild.</em></>}</h1><p>{car.name} · {map.name} · {snow ? 'summit climb' : `${result.laps} ${result.laps === 1 ? 'lap' : 'laps'}`}</p><strong className="result-time">{formatTime(result.time)}</strong>
-    <div className="result-details"><div><span>PREVIOUS {snow ? 'SUMMIT' : jungle ? 'JUNGLE' : 'ALPINE'} BEST</span><strong>{result.previousBest ? formatTime(result.previousBest) : 'Your very first finish'}</strong></div><div><span>ROAD RECOVERIES</span><strong>{String(result.resets).padStart(2, '0')}</strong></div></div>
-    {isNativeGame() ? <><button className="ww-button ww-primary" onClick={() => window.WindwayMobile?.command('restart')}><MobileIcon name="play" />Drive again</button><button className="back-link" onClick={() => window.WindwayMobile?.command('menu')}>Back to garage</button></> : <><StartButton>One more for the road</StartButton><button className="back-link" onClick={() => useGame.getState().navigate('garage')}>Try a different attitude →</button></>}
+    {grade.tier === 'PLATINUM' || grade.tier === 'GOLD'
+      ? <img src={`${import.meta.env.BASE_URL}branding/medal-gold.svg`} alt={`${grade.tier} medal`} className="results-trophy results-medal" draggable={false} />
+      : <Art name="winner-trophy" className="results-trophy" />}
+    <div className="result-badges">
+      <span className="result-badge">{result.newBest ? 'A FRESH PERSONAL BEST' : snow ? 'SUMMIT CONQUERED' : jungle ? 'CANOPY CONQUERED' : 'VALLEY CONQUERED'}</span>
+      <span className={`result-grade result-grade--${grade.tier.toLowerCase()}`}>{grade.headline}</span>
+    </div>
+    <h1 data-page-title tabIndex={-1}>{snow ? <>You took<br />the <em>high road.</em></> : <>Well, that<br />was <em>wild.</em></>}</h1>
+    <p>{car.name} · {map.name} · {snow ? 'summit climb' : `${result.laps} ${result.laps === 1 ? 'lap' : 'laps'}`}</p>
+    <strong className="result-time">{formatTime(result.time)}</strong>
+    <div className="result-details">
+      <div><span>PREVIOUS {snow ? 'SUMMIT' : jungle ? 'JUNGLE' : 'ALPINE'} BEST</span><strong>{result.previousBest ? formatTime(result.previousBest) : 'Your very first finish'}</strong></div>
+      <div><span>ROAD RECOVERIES</span><strong>{String(result.resets).padStart(2, '0')}</strong></div>
+      {typeof result.topSpeed === 'number' && result.topSpeed > 0 && <div><span>PEAK SPEED</span><strong>{Math.round(result.topSpeed)} km/h</strong></div>}
+      {typeof result.driftTime === 'number' && result.driftTime > 0.2 && <div><span>DRIFT TIME</span><strong>{result.driftTime.toFixed(1)} s</strong></div>}
+    </div>
+    {isNativeGame() ? <><button className="ww-button ww-primary" onClick={() => window.WindwayMobile?.command('restart')}><MobileIcon name="play" />Drive again</button><button className="back-link" onClick={() => window.WindwayMobile?.command('menu')}>Back to garage</button></> : <>
+      {nextLevel ? <button className="ww-button ww-primary" onClick={() => { void gameAudio.unlock(); const g = useGame.getState(); g.selectLevel(nextLevel.id); g.startRace(); }}>Advance to Level {nextLevel.id} · {nextLevel.name} <span aria-hidden="true">↗</span></button> : <StartButton>One more for the road</StartButton>}
+      {nextLevel && <StartButton className="result-replay">Replay Level {result.level ?? 0}</StartButton>}
+      <button className="back-link" onClick={() => useGame.getState().navigate('garage')}>Try a different attitude →</button>
+    </>}
   </section></main>;
 }
 
@@ -190,8 +213,10 @@ function RaceHUD() {
   const recovery = useGame((state) => state.recovery);
   const reducedMotion = useGame((state) => state.settings.reducedMotion);
   const { telemetry: data, status, countdown, reaction, cameraMode } = useGame(useShallow((state) => ({ telemetry: state.telemetry, status: state.status, countdown: state.countdown, reaction: state.reaction, cameraMode: state.cameraMode })));
-  const { selectedMap, selectedLevel } = useGame(useShallow((state) => ({ selectedMap: state.selectedMap, selectedLevel: state.selectedLevel })));
+  const { selectedMap, selectedLevel, selectedCar } = useGame(useShallow((state) => ({ selectedMap: state.selectedMap, selectedLevel: state.selectedLevel, selectedCar: state.selectedCar })));
   const map = mapById(selectedMap); const jungle = map.id === 'jungle';
+  const car = carById(selectedCar);
+  const tx = computeTransmission(data.speed / 3.6, car.topSpeed);
   const gates = checkpointCount(map.mode === 'ascent', selectedLevel) - (map.mode === 'ascent' ? 1 : 0);
   const best = useGame((state) => state.bestTimes[gameRecordKey(state.selectedMap, state.selectedCar, state.selectedLevel)]);
   return <div className={`race-ui race-ui-${status}`} data-hud-layout="split-corners">
@@ -212,6 +237,7 @@ function RaceHUD() {
         <button className="hud-button" disabled={status !== 'running'} onClick={() => useGame.getState().toggleCamera()} aria-label={`Switch to ${cameraMode === 'chase' ? 'hood' : 'chase'} camera`}><Art name="camera-button" /><span>{cameraMode === 'chase' ? 'CHASE CAM' : 'HOOD CAM'} <kbd>C</kbd></span></button>
       </div>
       <div className="race-notices">
+        {status === 'running' && data.paceNote && !data.boosting && !data.airborne && <div className={`pace-note pace-note--${data.paceNote.kind}`} role="status"><span className="pace-note-icon" aria-hidden="true">{data.paceNote.kind.includes('left') ? '↰' : data.paceNote.kind.includes('right') ? '↱' : data.paceNote.kind === 'ice' ? '❄' : '⚡'}</span><span><strong>{data.paceNote.label}</strong><small>{data.paceNote.detail}</small></span></div>}
         <div className="ramp-status" role="status" aria-live="polite" aria-atomic="true">{status === 'running' && (data.boosting || data.airborne) && <div className={`ramp-status-label ${data.airborne ? 'is-airborne' : ''}`}><Art name={jungle ? 'boost-ramp' : data.airborne ? 'eagle-soaring' : 'jump-ramp'} /><span><strong>{data.boosting ? 'BOOST' : 'AIRTIME'}{data.boosting && data.airborne ? ' + AIRTIME' : ''}</strong><small>{data.airborne ? 'HOLD YOUR LINE FOR LANDING' : 'ON-ROAD RAMP POWER'}</small></span></div>}</div>
         {reaction && reaction.until > performance.now() && status === 'running' && <div className="race-reaction" role="status"><Art name={reaction.character} /><p>{reaction.text}</p></div>}
         {status === 'countdown' && <div className="countdown" role="status"><span>THE {map.mode === 'ascent' ? 'SUMMIT' : jungle ? 'JUNGLE' : 'VALLEY'} IS YOURS IN</span><strong key={countdown}>{countdown}</strong><small>{map.mode === 'ascent' ? 'One long climb' : `${map.laps} ${map.laps === 1 ? 'lap' : 'laps'}`} · Hold W or ↑ when it’s time to go.</small></div>}
@@ -221,7 +247,12 @@ function RaceHUD() {
       </div>
     </aside>
     <section className="race-minimap" aria-label={`${map.name} live roadmap`}><span>{map.region.toUpperCase()}</span><TrackMap live /><small>FOLLOW THE {map.mode === 'ascent' ? 'CORAL' : jungle ? 'MARIGOLD' : 'ORANGE'} GATE</small></section>
-    <section className="speed-gauge" aria-label={`Speed ${Math.round(data.speed)} kilometers per hour`}><strong>{Math.round(data.speed).toString().padStart(2, '0')}</strong><span>KM/H</span><small>{data.boosting ? 'BOOST' : data.airborne ? 'AIRTIME' : data.drifting ? 'DRIFTING' : 'ON THE ROAD'}</small></section>
+    <section className="speed-gauge" data-boosting={data.boosting ? 'true' : undefined} data-redline={tx.redline ? 'true' : undefined} aria-label={`Speed ${Math.round(data.speed)} kilometers per hour`}>
+      <div className="rpm-strip" aria-hidden="true">{Array.from({ length: 8 }, (_, idx) => <i key={idx} className={tx.rpm >= (idx + 1) / 8 ? (idx >= 6 ? 'led-red' : idx >= 4 ? 'led-accent' : 'led-on') : ''} />)}</div>
+      <strong>{Math.round(data.speed).toString().padStart(2, '0')}</strong>
+      <span>KM/H <b className="gear-pill">G{tx.gear}</b></span>
+      <small>{data.boosting ? 'BOOST' : data.airborne ? 'AIRTIME' : data.drifting ? 'DRIFTING' : 'ON THE ROAD'}</small>
+    </section>
     {status === 'running' && (isNativeGame() ? <MobileTouchControls /> : <div className="touch-controls"><div className="touch-steering"><TouchButton action="left" label="Steer left">←</TouchButton><TouchButton action="right" label="Steer right">→</TouchButton><TouchButton action="handbrake" label="Hold handbrake" className="touch-drift">DRIFT</TouchButton></div><div className="touch-pedals"><TouchButton action="brake" label="Brake or reverse" className="touch-brake">BRAKE</TouchButton><TouchButton action="throttle" label="Accelerate" className="touch-throttle">GO</TouchButton></div></div>)}
     {status === 'paused' && <PauseMenu />}
   </div>;
