@@ -16,7 +16,7 @@
   border-radius: 20px;
   background: var(--route-panel);
   box-shadow: 0 20px 60px rgba(0, 0, 0, .24), inset 0 1px 0 rgba(255, 255, 255, .025);
-  font-family: Inter, "Segoe UI", Helvetica, Arial, sans-serif;
+  font-family: 'Outfit', system-ui, -apple-system, sans-serif;
   isolation: isolate;
 }
 
@@ -59,10 +59,12 @@
 .route-map__heading > strong {
   margin-block: 5px 4px;
   overflow: hidden;
-  font-size: clamp(21px, 2.4vw, 29px);
-  font-weight: 570;
-  letter-spacing: -.035em;
-  line-height: 1.12;
+  font-family: 'Barlow Condensed', Impact, sans-serif;
+  font-size: clamp(24px, 2.6vw, 34px);
+  font-weight: 700;
+  letter-spacing: .01em;
+  text-transform: uppercase;
+  line-height: 1.04;
   text-overflow: ellipsis;
   white-space: nowrap;
 }
@@ -95,7 +97,7 @@
 .route-map__code strong {
   margin-block: 4px;
   color: var(--route-accent);
-  font-family: "SFMono-Regular", Consolas, "Liberation Mono", monospace;
+  font-family: 'JetBrains Mono', ui-monospace, Consolas, monospace;
   font-size: 17px;
   font-weight: 600;
   letter-spacing: .075em;
@@ -294,6 +296,62 @@
   stroke: #bce4ef;
 }
 
+.route-map__ice-zone {
+  stroke: #8bdcff;
+  stroke-width: 5.4;
+  opacity: .72;
+}
+
+.route-map__road-progress {
+  stroke: var(--route-accent);
+  stroke-width: 2.3;
+  opacity: .92;
+}
+
+.route-map__boost circle {
+  fill: #131c1a;
+  stroke: #d5fc58;
+  stroke-width: .7;
+}
+
+.route-map__boost path {
+  fill: none;
+  stroke: #d5fc58;
+  stroke-width: .75;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.route-map__corner-dot {
+  fill: var(--route-accent);
+  stroke: #080f14;
+  stroke-width: .45;
+  opacity: .86;
+}
+
+.route-map__corner--hairpin .route-map__corner-dot {
+  fill: #ff7a59;
+}
+
+.route-map__corner-leader {
+  stroke: rgba(var(--route-accent-rgb), .42);
+  stroke-width: .35;
+  stroke-dasharray: 1.2 1.2;
+}
+
+.route-map__corners rect {
+  fill: rgba(8, 14, 19, .9);
+  stroke: rgba(var(--route-accent-rgb), .52);
+  stroke-width: .35;
+}
+
+.route-map__corners text {
+  fill: #edf4f6;
+  font-family: 'JetBrains Mono', ui-monospace, Consolas, monospace;
+  font-size: 2.6px;
+  font-weight: 700;
+}
+
 .route-map__direction path {
   fill: var(--route-accent);
   stroke: #0a1015;
@@ -309,7 +367,7 @@
 
 .route-map__checkpoints text {
   fill: #eef3f5;
-  font-family: "SFMono-Regular", Consolas, monospace;
+  font-family: 'JetBrains Mono', ui-monospace, Consolas, monospace;
   font-size: 2.5px;
   font-weight: 700;
   letter-spacing: -.14px;
@@ -388,7 +446,7 @@
 .route-map__compass text {
   fill: var(--route-accent);
   stroke: none;
-  font-family: "SFMono-Regular", Consolas, monospace;
+  font-family: 'JetBrains Mono', ui-monospace, Consolas, monospace;
   font-size: 3.3px;
   font-weight: 700;
   text-anchor: middle;
@@ -403,7 +461,7 @@
 
 .route-map__map-meta text {
   stroke: none;
-  font-family: "SFMono-Regular", Consolas, monospace;
+  font-family: 'JetBrains Mono', ui-monospace, Consolas, monospace;
   font-size: 2.8px;
   font-weight: 600;
   letter-spacing: .45px;
@@ -418,7 +476,7 @@
 
 .route-map__scale text {
   stroke: none;
-  font-family: "SFMono-Regular", Consolas, monospace;
+  font-family: 'JetBrains Mono', ui-monospace, Consolas, monospace;
   font-size: 2.35px;
   letter-spacing: .35px;
 }
@@ -465,7 +523,7 @@
 
 .route-map__telemetry dd small {
   color: #71828d;
-  font-family: "SFMono-Regular", Consolas, monospace;
+  font-family: 'JetBrains Mono', ui-monospace, Consolas, monospace;
   font-size: 8px;
   font-weight: 600;
   letter-spacing: .1em;

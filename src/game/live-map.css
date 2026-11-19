@@ -23,10 +23,20 @@
 }
 
 .route-map__player path {
-  fill: var(--route-accent);
-  stroke: #f7fff0;
-  stroke-width: .4;
+  fill: #d5fc58;
+  stroke: #091116;
+  stroke-width: .45;
   stroke-linejoin: round;
+}
+
+.route-map--live .route-map__road-progress {
+  stroke: #d5fc58;
+  stroke-width: 2.8;
+  opacity: .95;
+}
+
+.route-map--live .route-map__corner-dot {
+  opacity: .75;
 }
 
 .route-map__checkpoint--passed > circle:not(.route-map__checkpoint-pulse) {

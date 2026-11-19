@@ -2,6 +2,9 @@ import { useId, useMemo } from 'react';
 import * as THREE from 'three';
 import { mapById, type GameMap } from './maps';
 import { MAP_PATH, trackMapPoint } from './track';
+import { SNOW_ICE_ZONES } from './snowCourse';
+import { BOOST_JUMP } from './trackFeatures';
+import { analyzeCurveCorners } from './trackAnalysis';
 import './route-map.css';
 import './live-map.css';
 
@@ -16,6 +19,8 @@ export type RouteMapProps = {
   live?: boolean;
   x?: number;
   z?: number;
+  yaw?: number;
+  progress?: number;
   checkpoint?: number;
 };
 
@@ -30,13 +35,23 @@ type RouteProfile = {
   shortFinish: string;
 };
 
+type CornerMarker = Point & {
+  label: string;
+  severity: 'sweeper' | 'medium' | 'hard' | 'hairpin';
+  outsideX: number;
+  outsideY: number;
+};
+
 type RouteGeometry = {
   path: string;
   checkpoints: (Point & { number: number })[];
+  corners: CornerMarker[];
+  icePaths: string[];
+  boostMarker: (Point & { angle: number }) | null;
   start: Point;
   finish: Point;
   startAngle: number;
-  direction: Point & { angle: number };
+  directions: (Point & { angle: number })[];
   distance: string;
   metresToMap: number;
   project: (x: number, z: number) => Point;
@@ -123,18 +138,65 @@ function geometryFor(map: GameMap): RouteGeometry {
     const point = curve.getPointAt(progress);
     return { ...project(point.x, point.z), number: index + 1 };
   });
+
+  // Detect authentic track corners for apex indicators & turn numbering
+  const detectedCorners = analyzeCurveCorners(curve, closed, map.id === 'snow' ? 360 : 240, map.id === 'snow' ? 1.15 : 0.72, map.id === 'snow' ? 0.085 : 0.09);
+  const corners: CornerMarker[] = detectedCorners.slice(0, 8).map((c, idx) => {
+    const base = project(c.point.x, c.point.z);
+    const outWorld = c.point.clone().addScaledVector(c.right, c.outsideSide * (map.id === 'snow' ? 42 : 24));
+    const out = project(outWorld.x, outWorld.z);
+    return {
+      x: base.x,
+      y: base.y,
+      label: `T${idx + 1}`,
+      severity: c.severity,
+      outsideX: Math.max(12, Math.min(188, out.x)),
+      outsideY: Math.max(14, Math.min(186, out.y)),
+    };
+  });
+
+  // Plot Snow's 8 black-ice segments directly on the map path
+  const icePaths: string[] = map.id === 'snow'
+    ? SNOW_ICE_ZONES.map(([from, to]) => {
+        const steps = 10;
+        return Array.from({ length: steps + 1 }, (_, i) => {
+          const p = curve.getPointAt(from + (to - from) * (i / steps));
+          const pt = project(p.x, p.z);
+          return `${i ? 'L' : 'M'}${pt.x.toFixed(1)},${pt.y.toFixed(1)}`;
+        }).join(' ');
+      })
+    : [];
+
+  // Plot boost ramp position on closed circuits
+  let boostMarker: (Point & { angle: number }) | null = null;
+  if (closed) {
+    const bp = curve.getPointAt(BOOST_JUMP.startProgress);
+    const bpNext = curve.getPointAt((BOOST_JUMP.startProgress + 0.01) % 1);
+    const a = project(bp.x, bp.z);
+    const b = project(bpNext.x, bpNext.z);
+    boostMarker = { ...a, angle: Math.atan2(b.y - a.y, b.x - a.x) * 180 / Math.PI };
+  }
+
   const startWorld = curve.getPointAt(0), endWorld = curve.getPointAt(1);
   const nextWorld = curve.getPointAt(0.002);
   const start = project(startWorld.x, startWorld.z), next = project(nextWorld.x, nextWorld.z);
-  const directionWorld = curve.getPointAt(0.43), directionNextWorld = curve.getPointAt(0.433);
-  const direction = project(directionWorld.x, directionWorld.z), directionNext = project(directionNextWorld.x, directionNextWorld.z);
+  const dirProgress = closed ? [0.22, 0.56, 0.84] : [0.24, 0.54, 0.82];
+  const directions = dirProgress.map((t) => {
+    const dw = curve.getPointAt(t), dn = curve.getPointAt(Math.min(0.999, t + 0.003));
+    const d = project(dw.x, dw.z), dNext = project(dn.x, dn.z);
+    return { ...d, angle: Math.atan2(dNext.y - d.y, dNext.x - d.x) * 180 / Math.PI };
+  });
+
   return {
     path,
     checkpoints,
+    corners,
+    icePaths,
+    boostMarker,
     start,
     finish: closed ? start : project(endWorld.x, endWorld.z),
     startAngle: Math.atan2(next.y - start.y, next.x - start.x) * 180 / Math.PI + 90,
-    direction: { ...direction, angle: Math.atan2(directionNext.y - direction.y, directionNext.x - direction.x) * 180 / Math.PI },
+    directions,
     distance: `${(curve.getLength() / 1000).toFixed(2)} km`,
     metresToMap: scale,
     project,
@@ -240,7 +302,7 @@ function Endpoint({ point, label, angle, finish = false }: { point: Point; label
 }
 
 /** A dependency-free, presentation-ready technical map of a Windway route. */
-export function RouteMap({ mapId, className = '', compact = false, showTelemetry = true, live = false, x, z, checkpoint = 0 }: RouteMapProps) {
+export function RouteMap({ mapId, className = '', compact = false, showTelemetry = true, live = false, x, z, yaw, progress, checkpoint = 0 }: RouteMapProps) {
   const map = mapById(mapId);
   const id = map.id as MapId;
   const profile = PROFILES[id] ?? PROFILES.alpine;
@@ -255,6 +317,8 @@ export function RouteMap({ mapId, className = '', compact = false, showTelemetry
   const gridLines = Array.from({ length: 9 }, (_, index) => 20 + index * 20);
   const classes = `route-map route-map--${id}${compact ? ' route-map--compact' : ''}${live ? ' route-map--live' : ''}${className ? ` ${className}` : ''}`;
   const player = live && Number.isFinite(x) && Number.isFinite(z) ? route.project(x!, z!) : null;
+  const playerAngle = Number.isFinite(yaw) ? 180 - (yaw! * 180) / Math.PI : 0;
+  const liveProgressPct = live && Number.isFinite(progress) ? Math.max(0, Math.min(100, progress! * 100)) : 0;
   const nextCheckpoint = map.mode === 'ascent' ? Math.min(route.checkpoints.length - 1, checkpoint + 1) : (checkpoint + 1) % route.checkpoints.length;
 
   return <figure className={classes} data-map={id}>
@@ -303,11 +367,33 @@ export function RouteMap({ mapId, className = '', compact = false, showTelemetry
         <path d={route.path} className="route-map__road-shoulder" />
         <path d={route.path} stroke={`url(#${roadId})`} className="route-map__road-surface" />
         <path d={route.path} className="route-map__road-edge" />
+        {route.icePaths.map((icePath, idx) => <path key={idx} d={icePath} className="route-map__ice-zone" />)}
         <path d={route.path} className="route-map__road-centre" />
+        {live && liveProgressPct > 0.5 && (
+          <path d={route.path} pathLength={100} className="route-map__road-progress" strokeDasharray={`${liveProgressPct.toFixed(1)} 100`} />
+        )}
       </g>
 
-      <g className="route-map__direction" transform={`translate(${route.direction.x} ${route.direction.y}) rotate(${route.direction.angle})`} aria-hidden="true">
+      {route.directions.map((dir, index) => <g key={index} className="route-map__direction" transform={`translate(${dir.x} ${dir.y}) rotate(${dir.angle})`} aria-hidden="true">
         <path d="m-2-1.7 4 1.7-4 1.7" />
+      </g>)}
+
+      {route.boostMarker && <g className="route-map__boost" transform={`translate(${route.boostMarker.x} ${route.boostMarker.y}) rotate(${route.boostMarker.angle})`} aria-hidden="true">
+        <circle r={compact ? 3.2 : 3.8} />
+        <path d="m-1.6-1.4 2.1 1.4-2.1 1.4M0.3-1.4l2.1 1.4-2.1 1.4" />
+      </g>}
+
+      <g className="route-map__corners" aria-hidden="true">
+        {route.corners.map((corner) => <g key={corner.label} className={`route-map__corner route-map__corner--${corner.severity}`}>
+          <circle cx={corner.x} cy={corner.y} r={compact ? 1.35 : 1.7} className="route-map__corner-dot" />
+          {!compact && <>
+            <line x1={corner.x} y1={corner.y} x2={corner.outsideX} y2={corner.outsideY} className="route-map__corner-leader" />
+            <g transform={`translate(${corner.outsideX} ${corner.outsideY})`}>
+              <rect x="-4.4" y="-2.8" width="8.8" height="5.6" rx="1.2" />
+              <text x="0" y="0.95" textAnchor="middle">{corner.label}</text>
+            </g>
+          </>}
+        </g>)}
       </g>
 
       <g className="route-map__checkpoints" aria-hidden="true">
@@ -325,9 +411,11 @@ export function RouteMap({ mapId, className = '', compact = false, showTelemetry
       <Endpoint point={route.start} label={compact ? profile.shortStart : profile.startName} angle={route.startAngle} />
       {map.mode === 'ascent' && <Endpoint point={route.finish} label={compact ? profile.shortFinish : profile.finishName} finish />}
       {player && <g className="route-map__player" transform={`translate(${player.x} ${player.y})`} aria-hidden="true">
-        <circle className="route-map__player-pulse" r="8" />
+        <circle className="route-map__player-pulse" r="8.5" />
         <circle className="route-map__player-halo" r="5.4" />
-        <path d="M0-4 3 3 0 1.8-3 3Z" />
+        <g transform={`rotate(${playerAngle.toFixed(1)})`}>
+          <path d="M0-4.2 3.1 3.1 0 1.6-3.1 3.1Z" />
+        </g>
       </g>}
       <Compass />
 
@@ -345,8 +433,8 @@ export function RouteMap({ mapId, className = '', compact = false, showTelemetry
     {!compact && !live && showTelemetry && <footer className="route-map__telemetry" aria-label="Route telemetry">
       <dl>
         <div><dt>ROUTE LENGTH</dt><dd>{route.distance}<small>{map.mode === 'ascent' ? 'ONE WAY' : `${map.laps} ${map.laps === 1 ? 'LAP' : 'LAPS'}`}</small></dd></div>
-        <div><dt>ENVIRONMENT</dt><dd>{profile.environment}<small>{profile.code} / VERIFIED</small></dd></div>
-        <div><dt>ROAD SURFACE</dt><dd>{profile.road}<small>{map.mode === 'ascent' ? '+361 M ASCENT' : '14 M NOMINAL WIDTH'}</small></dd></div>
+        <div><dt>ENVIRONMENT</dt><dd>{profile.environment}<small>{route.corners.length} MARKED TURNS</small></dd></div>
+        <div><dt>ROAD SURFACE</dt><dd>{profile.road}<small>{map.mode === 'ascent' ? '+361 M · 8 ICE ZONES' : '14 M WIDTH · BOOST RAMP'}</small></dd></div>
       </dl>
     </footer>}
   </figure>;
