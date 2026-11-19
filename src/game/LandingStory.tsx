@@ -1,9 +1,11 @@
 import './landing-story.css';
 import F1Preview from './F1Preview';
 import { RouteMap } from './RouteMap';
+import LandingScroll3D from './LandingScroll3D';
+import Route3DShowcase from './Route3DShowcase';
 
 type MapId = 'alpine' | 'jungle' | 'snow';
-type Pack = 'cartoon-pack' | 'jungle-pack' | 'snow-pack';
+type Pack = 'cartoon-pack' | 'jungle-pack' | 'snow-pack' | 'branding';
 
 export interface LandingStoryProps {
   selectedMap: string;
@@ -31,7 +33,7 @@ interface RoadStory {
   description: string;
   facts: { value: string; label: string }[];
   details: { icon: string; title: string; description: string }[];
-  cast: { icon: string; label: string }[];
+  cast: { icon: string; pack?: Pack; label: string }[];
 }
 
 const ROAD_STORIES: RoadStory[] = [
@@ -69,7 +71,7 @@ const ROAD_STORIES: RoadStory[] = [
       { icon: 'ice-warning', title: 'Grip is a moving target', description: 'Blue ice reduces braking and lateral response. Slow down before the surface changes, then use small, deliberate inputs.' },
       { icon: 'slalom-gate', title: 'Find the passing lane', description: 'Solid snow blocks alternate across the route. Read the gap two turns ahead instead of charging the centre.' },
     ],
-    cast: [{ icon: 'snowman', label: 'Base-camp company' }, { icon: 'arctic-fox', label: 'Snow-line resident' }, { icon: 'summit-trophy', label: 'The summit reward' }],
+    cast: [{ icon: 'polar-bear', pack: 'branding' as Pack, label: 'Glacier polar bears' }, { icon: 'mountain-hut', label: 'Nordic village homes' }, { icon: 'summit-trophy', label: 'The summit reward' }],
   },
 ];
 
@@ -81,7 +83,7 @@ function Arrow({ diagonal = false }: { diagonal?: boolean }) {
   return <svg className="wl-arrow" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d={diagonal ? 'M5 19 19 5M5 5h14v14' : 'M4 12h16m-6-6 6 6-6 6'} stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" /></svg>;
 }
 
-function RouteLandscape({ id, name }: { id: MapId; name: string }) {
+function RouteLandscape({ id, name, reducedMotion }: { id: MapId; name: string; reducedMotion?: boolean }) {
   const snow = id === 'snow', jungle = id === 'jungle';
   const sky = snow ? ['#809fb5', '#d5e6ec'] : jungle ? ['#315b50', '#9bb886'] : ['#809cac', '#d5d9c6'];
   return <figure className={`wl-environment wl-environment-${id}`}>
@@ -105,14 +107,16 @@ function RouteLandscape({ id, name }: { id: MapId; name: string }) {
       </g>
       <path d="M0 442q176-45 367-9t593-3v50H0Z" fill={snow ? '#eff5f7' : jungle ? '#142b22' : '#20392e'} opacity=".75" />
     </svg>
-    <div className="wl-environment-caption"><span>{id === 'snow' ? 'ELEVATION / 362 M GAIN' : jungle ? 'SURFACE / DENSE CANOPY' : 'SURFACE / ALPINE ASPHALT'}</span><span>ENVIRONMENT STUDY {id === 'alpine' ? 'A' : id === 'jungle' ? 'B' : 'C'}</span></div>
+    <Route3DShowcase id={id} reducedMotion={reducedMotion} />
+    <div className="wl-environment-badge" aria-hidden="true"><i />LIVE 3D TERRAIN · SCROLL OR HOVER TO ORBIT</div>
+    <div className="wl-environment-caption"><span>{id === 'snow' ? 'ELEVATION / 362 M GAIN · NORDIC VILLAGE & GLACIERS' : jungle ? 'SURFACE / DENSE CANOPY · JADE RIVER' : 'SURFACE / ALPINE ASPHALT · VALLEY BRIDGES'}</span><span>3D ROUTE DIORAMA {id === 'alpine' ? '01' : id === 'jungle' ? '02' : '03'}</span></div>
   </figure>;
 }
 
-function RoadChapter({ story, selected, onStart, onExplore }: { story: RoadStory; selected: boolean; onStart: () => void; onExplore: () => void }) {
+function RoadChapter({ story, selected, reducedMotion, onStart, onExplore }: { story: RoadStory; selected: boolean; reducedMotion?: boolean; onStart: () => void; onExplore: () => void }) {
   return <article className={`wl-chapter wl-chapter-${story.id}`} id={`road-${story.id}`} aria-labelledby={`title-${story.id}`}>
     <div className="wl-chapter-topline"><span>ROUTE {story.number}<i />{story.region}</span><span>{story.coordinates}</span></div>
-    <RouteLandscape id={story.id} name={story.name} />
+    <RouteLandscape id={story.id} name={story.name} reducedMotion={reducedMotion} />
     <div className="wl-chapter-layout">
       <div className="wl-chapter-copy">
         <p className="wl-kicker">{story.code} / {story.id === 'snow' ? 'EXPERT ASCENT' : 'CIRCUIT'}</p>
@@ -125,13 +129,14 @@ function RoadChapter({ story, selected, onStart, onExplore }: { story: RoadStory
       </div>
       <div className="wl-chapter-intel"><RouteMap mapId={story.id} compact showTelemetry={false} /><div className="wl-road-details">{story.details.map((detail) => <div key={detail.title}><Illustration pack={story.pack} name={detail.icon} /><div><h4>{detail.title}</h4><p>{detail.description}</p></div></div>)}</div></div>
     </div>
-    <div className="wl-local-line"><span>WORLD DETAIL / {story.number}</span><div>{story.cast.map((character) => <figure key={character.icon}><Illustration pack={story.pack} name={character.icon} alt={character.label} /><figcaption>{character.label}</figcaption></figure>)}</div><a href={`${import.meta.env.BASE_URL}${story.pack}/`}>Open {story.id === 'alpine' ? 'alpine' : story.id === 'snow' ? 'winter' : 'jungle'} asset collection<Arrow diagonal /></a></div>
+    <div className="wl-local-line"><span>WORLD DETAIL / {story.number}</span><div>{story.cast.map((character) => <figure key={character.icon}><Illustration pack={character.pack ?? story.pack} name={character.icon} alt={character.label} /><figcaption>{character.label}</figcaption></figure>)}</div><a href={`${import.meta.env.BASE_URL}${story.pack}/`}>Open {story.id === 'alpine' ? 'alpine' : story.id === 'snow' ? 'winter' : 'jungle'} asset collection<Arrow diagonal /></a></div>
   </article>;
 }
 
 export default function LandingStory({ selectedMap, levelSelector, selectedCarName, reducedMotion, onChooseMap, onExploreMap, onStartMap, onGarage }: LandingStoryProps) {
   const chosen = ROAD_STORIES.find((road) => road.id === selectedMap) ?? ROAD_STORIES[0];
   return <div className={`windway-landing landing-${chosen.id}`}>
+    <LandingScroll3D reducedMotion={reducedMotion} />
     <a className="wl-skip" href="#windway-main">Skip to the roads</a>
     <header className="wl-header">
       <a href="#windway-main" className="wl-brand" aria-label="Windway, back to the start"><svg className="wl-brand-mark" viewBox="0 0 40 40" aria-hidden="true"><path d="M8 30 16 9h5l-4 11h10l5-11h5l-8 21h-5l4-11H18l-5 11Z" fill="currentColor" /></svg><span>WINDWAY<small>DRIVE BEYOND THE EXPECTED</small></span></a>
@@ -163,7 +168,7 @@ export default function LandingStory({ selectedMap, levelSelector, selectedCarNa
 
       <section className="wl-motion-story" aria-labelledby="motion-title"><div className="wl-motion-copy"><p className="wl-kicker">FROM THE DRIVER’S SEAT / LIVE CAPTURE</p><h2 id="motion-title">BUILT TO BE<br /><em>DRIVEN.</em></h2><p className="wl-body">Not a showroom with a start button. A real 3D driving experience with surface-dependent grip, momentum, drifting and recoverable checkpoints.</p><dl><div><dt>HANDLING</dt><dd>Two distinct car setups</dd></div><div><dt>CAMERAS</dt><dd>Chase and cockpit views</dd></div><div><dt>RECORDS</dt><dd>Saved locally, per car and route</dd></div></dl><button type="button" className="wl-text-link" onClick={onGarage}>Find your machine<Arrow diagonal /></button></div><F1Preview reducedMotion={reducedMotion} /></section>
 
-      <div className="wl-route-stories">{ROAD_STORIES.map((story) => <RoadChapter key={story.id} story={story} selected={chosen.id === story.id} onStart={() => onStartMap(story.id)} onExplore={() => onExploreMap(story.id)} />)}</div>
+      <div className="wl-route-stories">{ROAD_STORIES.map((story) => <RoadChapter key={story.id} story={story} selected={chosen.id === story.id} reducedMotion={reducedMotion} onStart={() => onStartMap(story.id)} onExplore={() => onExploreMap(story.id)} />)}</div>
 
       <section className="wl-garage-story" aria-labelledby="garage-title"><div className="wl-garage-art"><span>ENGINEERED FOR<br />DIFFERENT LINES.</span><Illustration pack="cartoon-pack" name="racing-wheel" /></div><div><p className="wl-kicker">THE GARAGE / SELECT YOUR MACHINE</p><h2 id="garage-title">TWO CARS.<br /><em>TWO TEMPERAMENTS.</em></h2><p className="wl-body">Choose a car and finish, then feel the difference where it matters: turn-in, traction and the seconds between corners.</p><dl className="wl-car-stories"><div><dt><span>01</span>McLaren MCL38<small>AGILE / INSTANT</small></dt><dd>Lively acceleration and a quick response for drivers who like to place the nose with intent.</dd></div><div><dt><span>02</span>Mercedes-AMG W14<small>PLANTED / PRECISE</small></dt><dd>Higher grip and stronger braking for a composed, confident attack through faster bends.</dd></div></dl><button type="button" className="wl-drive" onClick={onGarage}>Enter the garage<Arrow diagonal /></button></div></section>
 
