@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" fill="none">
+  <title>Windway Motorsport Crest</title>
+  <path d="M32 4 56 14v18c0 14.5-9.8 23.4-24 28C17.8 55.4 8 46.5 8 32V14L32 4Z" fill="#0d1519" stroke="#d5fc58" stroke-width="2.5" stroke-linejoin="round"/>
+  <path d="M32 9 51 17v14.8c0 11.6-7.7 19-19 22.8-11.3-3.8-19-11.2-19-22.8V17L32 9Z" fill="#132026" stroke="#ffffff" stroke-opacity=".14" stroke-width="1.2"/>
+  <path d="M18 42 25 22h5.2l-4 11h9.6l4.6-11H46l-7.2 20h-5.2l4-11H28l-4.6 11H18Z" fill="#d5fc58"/>
+  <path d="M22 47h20" stroke="#f08b5b" stroke-width="2.4" stroke-linecap="round"/>
+</svg>
