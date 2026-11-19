@@ -15,6 +15,7 @@ import { clearInput, drivingInput } from './input';
 import { useGame } from './store';
 import { vehicleFrame } from './runtime';
 import { gameAudio } from './audio';
+import { getUpcomingPaceCallout } from './trackAnalysis';
 
 const testDrive = import.meta.env.DEV && new URLSearchParams(window.location.search).has('testDrive');
 
@@ -29,11 +30,12 @@ export default function Vehicle() {
   const resetRequest = useGame((state) => state.resetRequest);
   const car = carById(selectedCar);
   const motion = useRef<CarMotion>({ speed: 0, steer: 0, lean: 0, bounce: 0 });
-  const simulation = useRef({ elapsed: initialRun.elapsed, lap: initialRun.lap, checkpoint: initialRun.checkpoint, resets: initialRun.resets, publish: 0, previous: { x: spawn.x, z: spawn.z }, airTime: 0, offRoadTime: 0, wasGrounded: true, lastCrash: -10 });
+  const tailLight = useRef<THREE.MeshBasicMaterial>(null);
+  const simulation = useRef({ elapsed: initialRun.elapsed, lap: initialRun.lap, checkpoint: initialRun.checkpoint, resets: initialRun.resets, publish: 0, previous: { x: spawn.x, z: spawn.z }, airTime: 0, offRoadTime: 0, wasGrounded: true, lastCrash: -10, topSpeed: 0, driftTime: 0 });
   const vectors = useRef(createMotionTools(rapier));
   const ready = useCallback(() => {
     const game = useGame.getState();
-    game.updateTelemetry({ ...game.telemetry, x: initialPose.position.x, z: initialPose.position.z, progress: initialPose.progress, altitude: initialPose.point.y, surface: surfaceAt(initialPose.progress).kind });
+    game.updateTelemetry({ ...game.telemetry, x: initialPose.position.x, z: initialPose.position.z, yaw: initialPose.yaw, progress: initialPose.progress, altitude: initialPose.point.y, surface: surfaceAt(initialPose.progress).kind });
     game.setReady(true); game.startCountdown();
   }, [initialPose]);
 
@@ -47,7 +49,7 @@ export default function Vehicle() {
     vehicleFrame.yaw = frame.yaw; vehicleFrame.speed = 0; vehicleFrame.steer = 0; vehicleFrame.shake = 0;
     vehicleFrame.drifting = false; vehicleFrame.grounded = true; vehicleFrame.boosting = false; vehicleFrame.resets = state.resets;
     Object.assign(motion.current, { speed: 0, steer: 0, lean: 0, bounce: 0 }); clearInput();
-    game.updateTelemetry({ speed: 0, elapsed: state.elapsed, lap: state.lap, checkpoint: state.checkpoint, progress: frame.progress, x: frame.position.x, z: frame.position.z, drifting: false, airborne: false, boosting: false, resets: state.resets, altitude: frame.point.y, surface: surfaceAt(frame.progress).kind });
+    game.updateTelemetry({ speed: 0, elapsed: state.elapsed, lap: state.lap, checkpoint: state.checkpoint, progress: frame.progress, x: frame.position.x, z: frame.position.z, yaw: frame.yaw, drifting: false, airborne: false, boosting: false, resets: state.resets, altitude: frame.point.y, surface: surfaceAt(frame.progress).kind, topSpeed: state.topSpeed, driftTime: state.driftTime, paceNote: null });
     game.beginRecovery(reason, state.checkpoint);
     game.react('Back on the road. You’ve got this.', currentMap.id === 'snow' ? 'snowman' : currentMap.id === 'jungle' ? 'imran' : 'crying-driver'); gameAudio.chime('crash');
   }, []);
@@ -88,7 +90,10 @@ export default function Vehicle() {
     motion.current.lean += (-driving.steer * Math.min(0.055, Math.abs(driving.forward) * 0.002) - motion.current.lean) * 0.08;
     vehicleFrame.position.set(position.x, position.y, position.z); vehicleFrame.velocity.set(velocity.x, velocity.y, velocity.z);
     vehicleFrame.yaw = yaw; vehicleFrame.speed = driving.forward; vehicleFrame.steer = driving.steer; vehicleFrame.drifting = drifting; vehicleFrame.grounded = grounded; vehicleFrame.boosting = boosting; vehicleFrame.resets = state.resets;
-    if (boostStarted) { game.react('A little more wild. Boost engaged.'); gameAudio.chime('checkpoint'); }
+    const kmh = Math.abs(driving.forward) * 3.6;
+    if (kmh > state.topSpeed) state.topSpeed = kmh;
+    if (drifting) state.driftTime += dt;
+    if (boostStarted) { game.react('A little more wild. Boost engaged.'); gameAudio.chime('boost'); }
     if (launched) { game.react('Air mail. Express delivery.', currentMap.id === 'jungle' ? 'toucan' : 'eagle-soaring'); gameAudio.chime('jump'); }
     if (!grounded) state.airTime += dt;
     if (grounded && !state.wasGrounded) {
@@ -102,8 +107,10 @@ export default function Vehicle() {
       const next = advanceRaceGate(state.checkpoint, state.lap, currentMap.laps, TRACK_CLOSED, CHECKPOINTS.length);
       const newLap = next.lap !== state.lap;
       state.checkpoint = next.checkpoint; state.lap = next.lap;
-      if (next.finished) { game.finish(state.elapsed, state.resets); gameAudio.chime('finish'); gameAudio.stop(); }
-      else {
+      if (next.finished) {
+        game.updateTelemetry({ speed: kmh, elapsed: state.elapsed, lap: state.lap, checkpoint: state.checkpoint, progress: nearest.progress, x: position.x, z: position.z, yaw, drifting, airborne: false, boosting, resets: state.resets, altitude: nearest.point.y, surface, topSpeed: state.topSpeed, driftTime: state.driftTime, paceNote: null });
+        game.finish(state.elapsed, state.resets); gameAudio.chime('finish'); gameAudio.stop();
+      } else {
         vehicleFrame.checkpointFlash = 1;
         gameAudio.chime('checkpoint');
         if (newLap) { state.publish = 1; game.react(`Lap ${state.lap} of ${currentMap.laps}. Bring it home!`, 'tatheer'); }
@@ -115,8 +122,9 @@ export default function Vehicle() {
     state.publish += dt;
     if (state.publish > 0.1) {
       state.publish = 0;
-      game.updateTelemetry({ speed: Math.abs(driving.forward) * 3.6, elapsed: state.elapsed, lap: state.lap, checkpoint: state.checkpoint, progress: nearest.progress, x: position.x, z: position.z, drifting, airborne: !grounded && state.airTime > 0.1, boosting, resets: state.resets, altitude: nearest.point.y, surface });
-      gameAudio.update(driving.forward, input.throttle, drifting, true);
+      const pace = getUpcomingPaceCallout(nearest.progress, currentMap.id, driving.forward);
+      game.updateTelemetry({ speed: kmh, elapsed: state.elapsed, lap: state.lap, checkpoint: state.checkpoint, progress: nearest.progress, x: position.x, z: position.z, yaw, drifting, airborne: !grounded && state.airTime > 0.1, boosting, resets: state.resets, altitude: nearest.point.y, surface, topSpeed: state.topSpeed, driftTime: state.driftTime, paceNote: pace ? { label: pace.label, detail: pace.detail, kind: pace.kind } : null });
+      gameAudio.update(driving.forward, input.throttle, drifting, true, car.topSpeed, boosting);
     }
   });
 
@@ -130,6 +138,19 @@ export default function Vehicle() {
     const pitch = vehicleFrame.grounded ? -grade * Math.cos(vehicleFrame.yaw - nearest.yaw)
       : -THREE.MathUtils.clamp(Math.atan2(vehicleFrame.velocity.y, Math.max(8, Math.abs(vehicleFrame.speed))) * 0.65, -0.16, 0.16);
     visual.current.rotation.x += (pitch - visual.current.rotation.x) * (1 - Math.exp(-delta * (vehicleFrame.grounded ? 12 : 5)));
+    if (tailLight.current) {
+      const braking = drivingInput.brake || drivingInput.handbrake;
+      if (vehicleFrame.boosting) {
+        tailLight.current.color.set('#d5fc58');
+        tailLight.current.opacity = 0.95;
+      } else if (braking) {
+        tailLight.current.color.set('#ff2a2a');
+        tailLight.current.opacity = 1;
+      } else {
+        tailLight.current.color.set('#ff3b30');
+        tailLight.current.opacity = 0.25 + 0.15 * Math.sin(performance.now() * 0.012);
+      }
+    }
   });
 
   return <RigidBody
@@ -144,7 +165,14 @@ export default function Vehicle() {
     }}
   >
     <CuboidCollider args={BODY_HALF_EXTENTS} position={[0, BODY_OFFSET_Y, 0]} mass={1} friction={0} frictionCombineRule={rapier.CoefficientCombineRule.Min} restitution={0} restitutionCombineRule={rapier.CoefficientCombineRule.Min} />
-    <group ref={visual} position={[0, -RIDE_HEIGHT, 0]}><Suspense fallback={null}><CarVisual carId={selectedCar} paint={paint} motion={motion} onReady={ready} /></Suspense></group>
+    <group ref={visual} position={[0, -RIDE_HEIGHT, 0]}>
+      <Suspense fallback={null}><CarVisual carId={selectedCar} paint={paint} motion={motion} onReady={ready} /></Suspense>
+      {/* F1-style rear rain/brake light indicator */}
+      <mesh position={[0, 0.56, -2.65]}>
+        <boxGeometry args={[0.14, 0.24, 0.06]} />
+        <meshBasicMaterial ref={tailLight} color="#ff3b30" transparent opacity={0.35} toneMapped={false} />
+      </mesh>
+    </group>
   </RigidBody>;
 }
 
@@ -159,7 +187,7 @@ export function ChaseCamera() {
     const sin = Math.sin(yaw), cos = Math.cos(yaw);
     if (p.lengthSq() < 1) { const pose = getRespawnPose(0, true); p.set(pose.position.x, pose.position.y, pose.position.z); vehicleFrame.yaw = pose.yaw; }
     const hood = cameraMode === 'hood'; const speed = Math.abs(vehicleFrame.speed);
-    const distance = hood ? -1.4 : 10.4 + Math.min(3, speed * 0.065);
+    const distance = hood ? -1.4 : 10.4 + Math.min(3.2, speed * 0.065) + (vehicleFrame.boosting ? 0.9 : 0);
     desired.current.set(p.x - sin * distance, p.y + (hood ? 1.4 : 5.2), p.z - cos * distance);
     if (!settings.reducedMotion && settings.effects && vehicleFrame.shake > 0.001) {
       desired.current.x += Math.sin(performance.now() * 0.08) * vehicleFrame.shake;
@@ -174,54 +202,75 @@ export function ChaseCamera() {
     }
     camera.lookAt(target.current);
     if (camera instanceof THREE.PerspectiveCamera) {
-      const fov = 53 + (!settings.reducedMotion && settings.effects && !hood ? Math.min(9, speed * 0.18) : 0);
-      if (Math.abs(camera.fov - fov) > 0.1) { camera.fov += (fov - camera.fov) * 0.05; camera.updateProjectionMatrix(); }
+      const boostFov = vehicleFrame.boosting ? 4.5 : 0;
+      const fov = 53 + (!settings.reducedMotion && settings.effects && !hood ? Math.min(9.5, speed * 0.18) + boostFov : 0);
+      if (Math.abs(camera.fov - fov) > 0.1) { camera.fov += (fov - camera.fov) * 0.06; camera.updateProjectionMatrix(); }
     }
   });
   return null;
 }
 
 export function DrivingEffects() {
-  const dust = useRef<THREE.InstancedMesh>(null); const marks = useRef<THREE.InstancedMesh>(null);
-  const particles = useRef(Array.from({ length: 36 }, () => ({ position: new THREE.Vector3(), age: 9, scale: 0 })));
-  const cursor = useRef(0); const skidCursor = useRef(0); const timer = useRef(0); const object = useRef(new THREE.Object3D());
+  const dust = useRef<THREE.InstancedMesh>(null); const marks = useRef<THREE.InstancedMesh>(null); const sparks = useRef<THREE.InstancedMesh>(null);
+  const particles = useRef(Array.from({ length: 42 }, () => ({ position: new THREE.Vector3(), age: 9, scale: 0 })));
+  const boostParticles = useRef(Array.from({ length: 28 }, () => ({ position: new THREE.Vector3(), velocity: new THREE.Vector3(), age: 9 })));
+  const cursor = useRef(0); const boostCursor = useRef(0); const skidCursor = useRef(0); const timer = useRef(0); const object = useRef(new THREE.Object3D());
   const effects = useGame((state) => state.settings.effects);
   const snow = useGame((state) => state.selectedMap === 'snow');
   useFrame((_, delta) => {
     if (!effects || useGame.getState().status !== 'running') return;
     const dt = Math.min(delta, 0.05); timer.current += dt;
     const p = vehicleFrame.position; const yaw = vehicleFrame.yaw;
-    if (timer.current > 0.055 && Math.abs(vehicleFrame.speed) > 6 && vehicleFrame.grounded) {
+    if (timer.current > 0.048 && Math.abs(vehicleFrame.speed) > 6 && vehicleFrame.grounded) {
       timer.current = 0;
       const nearest = nearestTrackPoint(p.x, p.z);
       if (vehicleFrame.drifting || nearest.distance > ROAD_WIDTH / 2 || snow) {
         const particle = particles.current[cursor.current++ % particles.current.length]; particle.age = 0;
-        particle.position.set(p.x - Math.sin(yaw) * 2, p.y - 0.1, p.z - Math.cos(yaw) * 2); particle.scale = 0.3;
+        const spread = (Math.random() - 0.5) * 1.1;
+        particle.position.set(p.x - Math.sin(yaw) * 2.1 + Math.cos(yaw) * spread, p.y - 0.12, p.z - Math.cos(yaw) * 2.1 - Math.sin(yaw) * spread); particle.scale = 0.34;
       }
       if (vehicleFrame.drifting && marks.current) {
         for (const side of [-1, 1]) {
-          const o = object.current; o.position.set(p.x + Math.cos(yaw) * side * 0.85, nearest.point.y + 0.04, p.z - Math.sin(yaw) * side * 0.85);
-          o.rotation.set(0, yaw, 0); o.scale.set(0.26, 0.02, 1.1); o.updateMatrix(); marks.current.setMatrixAt(skidCursor.current++ % 140, o.matrix);
+          const o = object.current; o.position.set(p.x + Math.cos(yaw) * side * 0.85, nearest.point.y + 0.042, p.z - Math.sin(yaw) * side * 0.85);
+          o.rotation.set(0, yaw, 0); o.scale.set(0.28, 0.02, 1.15); o.updateMatrix(); marks.current.setMatrixAt(skidCursor.current++ % 160, o.matrix);
         }
         marks.current.instanceMatrix.needsUpdate = true;
       }
     }
+    if ((vehicleFrame.boosting || vehicleFrame.drifting) && Math.abs(vehicleFrame.speed) > 14) {
+      const spark = boostParticles.current[boostCursor.current++ % boostParticles.current.length];
+      spark.age = 0;
+      const lateral = (Math.random() - 0.5) * 0.7;
+      spark.position.set(p.x - Math.sin(yaw) * 2.45 + Math.cos(yaw) * lateral, p.y + 0.14, p.z - Math.cos(yaw) * 2.45 - Math.sin(yaw) * lateral);
+      spark.velocity.set(-Math.sin(yaw) * 6 + (Math.random() - 0.5) * 2, 0.9 + Math.random() * 1.4, -Math.cos(yaw) * 6 + (Math.random() - 0.5) * 2);
+    }
     if (dust.current) {
       particles.current.forEach((particle, index) => {
-        particle.age += dt; particle.position.y += dt * 0.7;
-        const size = particle.age < 1.2 ? (0.25 + particle.age * 0.7) * (1 - particle.age / 1.2) : 0;
+        particle.age += dt; particle.position.y += dt * 0.75;
+        const size = particle.age < 1.15 ? (0.26 + particle.age * 0.72) * (1 - particle.age / 1.15) : 0;
         const o = object.current; o.position.copy(particle.position); o.scale.setScalar(size); o.rotation.set(0, 0, 0); o.updateMatrix(); dust.current!.setMatrixAt(index, o.matrix);
       }); dust.current.instanceMatrix.needsUpdate = true;
+    }
+    if (sparks.current) {
+      boostParticles.current.forEach((spark, index) => {
+        spark.age += dt;
+        spark.position.addScaledVector(spark.velocity, dt);
+        const life = 0.42;
+        const size = spark.age < life ? (1 - spark.age / life) * (vehicleFrame.boosting ? 0.24 : 0.13) : 0;
+        const o = object.current; o.position.copy(spark.position); o.scale.set(size, size, size * 2.6); o.rotation.set(0, yaw, 0); o.updateMatrix(); sparks.current!.setMatrixAt(index, o.matrix);
+      }); sparks.current.instanceMatrix.needsUpdate = true;
     }
   });
   useEffect(() => {
     const hidden = new THREE.Matrix4().makeScale(0, 0, 0);
-    if (marks.current) { for (let i = 0; i < 140; i++) marks.current.setMatrixAt(i, hidden); marks.current.instanceMatrix.needsUpdate = true; }
-    if (dust.current) { for (let i = 0; i < 36; i++) dust.current.setMatrixAt(i, hidden); dust.current.instanceMatrix.needsUpdate = true; }
+    if (marks.current) { for (let i = 0; i < 160; i++) marks.current.setMatrixAt(i, hidden); marks.current.instanceMatrix.needsUpdate = true; }
+    if (dust.current) { for (let i = 0; i < 42; i++) dust.current.setMatrixAt(i, hidden); dust.current.instanceMatrix.needsUpdate = true; }
+    if (sparks.current) { for (let i = 0; i < 28; i++) sparks.current.setMatrixAt(i, hidden); sparks.current.instanceMatrix.needsUpdate = true; }
   }, [effects]);
   if (!effects) return null;
   return <>
-    <instancedMesh ref={dust} args={[undefined, undefined, 36]} frustumCulled={false}><icosahedronGeometry args={[1, 0]} /><meshBasicMaterial color={snow ? '#f3f8fb' : '#e0cda6'} transparent opacity={0.6} depthWrite={false} /></instancedMesh>
-    <instancedMesh ref={marks} args={[undefined, undefined, 140]} frustumCulled={false}><boxGeometry /><meshBasicMaterial color={snow ? '#527485' : '#344c40'} transparent opacity={0.5} depthWrite={false} /></instancedMesh>
+    <instancedMesh ref={dust} args={[undefined, undefined, 42]} frustumCulled={false}><icosahedronGeometry args={[1, 0]} /><meshBasicMaterial color={snow ? '#f3f8fb' : '#e4d3b0'} transparent opacity={0.58} depthWrite={false} /></instancedMesh>
+    <instancedMesh ref={marks} args={[undefined, undefined, 160]} frustumCulled={false}><boxGeometry /><meshBasicMaterial color={snow ? '#527485' : '#26352e'} transparent opacity={0.55} depthWrite={false} /></instancedMesh>
+    <instancedMesh ref={sparks} args={[undefined, undefined, 28]} frustumCulled={false}><boxGeometry /><meshBasicMaterial color={snow ? '#8bdcff' : '#d5fc58'} transparent opacity={0.9} depthWrite={false} toneMapped={false} /></instancedMesh>
   </>;
 }

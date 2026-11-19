@@ -43,15 +43,17 @@ export interface Telemetry {
   speed: number; elapsed: number; lap: number; checkpoint: number; progress: number; x: number; z: number;
   drifting: boolean; airborne: boolean; boosting: boolean; resets: number;
   altitude?: number; surface?: 'dry' | 'packed-snow' | 'black-ice';
+  yaw?: number; topSpeed?: number; driftTime?: number;
+  paceNote?: { label: string; detail: string; kind: string } | null;
 }
 export interface ResumeRun { checkpoint: number; lap: number; elapsed: number; resets: number }
-const emptyTelemetry: Telemetry = { speed: 0, elapsed: 0, lap: 1, checkpoint: 0, progress: 0, x: 0, z: 119, drifting: false, airborne: false, boosting: false, resets: 0 };
-const emptyRun = (): Telemetry => ({ ...emptyTelemetry, x: START.point.x, z: START.point.z, altitude: START.point.y, surface: mapById(preferences.selectedMap).mode === 'ascent' ? 'packed-snow' : 'dry' });
+const emptyTelemetry: Telemetry = { speed: 0, elapsed: 0, lap: 1, checkpoint: 0, progress: 0, x: 0, z: 119, drifting: false, airborne: false, boosting: false, resets: 0, yaw: 0, topSpeed: 0, driftTime: 0, paceNote: null };
+const emptyRun = (): Telemetry => ({ ...emptyTelemetry, x: START.point.x, z: START.point.z, yaw: START.yaw, altitude: START.point.y, surface: mapById(preferences.selectedMap).mode === 'ascent' ? 'packed-snow' : 'dry' });
 
 interface GameState extends Preferences {
   page: Page; returnPage: Page; status: RaceStatus; countdown: number; ready: boolean;
   runId: number; resetRequest: number; cameraMode: 'chase' | 'hood'; error: string | null;
-  telemetry: Telemetry; result: { time: number; previousBest: number | null; newBest: boolean; resets: number; mapId: string; laps: number; level: number } | null;
+  telemetry: Telemetry; result: { time: number; previousBest: number | null; newBest: boolean; resets: number; mapId: string; laps: number; level: number; topSpeed?: number; driftTime?: number } | null;
   reaction: { text: string; character: string; until: number } | null;
   recovery: { reason: RecoveryReason; checkpoint: number; remaining: number } | null;
   navigate: (page: Page) => void;
@@ -137,7 +139,7 @@ export const useGame = create<GameState>((set, get) => ({
     const map = mapById(state.selectedMap), key = gameRecordKey(map.id, state.selectedCar, state.selectedLevel);
     const previousBest = state.bestTimes[key] ?? null;
     const newBest = previousBest === null || time < previousBest;
-    set({ status: 'finished', page: 'results', result: { time, previousBest, newBest, resets, mapId: map.id, laps: map.laps, level: state.selectedLevel },
+    set({ status: 'finished', page: 'results', result: { time, previousBest, newBest, resets, mapId: map.id, laps: map.laps, level: state.selectedLevel, topSpeed: state.telemetry.topSpeed, driftTime: state.telemetry.driftTime },
       completedLevels: { ...state.completedLevels, [map.id]: [...new Set([...(state.completedLevels[map.id] ?? []), state.selectedLevel])].sort((a, b) => a - b) }, bestTimes: newBest ? { ...state.bestTimes, [key]: time } : state.bestTimes });
     persistPreferences(get());
   },
