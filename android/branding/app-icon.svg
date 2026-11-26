@@ -1,0 +1,25 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="256" height="256" viewBox="0 0 256 256" fill="none" role="img" aria-labelledby="title desc">
+  <title id="title">Windway open-wheel racer app icon</title>
+  <desc id="desc">An original papaya-orange and gold open-wheel racing car on forged obsidian carbon. This is not the Formula 1 logo.</desc>
+  <rect width="256" height="256" fill="#141210"/>
+  <circle cx="128" cy="128" r="108" stroke="#F2A93B" stroke-opacity=".18" stroke-width="2"/>
+  <path d="M39 75v32m0 17v39m178-60v33m0 15v30" stroke="#F5EFE6" stroke-opacity=".28" stroke-width="5" stroke-linecap="round"/>
+  <path d="M58 54v35m140 84v29" stroke="#F2A93B" stroke-width="5" stroke-linecap="round"/>
+  <g stroke="#0B0A09" stroke-width="5" stroke-linejoin="round" stroke-linecap="round">
+    <path d="M83 78h90v19H83zM78 168h100v20H78z" fill="#F5EFE6"/>
+    <rect x="62" y="67" width="30" height="48" rx="9" fill="#1E1A16"/>
+    <rect x="164" y="67" width="30" height="48" rx="9" fill="#1E1A16"/>
+    <rect x="59" y="153" width="34" height="54" rx="10" fill="#1E1A16"/>
+    <rect x="163" y="153" width="34" height="54" rx="10" fill="#1E1A16"/>
+    <path d="m117 41-8 71-13 34 9 51h46l9-51-13-34-8-71z" fill="#E36D2B"/>
+    <path d="m117 41-6 60h34l-6-60z" fill="#F5EFE6"/>
+    <path d="m113 128-5 25 7 28h26l7-28-5-25z" fill="#C83324"/>
+    <path d="M110 106q18-15 36 0l-3 30q-15 11-30 0z" fill="#1E1A16"/>
+    <path d="M116 113q12-10 24 0v16h-24z" fill="#F2A93B" stroke-width="3"/>
+    <path d="M105 204h46v13h-46z" fill="#F5EFE6"/>
+    <path d="M86 198h84v15H86z" fill="#E36D2B"/>
+    <path d="M94 58h68v16H94z" fill="#F2A93B"/>
+    <path d="M128 47v43m-22 65 4 24m40-24-4 24" stroke="#F5EFE6" stroke-width="3"/>
+    <path d="M72 76v29m112-29v29M69 163v34m118-34v34" stroke="#F5EFE6" stroke-opacity=".28" stroke-width="3"/>
+  </g>
+</svg>

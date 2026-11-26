@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <style name="Theme.Windway" parent="Theme.AppCompat.NoActionBar">
+        <item name="android:windowBackground">@color/windway_obsidian</item>
+        <item name="android:colorBackground">@color/windway_obsidian</item>
+        <item name="android:statusBarColor">@android:color/transparent</item>
+        <item name="android:navigationBarColor">@color/windway_obsidian</item>
+        <item name="android:windowFullscreen">true</item>
+    </style>
+
+    <style name="Theme.Windway.Starting" parent="Theme.SplashScreen">
+        <item name="windowSplashScreenBackground">@color/windway_obsidian</item>
+        <item name="windowSplashScreenAnimatedIcon">@mipmap/ic_launcher</item>
+        <item name="windowSplashScreenIconBackgroundColor">@color/windway_launcher_background</item>
+        <item name="postSplashScreenTheme">@style/Theme.Windway</item>
+    </style>
+</resources>

@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Windway</string>
+    <string name="offline_error_title">Unable to launch Windway</string>
+    <string name="offline_error_message">The offline 3D driving engine could not initialize. Ensure Android System WebView is enabled and try again.</string>
+    <string name="offline_error_retry">Try again</string>
+</resources>
