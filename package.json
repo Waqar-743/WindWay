@@ -25,7 +25,8 @@
     "test:android:web": "node --max-semi-space-size=4 scripts/test-android-web.mjs",
     "test:android:bridge": "node --max-semi-space-size=4 scripts/test-mobile-bridge.mjs && node --max-semi-space-size=4 scripts/test-native-hud.mjs",
     "test:mobile:app": "node --max-semi-space-size=4 scripts/test-mobile-app.mjs",
-    "test:levels": "node --max-semi-space-size=4 scripts/test-levels.mjs"
+    "test:levels": "node --max-semi-space-size=4 scripts/test-levels.mjs",
+    "test:colors": "node --max-semi-space-size=4 scripts/test-color-policy.mjs"
   },
   "dependencies": {
     "@react-three/drei": "^9.92.7",

@@ -6,7 +6,7 @@ import { build } from 'vite';
 
 const root = resolve(dirname(fileURLToPath(import.meta.url)), '..');
 const intermediate = resolve(root, '.tooling/android-web');
-const destination = resolve(root, 'mobile/assets/game');
+const destination = resolve(root, 'android/app/src/main/assets/game');
 const posix = path => path.replaceAll('\\', '/');
 const hash = bytes => createHash('sha256').update(bytes).digest('hex');
 const packs = ['cartoon-pack', 'jungle-pack', 'snow-pack', 'branding'];
@@ -18,7 +18,7 @@ function validateOutput(path, expected) {
   }
 }
 validateOutput(intermediate, '.tooling/android-web');
-validateOutput(destination, 'mobile/assets/game');
+validateOutput(destination, 'android/app/src/main/assets/game');
 
 async function filesIn(directory) {
   const entries = await readdir(directory, { withFileTypes: true });
@@ -29,7 +29,7 @@ async function filesIn(directory) {
 }
 
 // Public contains large legacy authoring models. Bundle the game code separately,
-// then explicitly allow only delivery assets needed by the three playable maps.
+// then explicitly allow only delivery assets needed by the unified Android app.
 await build({
   root,
   configFile: join(root, 'vite.config.ts'),
@@ -49,24 +49,27 @@ if (models.length !== 2 || models.some(path => path.includes('..'))) {
   throw new Error('Expected the two optimized active game car paths in src/game/config.ts.');
 }
 
-// Only this generated directory is removed; handwritten mobile assets stay intact.
-validateOutput(destination, 'mobile/assets/game');
+validateOutput(destination, 'android/app/src/main/assets/game');
 await rm(destination, { recursive: true, force: true });
 await mkdir(destination, { recursive: true });
+
 for (const file of await filesIn(intermediate)) {
   const path = relative(intermediate, file);
   const target = join(destination, path);
   await mkdir(dirname(target), { recursive: true });
   if (file.endsWith('.css')) {
     const css = await readFile(file, 'utf8');
-    // Keep website typography untouched, but never fetch Google Fonts at runtime
-    // from the offline Android WebView. Existing CSS has system fallbacks.
-    const offlineCss = css.replace(/@import\s+(?:url\(\s*)?['"]?(?:https?:)?\/\/[^;]+;/gi, '');
+    // Rewrite root-absolute /fonts/... to relative ../fonts/... for offline WebViewAssetLoader,
+    // and strip any remote @import directives.
+    const offlineCss = css
+      .replace(/@import\s+(?:url\(\s*)?['"]?(?:https?:)?\/\/[^;]+;/gi, '')
+      .replace(/url\(\s*['"]?\/fonts\//gi, 'url(../fonts/');
     await writeFile(target, offlineCss);
   } else {
     await copyFile(file, target);
   }
 }
+
 for (const pack of packs) {
   const sourceDir = join(root, 'public', pack);
   await mkdir(join(destination, pack), { recursive: true });
@@ -74,6 +77,14 @@ for (const pack of packs) {
     await copyFile(join(sourceDir, file), join(destination, pack, file));
   }
 }
+
+// Copy bundled local fonts for offline typography inside Android WebView.
+const fontsSource = join(root, 'public/fonts');
+await mkdir(join(destination, 'fonts'), { recursive: true });
+for (const file of (await readdir(fontsSource)).filter(path => /\.(?:ttf|woff2|txt)$/i.test(path))) {
+  await copyFile(join(fontsSource, file), join(destination, 'fonts', file));
+}
+
 for (const path of [...models, 'MODEL_CREDITS.md']) {
   const target = join(destination, path);
   await mkdir(dirname(target), { recursive: true });
@@ -85,13 +96,15 @@ for (const file of await filesIn(destination)) {
   const bytes = await readFile(file);
   files.push({ path: posix(relative(destination, file)), bytes: bytes.length, sha256: hash(bytes) });
 }
+
 await writeFile(join(destination, 'asset-manifest.json'), `${JSON.stringify({
-  formatVersion: 1,
+  formatVersion: 2,
   base: './',
-  engine: 'Bundled React / Three.js / Rapier game hosted by the Flutter Android shell',
+  engine: 'Bundled React / Three.js / Rapier unified game hosted by the Native Kotlin Android shell',
   models,
   totalBytes: files.reduce((sum, item) => sum + item.bytes, 0),
   files,
 }, null, 2)}\n`);
+
 const size = (files.reduce((sum, item) => sum + item.bytes, 0) / 1024 / 1024).toFixed(2);
 console.log(`Prepared offline Android game: ${files.length} files, ${models.length} optimized cars, ${size} MiB. No legacy full-resolution models copied.`);

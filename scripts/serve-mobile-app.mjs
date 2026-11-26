@@ -5,17 +5,16 @@ import { dirname, extname, resolve, sep } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
 const project = resolve(dirname(fileURLToPath(import.meta.url)), '..');
-const assetRoot = resolve(project, 'mobile/assets/game');
+const assetRoot = resolve(project, 'android/app/src/main/assets/game');
 const types = {
   '.html': 'text/html; charset=utf-8', '.js': 'text/javascript; charset=utf-8',
   '.css': 'text/css; charset=utf-8', '.svg': 'image/svg+xml',
   '.json': 'application/json; charset=utf-8', '.glb': 'model/gltf-binary',
-  '.wasm': 'application/wasm', '.png': 'image/png', '.md': 'text/plain; charset=utf-8',
+  '.wasm': 'application/wasm', '.png': 'image/png', '.webp': 'image/webp',
+  '.ttf': 'font/ttf', '.woff2': 'font/woff2', '.md': 'text/plain; charset=utf-8',
 };
 
-/** Serve the exact Android game assets, including the browser app shell. The
- * application owns navigation, preferences and saves; this server injects no
- * fake native channel and never automatically launches a race. */
+/** Serve the exact Android game assets, including the unified mobile app shell. */
 export function createMobilePreviewServer(directory = assetRoot) {
   const root = resolve(directory);
   return createServer(async (request, response) => {
@@ -26,7 +25,7 @@ export function createMobilePreviewServer(directory = assetRoot) {
     }
     try {
       const url = new URL(request.url ?? '/', 'http://127.0.0.1');
-      if (url.pathname === '/' || (url.pathname === '/index.html' && url.searchParams.get('native') !== '1')) {
+      if (url.pathname === '/' || (url.pathname === '/index.html' && url.searchParams.get('native') !== '1' && url.searchParams.get('android') !== '1')) {
         url.searchParams.set('native', '1');
         response.writeHead(302, { Location: '/index.html' + url.search }).end(); return;
       }

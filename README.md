@@ -55,7 +55,7 @@ Open [the local game](http://127.0.0.1:4175/WindWay/).
 
 ### Windway for Android
 
-The Android edition is being built on [codex/flutter-android](https://github.com/Waqar-743/WindWay/tree/codex/flutter-android), separate from the live website. It uses Flutter menus and bundles the existing 3D game for offline driving, with arrow, steering-wheel and phone-tilt controls. See the [Android app guide](mobile/README.md) for builds, device testing and installation notes.
+Windway's Android edition lives in [`android/`](android/) as a **pure Native Kotlin Android application** (`com.waqar.windway`) using AndroidX `WebViewAssetLoader` for 100% offline, zero-`INTERNET`-permission play. It includes a first-launch interactive Starter Guide, 3 paths × 6 progressive levels (18 challenges), a live 3D Car Garage, native landscape tilt steering, haptic feedback, and `SharedPreferences` local saves. See the [Android app guide](android/README.md) for builds, previewing locally (`npm run preview:mobile`), and installation notes.
 
 ### The browser game
 

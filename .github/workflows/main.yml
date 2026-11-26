@@ -34,8 +34,8 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
-      - name: Test driving, maps and interface
-        run: npm run test:game && npm run test:site && npm run test:mobile:app && npm run test:android:bridge
+      - name: Test driving, maps, colors and interface
+        run: npm run test:colors && npm run test:game && npm run test:site && npm run test:mobile:app && npm run test:android:bridge
 
       - name: Build production
         run: npm run build -- --base "/${GITHUB_REPOSITORY#*/}/"

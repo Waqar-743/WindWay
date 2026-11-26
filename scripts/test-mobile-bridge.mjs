@@ -23,17 +23,19 @@ const cleanup = game.installMobileBridge();
 const api = window.WindwayMobile;
 check('Native host receives a protocol handshake', () => assert(messages.some((message) => message.type === 'ready' && message.protocol === 1)));
 const valid = { version: 1, mapId: 'jungle', carId: 'mercedes-w14', checkpoint: 5, lap: 2, elapsed: 137.25, resets: 3 };
-check('Checkpoint saves validate map, car, ordered gate, lap, elapsed time and reset count', () => {
+check('Checkpoint saves validate map, car, level, ordered gate, lap, elapsed time and reset count', () => {
   assert.deepEqual(game.validateSavedRun(valid), valid);
-  for (const change of [{ version: 2 }, { mapId: 'missing' }, { carId: 'missing' }, { checkpoint: 8 }, { checkpoint: -1 }, { checkpoint: 1.5 }, { lap: 3 }, { lap: 0 }, { elapsed: NaN }, { elapsed: Infinity }, { elapsed: -1 }, { elapsed: 604801 }, { resets: -1 }, { resets: 0.5 }]) assert.equal(game.validateSavedRun({ ...valid, ...change }), null, JSON.stringify(change));
+  for (const change of [{ version: 2 }, { mapId: 'missing' }, { carId: 'missing' }, { level: -1 }, { level: 6 }, { level: 1.5 }, { checkpoint: 8 }, { checkpoint: -1 }, { checkpoint: 1.5 }, { lap: 3 }, { lap: 0 }, { elapsed: NaN }, { elapsed: Infinity }, { elapsed: -1 }, { elapsed: 604801 }, { resets: -1 }, { resets: 0.5 }]) assert.equal(game.validateSavedRun({ ...valid, ...change }), null, JSON.stringify(change));
   assert.equal(game.validateSavedRun({ ...valid, mapId: 'snow', checkpoint: 16, lap: 1 }), null, 'A finished summit run must not resume beyond its finish');
+  const levelThree = { ...valid, level: 3, checkpoint: 12 };
+  assert.deepEqual(game.validateSavedRun(levelThree), levelThree, 'Higher levels allow additional ordered checkpoints');
 });
-check('Native configuration restores the selected car, map, paint and graphics preferences', () => {
-  api.configure({ mapId: 'jungle', carId: 'mercedes-w14', paint: '#70b9c7', steeringMode: 'tilt', cameraMode: 'hood', character: 'imran', quality: 'low', effects: false, sound: .3, sensitivity: 1.2, reducedMotion: true, bestTimes: { 'jungle:mercedes-w14': 123.5, 'mclaren-mcl38': -20, unknown: 7 } });
+check('Native configuration restores the selected car, map, level, paint and graphics preferences', () => {
+  api.configure({ mapId: 'jungle', level: 2, carId: 'mercedes-w14', paint: '#ebb53b', steeringMode: 'tilt', cameraMode: 'hood', character: 'imran', quality: 'low', effects: false, sound: .3, sensitivity: 1.2, reducedMotion: true, bestTimes: { 'jungle:mercedes-w14': 123.5, 'jungle:mercedes-w14:2': 142.0, 'mclaren-mcl38': -20, unknown: 7 } });
   const state = game.useGame.getState();
-  assert.equal(state.selectedMap, 'jungle'); assert.equal(state.selectedCar, 'mercedes-w14'); assert.equal(state.paint, '#70b9c7');
+  assert.equal(state.selectedMap, 'jungle'); assert.equal(state.selectedLevel, 2); assert.equal(state.selectedCar, 'mercedes-w14'); assert.equal(state.paint, '#ebb53b');
   assert.equal(state.settings.quality, 'low'); assert.equal(state.settings.reducedMotion, true); assert.equal(state.settings.effects, false); assert.equal(state.settings.sound, .3);
-  assert.equal(state.bestTimes['jungle:mercedes-w14'], 123.5); assert.equal(state.bestTimes.unknown, undefined);
+  assert.equal(state.bestTimes['jungle:mercedes-w14'], 123.5); assert.equal(state.bestTimes['jungle:mercedes-w14:2'], 142.0); assert.equal(state.bestTimes.unknown, undefined);
 });
 check('Continue restores earned progress and spawns safely at its checkpoint, not a falling position', () => {
   api.start({ resume: valid });
@@ -198,6 +200,16 @@ check('Stop to menu saves the current checkpoint before exit and releases every 
   assert.equal(game.useGame.getState().page, 'home');
   assert.deepEqual(game.drivingInput, game.neutralInput());
   assert.equal(messages.at(-1).type, 'exit');
+});
+check('Next-level command advances the active level, notifies Android host, and starts fresh', () => {
+  api.start();
+  assert.equal(game.useGame.getState().selectedLevel, 0);
+  const sentBefore = messages.length;
+  api.command('nextLevel');
+  assert.equal(game.useGame.getState().selectedLevel, 1);
+  assert.equal(game.useGame.getState().status, 'loading');
+  assert(messages.slice(sentBefore).some((m) => m.type === 'level' && m.level === 1));
+  api.command('menu');
 });
 check('Bridge cleanup removes native globals and background listeners', () => {
   cleanup(); assert.equal(window.WindwayMobile, undefined); assert(!events.has('visibilitychange'));

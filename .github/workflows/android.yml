@@ -1,8 +1,9 @@
-name: Build Windway Android demo
+name: Build Windway Android APK
 
 on:
   push:
     branches:
+      - main
       - codex/flutter-android
   workflow_dispatch:
 
@@ -15,11 +16,11 @@ concurrency:
 
 jobs:
   android:
-    name: Offline Android APK
+    name: Native Kotlin Offline Android APK
     runs-on: ubuntu-latest
-    timeout-minutes: 35
+    timeout-minutes: 25
     steps:
-      - name: Check out Android branch
+      - name: Check out repository
         uses: actions/checkout@v4
 
       - name: Set up Node.js
@@ -31,51 +32,37 @@ jobs:
       - name: Install web dependencies
         run: npm ci
 
-      - name: Test game, website and mobile bridge
-        run: npm exec tsc -- --noEmit && npm run test:game && npm run test:site && npm run test:android:bridge && npm run test:mobile:app
+      - name: Test game, website, color policy, mobile bridge and app shell
+        run: npm exec tsc -- --noEmit && npm run test:colors && npm run test:game && npm run test:site && npm run test:android:bridge && npm run test:mobile:app
 
-      - name: Prepare mobile SVGs and launcher icons
-        run: node scripts/prepare-android-assets.mjs
+      - name: Prepare Android launcher icons
+        run: npm run android:prepare:art
 
-      - name: Bundle the real offline 3D game
-        run: node scripts/prepare-android-web.mjs
+      - name: Bundle the unified offline 3D Android app
+        run: npm run android:prepare:web
 
-      - name: Verify Android assets and offline paths
-        run: node scripts/test-android-assets.mjs && node scripts/test-android-web.mjs
+      - name: Verify Android assets and offline bundle
+        run: npm run test:android:assets && npm run test:android:web
 
-      - name: Set up Java
+      - name: Set up Java 17
         uses: actions/setup-java@v4
         with:
           distribution: temurin
           java-version: '17'
 
-      - name: Set up Flutter
-        uses: subosito/flutter-action@v2
+      - name: Set up Gradle
+        uses: gradle/actions/setup-gradle@v4
         with:
-          flutter-version: '3.47.7'
-          channel: stable
-          cache: true
+          gradle-version: '8.11.1'
 
-      - name: Install Flutter dependencies
-        working-directory: mobile
-        run: flutter pub get
+      - name: Run Kotlin Android unit tests and build release APK
+        working-directory: android
+        run: gradle testDebugUnitTest assembleRelease
 
-      - name: Analyze Flutter application
-        working-directory: mobile
-        run: flutter analyze
-
-      - name: Test native menus and saved settings
-        working-directory: mobile
-        run: flutter test
-
-      - name: Build a universal Android demo APK
-        working-directory: mobile
-        run: flutter build apk --release --target-platform android-arm,android-arm64
-
-      - name: Upload installable demo APK
+      - name: Upload installable Android APK
         uses: actions/upload-artifact@v4
         with:
-          name: windway-android-demo
-          path: mobile/build/app/outputs/flutter-apk/app-release.apk
+          name: windway-android-apk
+          path: android/app/build/outputs/apk/release/app-release.apk
           if-no-files-found: error
           retention-days: 14

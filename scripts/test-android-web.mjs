@@ -5,7 +5,7 @@ import { dirname, join, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
 const root = resolve(dirname(fileURLToPath(import.meta.url)), '..');
-const game = join(root, 'mobile/assets/game');
+const game = join(root, 'android/app/src/main/assets/game');
 const manifest = JSON.parse(await readFile(join(game, 'asset-manifest.json'), 'utf8'));
 let checks = 0;
 const check = (condition, message) => { assert.ok(condition, message); checks += 1; };
@@ -18,11 +18,12 @@ check(!html.includes('/src/main.tsx'), 'Android entry references compiled game a
 const resourceLinks = [...html.matchAll(/<(?:script|link|img)\b[^>]*\b(?:src|href)=["']([^"']+)["']/g)]
   .map(match => match[1]).filter(path => !/^(?:https?:|data:|#)/.test(path));
 check(resourceLinks.some(path => /^\.\/assets\/.*\.js$/.test(path)), 'Compiled relative JavaScript entry exists');
-for (const prefix of ['/windway-a91ef/', '/a/very/different-local-token/game/']) {
-  const base = new URL(`${prefix}index.html`, 'http://127.0.0.1:39837');
-  for (const path of [...resourceLinks, ...manifest.models, 'cartoon-pack/formula-racer.svg']) {
+
+for (const prefix of ['/assets/game/', '/a/very/different-local-token/game/']) {
+  const base = new URL(`${prefix}index.html`, 'https://appassets.androidplatform.net');
+  for (const path of [...resourceLinks, ...manifest.models, 'cartoon-pack/formula-racer.svg', 'fonts/outfit-500.ttf']) {
     const resolved = new URL(path, base);
-    check(resolved.origin === base.origin && resolved.pathname.startsWith(prefix), `Relative asset stays under randomized local prefix: ${path}`);
+    check(resolved.origin === base.origin && resolved.pathname.startsWith(prefix), `Relative asset stays under offline origin prefix: ${path}`);
     const decoded = decodeURIComponent(resolved.pathname.slice(prefix.length));
     check(!decoded.includes('..') && (await stat(join(game, decoded))).isFile(), `Bundled relative asset exists: ${decoded}`);
   }
@@ -35,14 +36,19 @@ for (const item of manifest.files) {
   check(bytes.length === item.bytes && hash(bytes) === item.sha256, `Bundle inventory hash: ${item.path}`);
   if (item.path.endsWith('.js')) js.push(bytes.toString('utf8'));
   if (item.path.endsWith('.css')) {
-    check(!/@import\s+(?:url\(\s*)?['"]?(?:https?:)?\/\//i.test(bytes.toString('utf8')), 'Offline styles never import remote fonts');
+    const css = bytes.toString('utf8');
+    check(!/@import\s+(?:url\(\s*)?['"]?(?:https?:)?\/\//i.test(css), 'Offline styles never import remote fonts');
+    check(!/url\(\s*['"]?\/fonts\//i.test(css), 'Offline font URLs are rewritten to relative paths');
   }
 }
+
 const code = js.join('\n');
 check(code.includes('WindwayMobile'), 'Native game bridge is included in the real game bundle');
+check(code.includes('WindwayAndroidHost'), 'Native Kotlin Android host interface is included in the bundle');
 for (const method of ['configure', 'start', 'command', 'steer']) {
   check(new RegExp(`\\b${method}\\b`).test(code), `Native bridge method ${method} is bundled`);
 }
+
 for (const pack of ['cartoon-pack', 'jungle-pack', 'snow-pack', 'branding']) {
   const source = (await readdir(join(root, 'public', pack))).filter(path => path.endsWith('.svg')).sort();
   const bundled = (await readdir(join(game, pack))).filter(path => path.endsWith('.svg')).sort();
@@ -52,6 +58,7 @@ for (const pack of ['cartoon-pack', 'jungle-pack', 'snow-pack', 'branding']) {
     check(hash(await readFile(join(game, pack, file))) === hash(await readFile(join(root, 'public', pack, file))), `Offline SVG matches source: ${pack}/${file}`);
   }
 }
+
 const modelFiles = manifest.files.filter(item => item.path.endsWith('.glb'));
 check(modelFiles.length === 2 && manifest.models.length === 2, 'Exactly two delivery car models are bundled');
 check(modelFiles.every(item => manifest.models.includes(item.path) && item.bytes < 8 * 1024 * 1024), 'Car models are the optimized delivery variants');
