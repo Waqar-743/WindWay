@@ -16,15 +16,15 @@ export default function MobileShowroom({ carId, paint, interactive = false }: { 
       {!failed && <Canvas frameloop="demand" dpr={[1, 1.5]} shadows camera={{ position: [8.4, 3.5, 8.2], fov: 36, near: .1, far: 50 }}
         gl={{ alpha: true, antialias: true, powerPreference: 'low-power', stencil: false, toneMapping: THREE.ACESFilmicToneMapping, toneMappingExposure: 1.1 }}
         fallback={<span className="wwa-preview-note">3D preview unavailable on this device</span>}>
-        <ambientLight intensity={.7} />
-        <hemisphereLight args={['#d8e9f5', '#182a34', 1]} />
-        <directionalLight position={[4, 7, 3]} intensity={3.2} color="#fff2de" castShadow shadow-mapSize={[512, 512]} shadow-camera-left={-6} shadow-camera-right={6} shadow-camera-top={6} shadow-camera-bottom={-6} shadow-normalBias={.04} />
-        <directionalLight position={[-5, 3, -4]} intensity={1.8} color="#a3c7da" />
+        <ambientLight intensity={.75} />
+        <hemisphereLight args={['#f6e7cf', '#1b1714', 1.05]} />
+        <directionalLight position={[4, 7, 3]} intensity={3.3} color="#fff1d8" castShadow shadow-mapSize={[512, 512]} shadow-camera-left={-6} shadow-camera-right={6} shadow-camera-top={6} shadow-camera-bottom={-6} shadow-normalBias={.04} />
+        <directionalLight position={[-5, 3, -4]} intensity={1.7} color="#e8b878" />
         <Suspense fallback={null}>
           <Environment resolution={128} frames={1}>
             <Lightformer intensity={3} position={[0, 6, 0]} rotation={[Math.PI / 2, 0, 0]} scale={[12, 4, 1]} />
-            <Lightformer intensity={2} color="#9dc0d7" position={[-5, 2, 0]} rotation={[0, Math.PI / 2, 0]} scale={[8, 3, 1]} />
-            <Lightformer intensity={2} color="#f2d1a6" position={[5, 3, -2]} rotation={[0, -Math.PI / 2, 0]} scale={[5, 3, 1]} />
+            <Lightformer intensity={2} color="#f2c482" position={[-5, 2, 0]} rotation={[0, Math.PI / 2, 0]} scale={[8, 3, 1]} />
+            <Lightformer intensity={2} color="#e38246" position={[5, 3, -2]} rotation={[0, -Math.PI / 2, 0]} scale={[5, 3, 1]} />
           </Environment>
           <group rotation={[0, -.25, 0]}><CarVisual carId={carId} paint={paint} onReady={loaded} /></group>
           <mesh rotation={[-Math.PI / 2, 0, 0]} position={[0, -.025, 0]} receiveShadow><planeGeometry args={[80, 80]} /><shadowMaterial opacity={.4} transparent /></mesh>

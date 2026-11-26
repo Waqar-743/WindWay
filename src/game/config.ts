@@ -6,24 +6,24 @@ export const GAME_CARS = [
     description: 'Quick off the line. Light on its feet. Made for late braking and a little mischief.',
     path: 'models/mclaren-mcl38/f1_2024_mclaren_mcl38.glb',
     topSpeed: 48, acceleration: 15.5, grip: 7.5, steering: 1.65, braking: 24,
-    color: '#e98254', character: 'wild-haired-driver',
+    color: '#e36d2b', character: 'wild-haired-driver',
   },
   {
     id: 'mercedes-w14', name: 'Mercedes-AMG W14', nickname: 'The mountain arrow', number: '02',
     description: 'Planted through the bends, with a longer stride on the straights. Find your flow.',
     path: 'models/mercedes-w14/f1_2023_mercedes_amg_w14_e_performance_s1.glb',
     topSpeed: 53, acceleration: 12.8, grip: 10.5, steering: 1.35, braking: 27,
-    color: '#9aba97', character: 'eagle-perched',
+    color: '#ebb53b', character: 'eagle-perched',
   },
 ] as const;
 
 export const PAINTS = [
-  { name: 'Trail orange', hex: '#e98254' },
-  { name: 'Alpine sage', hex: '#9aba97' },
-  { name: 'River blue', hex: '#70b9c7' },
-  { name: 'Butter yellow', hex: '#f7d674' },
-  { name: 'Warm cream', hex: '#fff7e8' },
-  { name: 'Dark pine', hex: '#334c41' },
+  { name: 'Papaya flame', hex: '#e36d2b' },
+  { name: 'Solar gold', hex: '#ebb53b' },
+  { name: 'Racing crimson', hex: '#c83324' },
+  { name: 'Titanium cream', hex: '#f4ede0' },
+  { name: 'Bronze graphite', hex: '#7d644b' },
+  { name: 'Obsidian carbon', hex: '#26221f' },
 ];
 
 export type GameCar = typeof GAME_CARS[number];
