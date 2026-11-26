@@ -336,12 +336,12 @@ export function RouteMap({ mapId, className = '', compact = false, showTelemetry
       <desc id={descriptionId}>{accessibleLabel} The marked route runs from {profile.startName}{map.mode === 'ascent' ? ` to ${profile.finishName}` : ''}. Numbered dots indicate ordered checkpoints.</desc>
       <defs>
         <linearGradient id={backgroundId} x1="0" y1="0" x2="1" y2="1">
-          <stop offset="0" stopColor="#101920" /><stop offset="0.52" stopColor="#0a1117" /><stop offset="1" stopColor="#060b10" />
+          <stop offset="0" stopColor="#171411" /><stop offset="0.52" stopColor="#110f0d" /><stop offset="1" stopColor="#0b0a09" />
         </linearGradient>
         <linearGradient id={roadId} x1="0" y1="0" x2="0.8" y2="1">
-          <stop offset="0" stopColor={id === 'snow' ? '#59717c' : id === 'jungle' ? '#40554e' : '#4a555e'} />
-          <stop offset="0.48" stopColor={id === 'snow' ? '#3e5562' : id === 'jungle' ? '#293e38' : '#303b44'} />
-          <stop offset="1" stopColor="#202b33" />
+          <stop offset="0" stopColor={id === 'snow' ? '#665e55' : id === 'jungle' ? '#524433' : '#574e46'} />
+          <stop offset="0.48" stopColor={id === 'snow' ? '#4a433d' : id === 'jungle' ? '#382f24' : '#3d3731'} />
+          <stop offset="1" stopColor="#26221e" />
         </linearGradient>
         <pattern id={gridId} width="10" height="10" patternUnits="userSpaceOnUse">
           <path d="M10 0H0v10" fill="none" stroke="currentColor" strokeWidth="0.18" />

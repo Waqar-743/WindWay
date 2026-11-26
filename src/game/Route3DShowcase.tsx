@@ -17,16 +17,16 @@ const BIOME_CONFIG: Record<MapId, {
   water: string;
 }> = {
   alpine: {
-    sky: '#152532', fog: '#14232d', ground: '#3e5c45', rock: '#556e78',
-    accent: '#f08b5b', secondary: '#d5fc58', road: '#222a30', tree: '#2a563c', water: '#398fa0',
+    sky: '#1d1610', fog: '#1a140f', ground: '#4a3a29', rock: '#695c4e',
+    accent: '#e36d2b', secondary: '#f2a93b', road: '#24201c', tree: '#2f2419', water: '#785a38',
   },
   jungle: {
-    sky: '#0b221e', fog: '#0b201c', ground: '#1f442d', rock: '#2e523c',
-    accent: '#6bdeb1', secondary: '#eac35a', road: '#1e2824', tree: '#175436', water: '#248778',
+    sky: '#18140d', fog: '#16120c', ground: '#382c1a', rock: '#4f402a',
+    accent: '#d9a438', secondary: '#f2a93b', road: '#221e19', tree: '#2a2214', water: '#6b5328',
   },
   snow: {
-    sky: '#112234', fog: '#132638', ground: '#9ab6ca', rock: '#485b6c',
-    accent: '#8bdcff', secondary: '#f08b5b', road: '#1c252d', tree: '#1f4a3f', water: '#6bb8dc',
+    sky: '#1b1815', fog: '#1f1c18', ground: '#b5aca0', rock: '#59524a',
+    accent: '#d6cec2', secondary: '#e36d2b', road: '#211e1b', tree: '#38322c', water: '#8f867b',
   },
 };
 
@@ -65,7 +65,7 @@ export default function Route3DShowcase({ id, reducedMotion = false }: { id: Map
     const camera = new THREE.PerspectiveCamera(40, width / Math.max(1, height), 0.5, 220);
 
     // Lighting
-    const hemi = new THREE.HemisphereLight(id === 'snow' ? '#cce8fa' : '#ffecd2', cfg.ground, 0.95);
+    const hemi = new THREE.HemisphereLight(id === 'snow' ? '#f2ece2' : '#ffecd2', cfg.ground, 0.95);
     const sun = new THREE.DirectionalLight('#fff2da', 2.2);
     sun.position.set(28, 42, 24);
     const rim = new THREE.DirectionalLight(cfg.accent, 0.9);
@@ -99,7 +99,7 @@ export default function Route3DShowcase({ id, reducedMotion = false }: { id: Map
     const tColors = new Float32Array(tPos.count * 3);
     const cGround = new THREE.Color(cfg.ground);
     const cRock = new THREE.Color(cfg.rock);
-    const cSnowCap = new THREE.Color('#eef6fc');
+    const cSnowCap = new THREE.Color('#f5efe6');
     const tmpC = new THREE.Color();
 
     for (let i = 0; i < tPos.count; i++) {
@@ -179,7 +179,7 @@ export default function Route3DShowcase({ id, reducedMotion = false }: { id: Map
 
     // Highlight Snow's 8 Ice Zones directly on the 3D miniature climb
     if (id === 'snow') {
-      const iceMat = track(new THREE.MeshBasicMaterial({ color: '#8bdcff' }));
+      const iceMat = track(new THREE.MeshBasicMaterial({ color: '#f2a93b' }));
       for (const [from, to] of SNOW_ICE_ZONES) {
         const pts = Array.from({ length: 8 }, (_, k) => displayCurve.getPointAt(from + (to - from) * (k / 7)).add(new THREE.Vector3(0, 0.12, 0)));
         const tube = track(new THREE.TubeGeometry(new THREE.CatmullRomCurve3(pts), 8, 0.24, 6, false));

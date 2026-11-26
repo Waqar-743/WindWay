@@ -85,31 +85,31 @@ function Arrow({ diagonal = false }: { diagonal?: boolean }) {
 
 function RouteLandscape({ id, name, reducedMotion }: { id: MapId; name: string; reducedMotion?: boolean }) {
   const snow = id === 'snow', jungle = id === 'jungle';
-  const sky = snow ? ['#809fb5', '#d5e6ec'] : jungle ? ['#315b50', '#9bb886'] : ['#809cac', '#d5d9c6'];
+  const sky = snow ? ['#3a332d', '#8c8175'] : jungle ? ['#3b2a17', '#8c6934'] : ['#4a311e', '#a87d4c'];
   return <figure className={`wl-environment wl-environment-${id}`}>
     <svg viewBox="0 0 960 480" role="img" aria-label={`${name} environment artwork`} preserveAspectRatio="xMidYMid slice">
       <defs>
         <linearGradient id={`sky-${id}`} x2="0" y2="1"><stop stopColor={sky[0]} /><stop offset="1" stopColor={sky[1]} /></linearGradient>
-        <linearGradient id={`ground-${id}`} x2="0" y2="1"><stop stopColor={snow ? '#a5bfce' : jungle ? '#345d3c' : '#617656'} /><stop offset="1" stopColor={snow ? '#e5edf1' : jungle ? '#172e26' : '#283d34'} /></linearGradient>
-        <linearGradient id={`road-${id}`} x2="0" y2="1"><stop stopColor={snow ? '#657e8e' : '#596263'} /><stop offset="1" stopColor={snow ? '#334958' : '#252d30'} /></linearGradient>
-        <filter id={`road-shadow-${id}`}><feDropShadow dx="0" dy="8" stdDeviation="8" floodOpacity=".22" /></filter>
+        <linearGradient id={`ground-${id}`} x2="0" y2="1"><stop stopColor={snow ? '#786e64' : jungle ? '#3c2e1c' : '#4a3827'} /><stop offset="1" stopColor={snow ? '#2a2520' : jungle ? '#17130d' : '#1b1611'} /></linearGradient>
+        <linearGradient id={`road-${id}`} x2="0" y2="1"><stop stopColor={snow ? '#575049' : '#4f4842'} /><stop offset="1" stopColor="#1b1815" /></linearGradient>
+        <filter id={`road-shadow-${id}`}><feDropShadow dx="0" dy="8" stdDeviation="8" floodOpacity=".28" /></filter>
       </defs>
       <rect width="960" height="480" fill={`url(#sky-${id})`} />
-      <circle cx={jungle ? 760 : 715} cy="92" r={snow ? 35 : 46} fill={snow ? '#eaf4f8' : '#ffdfa0'} opacity=".7" />
-      <g fill={snow ? '#6d879b' : jungle ? '#33594a' : '#788e85'} opacity=".74"><path d="M-50 288 170 45l124 126L421 38l241 238 125-146 233 157v135H-50Z" /><path d="m370 38 51 114-39-23-30 20-32-18-32 9Z" fill={snow ? '#e2ecf0' : '#d9ddd0'} opacity=".65" /></g>
+      <circle cx={jungle ? 760 : 715} cy="92" r={snow ? 35 : 46} fill={snow ? '#efe9df' : '#f7c96b'} opacity=".78" />
+      <g fill={snow ? '#4e4740' : jungle ? '#2f2416' : '#453528'} opacity=".78"><path d="M-50 288 170 45l124 126L421 38l241 238 125-146 233 157v135H-50Z" /><path d="m370 38 51 114-39-23-30 20-32-18-32 9Z" fill={snow ? '#e5ddd2' : '#d8cbb8'} opacity=".62" /></g>
       <path d="M0 280Q164 177 318 250T642 225T960 250V480H0Z" fill={`url(#ground-${id})`} />
-      {snow ? <path d="m0 321 208-92 115 24 155-78 124 48 196-33 162 46v93H0Z" fill="#dce7ed" opacity=".72" /> : <path d="M0 322q190-110 398-30t408-42l154 16v89H0Z" fill={jungle ? '#477849' : '#829065'} opacity=".55" />}
-      <path d="M910 505C749 414 633 420 557 372c-83-53-43-86 94-105 93-13 55-59-29-65-92-7-215 39-294 14-66-21-45-45-4-59" fill="none" stroke={snow ? '#c7d8e2' : jungle ? '#455840' : '#b4a789'} strokeWidth={jungle ? 61 : 72} strokeLinecap="round" filter={`url(#road-shadow-${id})`} />
+      {snow ? <path d="m0 321 208-92 115 24 155-78 124 48 196-33 162 46v93H0Z" fill="#c7beb2" opacity=".68" /> : <path d="M0 322q190-110 398-30t408-42l154 16v89H0Z" fill={jungle ? '#544123' : '#6b5336'} opacity=".55" />}
+      <path d="M910 505C749 414 633 420 557 372c-83-53-43-86 94-105 93-13 55-59-29-65-92-7-215 39-294 14-66-21-45-45-4-59" fill="none" stroke={snow ? '#b8afa4' : jungle ? '#5e4b30' : '#967c5c'} strokeWidth={jungle ? 61 : 72} strokeLinecap="round" filter={`url(#road-shadow-${id})`} />
       <path d="M910 505C749 414 633 420 557 372c-83-53-43-86 94-105 93-13 55-59-29-65-92-7-215 39-294 14-66-21-45-45-4-59" fill="none" stroke={`url(#road-${id})`} strokeWidth={jungle ? 48 : 57} strokeLinecap="round" />
-      <path d="M910 505C749 414 633 420 557 372c-83-53-43-86 94-105 93-13 55-59-29-65-92-7-215 39-294 14-66-21-45-45-4-59" fill="none" stroke="#eef0df" strokeWidth="2.5" strokeDasharray="15 20" opacity=".8" />
-      <g opacity={jungle ? '.95' : '.8'} fill={snow ? '#385762' : jungle ? '#183c29' : '#294b3b'}>
-        {[[38,311,1.3],[110,292,.9],[184,330,1.5],[273,299,.8],[382,285,1.1],[724,301,1.3],[805,279,.9],[890,336,1.5],[90,413,1.8],[262,430,1.35],[757,451,1.65]].map(([x,y,s],i) => <g key={i} transform={`translate(${x} ${y}) scale(${s})`}><path d="M0 0v-56" stroke={snow ? '#52656b' : '#493f2e'} strokeWidth="5" /><path d="m0-94-25 45h13l-26 32h76L12-49h13Z" /></g>)}
+      <path d="M910 505C749 414 633 420 557 372c-83-53-43-86 94-105 93-13 55-59-29-65-92-7-215 39-294 14-66-21-45-45-4-59" fill="none" stroke="#f2a93b" strokeWidth="2.5" strokeDasharray="15 20" opacity=".82" />
+      <g opacity={jungle ? '.92' : '.8'} fill={snow ? '#3b352f' : jungle ? '#241c13' : '#2b2219'}>
+        {[[38,311,1.3],[110,292,.9],[184,330,1.5],[273,299,.8],[382,285,1.1],[724,301,1.3],[805,279,.9],[890,336,1.5],[90,413,1.8],[262,430,1.35],[757,451,1.65]].map(([x,y,s],i) => <g key={i} transform={`translate(${x} ${y}) scale(${s})`}><path d="M0 0v-56" stroke={snow ? '#574e45' : '#4a3827'} strokeWidth="5" /><path d="m0-94-25 45h13l-26 32h76L12-49h13Z" /></g>)}
       </g>
-      <path d="M0 442q176-45 367-9t593-3v50H0Z" fill={snow ? '#eff5f7' : jungle ? '#142b22' : '#20392e'} opacity=".75" />
+      <path d="M0 442q176-45 367-9t593-3v50H0Z" fill={snow ? '#dfd7cb' : jungle ? '#17130e' : '#1b1611'} opacity=".75" />
     </svg>
     <Route3DShowcase id={id} reducedMotion={reducedMotion} />
     <div className="wl-environment-badge" aria-hidden="true"><i />LIVE 3D TERRAIN · SCROLL OR HOVER TO ORBIT</div>
-    <div className="wl-environment-caption"><span>{id === 'snow' ? 'ELEVATION / 362 M GAIN · NORDIC VILLAGE & GLACIERS' : jungle ? 'SURFACE / DENSE CANOPY · JADE RIVER' : 'SURFACE / ALPINE ASPHALT · VALLEY BRIDGES'}</span><span>3D ROUTE DIORAMA {id === 'alpine' ? '01' : id === 'jungle' ? '02' : '03'}</span></div>
+    <div className="wl-environment-caption"><span>{id === 'snow' ? 'ELEVATION / 362 M GAIN · NORDIC VILLAGE & GLACIERS' : jungle ? 'SURFACE / DENSE CANOPY · GOLDEN RIVER' : 'SURFACE / ALPINE ASPHALT · VALLEY BRIDGES'}</span><span>3D ROUTE DIORAMA {id === 'alpine' ? '01' : id === 'jungle' ? '02' : '03'}</span></div>
   </figure>;
 }
 
@@ -140,7 +140,7 @@ export default function LandingStory({ selectedMap, levelSelector, selectedCarNa
     <a className="wl-skip" href="#windway-main">Skip to the roads</a>
     <header className="wl-header">
       <a href="#windway-main" className="wl-brand" aria-label="Windway, back to the start"><svg className="wl-brand-mark" viewBox="0 0 40 40" aria-hidden="true"><path d="M8 30 16 9h5l-4 11h10l5-11h5l-8 21h-5l4-11H18l-5 11Z" fill="currentColor" /></svg><span>WINDWAY<small>DRIVE BEYOND THE EXPECTED</small></span></a>
-      <nav aria-label="Windway landing navigation"><a href="#the-roads">Routes</a><button type="button" onClick={onGarage}>Garage</button><a href="#first-drive">Driver briefing</a><a href="#the-story">Project</a></nav>
+      <nav aria-label="Windway landing navigation"><a href="#the-roads">Paths</a><button type="button" onClick={onGarage}>Garage</button><a href="#first-drive">Briefing</a><a href="?mobile=1">Android App UI</a><a href="#the-story">Project</a></nav>
       <a className="wl-source" href="https://github.com/Waqar-743/WindWay" target="_blank" rel="noreferrer"><i />Open source<Arrow diagonal /></a>
     </header>
     <main id="windway-main">
@@ -151,7 +151,7 @@ export default function LandingStory({ selectedMap, levelSelector, selectedCarNa
           <p className="wl-kicker"><span>01</span> INDEPENDENT DRIVING EXPERIENCE</p>
           <h1 id="windway-title" data-page-title tabIndex={-1}>EVERY ROAD<br />HAS A <em>PULSE.</em></h1>
           <p className="wl-hero-intro">Three worlds. Two precision machines. One simple objective: find the line that makes the road yours.</p>
-          <div className="wl-hero-actions"><button type="button" className="wl-drive wl-hero-drive" onClick={() => onStartMap(chosen.id)}>Start your drive<span>01</span><Arrow diagonal /></button><button type="button" className="wl-garage-link" onClick={onGarage} aria-label={`Choose your car. Selected car: ${selectedCarName}`}>Configure your car<Arrow /></button></div>
+          <div className="wl-hero-actions"><button type="button" className="wl-drive wl-hero-drive" onClick={() => onStartMap(chosen.id)}>Start your drive<span>01</span><Arrow diagonal /></button><button type="button" className="wl-garage-link" onClick={onGarage} aria-label={`Choose your car. Selected car: ${selectedCarName}`}>Configure your car<Arrow /></button><a className="wl-garage-link" href="?mobile=1">Try Android App UI<Arrow diagonal /></a></div>
           <p className="wl-browser-note"><i />BROWSER READY<i />NO DOWNLOAD<i />FREE TO PLAY</p>
         </div>
         <div className="wl-hero-route"><span>YOUR NEXT ROUTE</span><strong>{chosen.name}</strong><small>{chosen.region}<i />{chosen.id === 'snow' ? 'Expert ascent' : chosen.id === 'jungle' ? '2 lap circuit' : '1 lap circuit'}</small><a href={`#road-${chosen.id}`} aria-label={`View ${chosen.name}`}><Arrow /></a></div>

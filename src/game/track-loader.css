@@ -1,7 +1,7 @@
 .track-loader {
-  --loader-ink: var(--ink, #253b39);
-  --loader-paper: var(--paper, #f8f3e8);
-  --loader-accent: var(--accent, #d47762);
+  --loader-ink: var(--ink, #f5efe6);
+  --loader-paper: var(--paper, #151311);
+  --loader-accent: var(--accent, #f2a93b);
   display: grid;
   gap: 10px;
   inline-size: min(100%, 360px);
@@ -19,7 +19,7 @@
   border-block-end: 2px solid currentColor;
   border-radius: 8px;
   background: linear-gradient(180deg, color-mix(in srgb, var(--loader-ink) 3%, var(--loader-paper)), color-mix(in srgb, var(--loader-ink) 9%, var(--loader-paper)));
-  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.6);
+  box-shadow: inset 0 1px 0 rgba(245, 239, 230, 0.2);
 }
 
 .track-loader .track-loader-road::after {
@@ -28,7 +28,7 @@
   inset-inline: 0;
   inset-block-end: 2px;
   block-size: 2px;
-  opacity: .28;
+  opacity: .3;
   background: repeating-linear-gradient(90deg, currentColor 0 18px, transparent 18px 32px);
 }
 
@@ -62,98 +62,30 @@
   background: conic-gradient(currentColor 25%, transparent 0 50%, currentColor 0 75%, transparent 0) 0 0 / 5px 5px;
 }
 
-.track-loader .track-loader-caption {
-  display: flex;
-  align-items: baseline;
-  justify-content: space-between;
-  gap: 10px;
-  min-inline-size: 0;
-  font-size: 12px;
-  line-height: 1.5;
-  font-weight: 700;
-}
-
-.track-loader .track-loader-label {
-  min-inline-size: 0;
-  overflow-wrap: anywhere;
-}
-
-.track-loader .track-loader-percent {
-  flex-shrink: 0;
-  font-variant-numeric: tabular-nums;
-}
-
-.track-loader .track-loader-progress {
-  display: block;
-  appearance: none;
-  inline-size: 100%;
-  block-size: 4px;
-  overflow: hidden;
-  border: 0;
-  border-radius: 2px;
-  background: color-mix(in srgb, var(--loader-ink) 13%, var(--loader-paper));
-  accent-color: var(--loader-accent);
-}
-
-.track-loader .track-loader-progress::-webkit-progress-bar {
-  border-radius: 2px;
-  background: color-mix(in srgb, var(--loader-ink) 13%, var(--loader-paper));
-}
-
-.track-loader .track-loader-progress::-webkit-progress-value {
-  border-radius: 2px;
-  background: var(--loader-accent);
-}
-
-.track-loader .track-loader-progress::-moz-progress-bar {
-  border-radius: 2px;
-  background: var(--loader-accent);
-}
-
-.track-loader.track-loader--compact {
-  gap: 6px;
-  inline-size: 100%;
-}
-
-.track-loader.track-loader--compact .track-loader-road {
-  block-size: 38px;
-}
-
-.track-loader.track-loader--compact .track-loader-car img {
-  inline-size: 72px;
-  block-size: 30px;
-}
-
-.track-loader.track-loader--compact .track-loader-caption {
-  font-size: 11px;
-}
-
-.track-loader[data-reduced-motion='true'] .track-loader-car {
-  animation: none;
-  transform: translateX(calc(50% - 48px));
-  will-change: auto;
-}
-
-.track-loader.track-loader--compact[data-reduced-motion='true'] .track-loader-car {
-  transform: translateX(calc(50% - 36px));
-}
+.track-loader .track-loader-caption { display: flex; align-items: baseline; justify-content: space-between; gap: 10px; min-inline-size: 0; font-size: 12px; line-height: 1.5; font-weight: 700; }
+.track-loader .track-loader-label { min-inline-size: 0; overflow-wrap: anywhere; }
+.track-loader .track-loader-percent { flex-shrink: 0; font-variant-numeric: tabular-nums; }
+.track-loader .track-loader-progress { display: block; appearance: none; inline-size: 100%; block-size: 4px; overflow: hidden; border: 0; border-radius: 2px; background: color-mix(in srgb, var(--loader-ink) 13%, var(--loader-paper)); accent-color: var(--loader-accent); }
+.track-loader .track-loader-progress::-webkit-progress-bar { border-radius: 2px; background: color-mix(in srgb, var(--loader-ink) 13%, var(--loader-paper)); }
+.track-loader .track-loader-progress::-webkit-progress-value { border-radius: 2px; background: var(--loader-accent); }
+.track-loader .track-loader-progress::-moz-progress-bar { border-radius: 2px; background: var(--loader-accent); }
+.track-loader.track-loader--compact { gap: 6px; inline-size: 100%; }
+.track-loader.track-loader--compact .track-loader-road { block-size: 38px; }
+.track-loader.track-loader--compact .track-loader-car img { inline-size: 72px; block-size: 30px; }
+.track-loader.track-loader--compact .track-loader-caption { font-size: 11px; }
+.track-loader[data-reduced-motion='true'] .track-loader-car { animation: none; transform: translateX(calc(50% - 48px)); will-change: auto; }
+.track-loader.track-loader--compact[data-reduced-motion='true'] .track-loader-car { transform: translateX(calc(50% - 36px)); }
 
 @keyframes windway-loader-drive {
   from { transform: translateX(-100px); }
   to { transform: translateX(100%); }
 }
 
-.scene-loadscreen { position: absolute; inset: 0; display: grid; place-items: center; padding: 24px; background: var(--paper, #f7f3e7); color: var(--ink, #30483d); }
-.wildway .race-ui .track-loader { --loader-ink: var(--hud-text); --loader-paper: #213b4f; --loader-accent: var(--hud-accent); }
+.scene-loadscreen { position: absolute; inset: 0; display: grid; place-items: center; padding: 24px; background: var(--paper, #14110f); color: var(--ink, #f5efe6); }
+.wildway .race-ui .track-loader { --loader-ink: var(--hud-text); --loader-paper: #1c1814; --loader-accent: var(--hud-accent); }
 .wildway .race-ui .track-loader-caption { font-size: 10px; }
 
 @media (prefers-reduced-motion: reduce) {
-  .track-loader .track-loader-car {
-    animation: none;
-    transform: translateX(calc(50% - 48px));
-    will-change: auto;
-  }
-  .track-loader.track-loader--compact .track-loader-car {
-    transform: translateX(calc(50% - 36px));
-  }
+  .track-loader .track-loader-car { animation: none; transform: translateX(calc(50% - 48px)); will-change: auto; }
+  .track-loader.track-loader--compact .track-loader-car { transform: translateX(calc(50% - 36px)); }
 }

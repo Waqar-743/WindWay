@@ -11,25 +11,25 @@ interface BiomePalette {
 
 const PALETTES: BiomePalette[] = [
   {
-    bg: new THREE.Color('#090d10'),
-    fog: new THREE.Color('#0c1317'),
-    accent: new THREE.Color('#f08b5b'),
-    secondary: new THREE.Color('#d5fc58'),
-    terrain: new THREE.Color('#1c2a2a'),
+    bg: new THREE.Color('#0b0a09'),
+    fog: new THREE.Color('#14110e'),
+    accent: new THREE.Color('#e36d2b'),
+    secondary: new THREE.Color('#f2a93b'),
+    terrain: new THREE.Color('#241d17'),
   },
   {
-    bg: new THREE.Color('#07120f'),
-    fog: new THREE.Color('#0a1a15'),
-    accent: new THREE.Color('#6bdeb1'),
-    secondary: new THREE.Color('#eac35a'),
-    terrain: new THREE.Color('#142c24'),
+    bg: new THREE.Color('#0c0a08'),
+    fog: new THREE.Color('#17120c'),
+    accent: new THREE.Color('#d9a438'),
+    secondary: new THREE.Color('#e36d2b'),
+    terrain: new THREE.Color('#261f15'),
   },
   {
-    bg: new THREE.Color('#081018'),
-    fog: new THREE.Color('#0c1a27'),
-    accent: new THREE.Color('#8bdcff'),
-    secondary: new THREE.Color('#f08b5b'),
-    terrain: new THREE.Color('#1b2e3f'),
+    bg: new THREE.Color('#0d0c0b'),
+    fog: new THREE.Color('#191714'),
+    accent: new THREE.Color('#d6cec2'),
+    secondary: new THREE.Color('#f2a93b'),
+    terrain: new THREE.Color('#292622'),
   },
 ];
 
@@ -81,17 +81,17 @@ export default function LandingScroll3D({ reducedMotion = false }: { reducedMoti
     host.appendChild(renderer.domElement);
 
     const scene = new THREE.Scene();
-    const fog = new THREE.FogExp2('#0c1317', 0.0155);
+    const fog = new THREE.FogExp2('#14110e', 0.0155);
     scene.fog = fog;
 
     const camera = new THREE.PerspectiveCamera(48, (host.clientWidth || window.innerWidth) / Math.max(1, host.clientHeight || window.innerHeight), 0.5, 220);
     camera.position.set(0, 12, 34);
 
     // Lighting
-    const hemi = new THREE.HemisphereLight('#b8dce8', '#152024', 0.75);
+    const hemi = new THREE.HemisphereLight('#f2dfc4', '#1d1814', 0.78);
     const keyLight = new THREE.DirectionalLight('#ffefd6', 1.65);
     keyLight.position.set(22, 35, 18);
-    const accentLight = new THREE.PointLight('#f08b5b', 28, 95, 1.6);
+    const accentLight = new THREE.PointLight('#e36d2b', 28, 95, 1.6);
     accentLight.position.set(0, 10, 0);
     scene.add(hemi, keyLight, accentLight);
 
@@ -115,7 +115,7 @@ export default function LandingScroll3D({ reducedMotion = false }: { reducedMoti
     terrainGeo.computeVertexNormals();
 
     const terrainMat = new THREE.MeshStandardMaterial({
-      color: '#1c2a2a',
+      color: '#241d17',
       roughness: 0.88,
       metalness: 0.12,
       flatShading: true,
@@ -124,7 +124,7 @@ export default function LandingScroll3D({ reducedMotion = false }: { reducedMoti
     scene.add(terrainMesh);
 
     const wireMat = new THREE.MeshBasicMaterial({
-      color: '#f08b5b',
+      color: '#e36d2b',
       wireframe: true,
       transparent: true,
       opacity: 0.14,
@@ -163,7 +163,7 @@ export default function LandingScroll3D({ reducedMotion = false }: { reducedMoti
     roadGeo.setAttribute('position', new THREE.Float32BufferAttribute(roadPos, 3));
     roadGeo.setIndex(roadIdx);
     roadGeo.computeVertexNormals();
-    const roadMat = new THREE.MeshStandardMaterial({ color: '#11181d', roughness: 0.5, metalness: 0.25, side: THREE.DoubleSide });
+    const roadMat = new THREE.MeshStandardMaterial({ color: '#171412', roughness: 0.5, metalness: 0.25, side: THREE.DoubleSide });
     scene.add(new THREE.Mesh(roadGeo, roadMat));
 
     // Glowing road edge rails & center racing line
@@ -181,19 +181,19 @@ export default function LandingScroll3D({ reducedMotion = false }: { reducedMoti
     const leftEdgeGeo = buildLine(-halfW + 0.15);
     const rightEdgeGeo = buildLine(halfW - 0.15);
     const centerGeo = buildLine(0);
-    const edgeMat = new THREE.LineBasicMaterial({ color: '#f08b5b', transparent: true, opacity: 0.72 });
-    const centerMat = new THREE.LineBasicMaterial({ color: '#d5fc58', transparent: true, opacity: 0.85 });
+    const edgeMat = new THREE.LineBasicMaterial({ color: '#e36d2b', transparent: true, opacity: 0.72 });
+    const centerMat = new THREE.LineBasicMaterial({ color: '#f2a93b', transparent: true, opacity: 0.85 });
     scene.add(new THREE.Line(leftEdgeGeo, edgeMat), new THREE.Line(rightEdgeGeo, edgeMat), new THREE.Line(centerGeo, centerMat));
 
     // Two luminous light-stream racers speeding down the 3D circuit
     const racerGeo = new THREE.SphereGeometry(0.45, 12, 10);
-    const racerMatA = new THREE.MeshBasicMaterial({ color: '#d5fc58' });
-    const racerMatB = new THREE.MeshBasicMaterial({ color: '#8bdcff' });
+    const racerMatA = new THREE.MeshBasicMaterial({ color: '#f2a93b' });
+    const racerMatB = new THREE.MeshBasicMaterial({ color: '#e36d2b' });
     const racerA = new THREE.Mesh(racerGeo, racerMatA);
     const racerB = new THREE.Mesh(racerGeo, racerMatB);
     scene.add(racerA, racerB);
 
-    // Floating atmospheric particles (valley embers / jungle fireflies / arctic snowflakes)
+    // Floating atmospheric particles (valley embers / golden dust / summit frost)
     const pCount = 260;
     const pPositions = new Float32Array(pCount * 3);
     for (let i = 0; i < pCount; i++) {
@@ -203,7 +203,7 @@ export default function LandingScroll3D({ reducedMotion = false }: { reducedMoti
     }
     const particleGeo = new THREE.BufferGeometry();
     particleGeo.setAttribute('position', new THREE.BufferAttribute(pPositions, 3));
-    const particleMat = new THREE.PointsMaterial({ color: '#d5fc58', size: 0.38, transparent: true, opacity: 0.52, depthWrite: false, blending: THREE.AdditiveBlending });
+    const particleMat = new THREE.PointsMaterial({ color: '#f2a93b', size: 0.38, transparent: true, opacity: 0.52, depthWrite: false, blending: THREE.AdditiveBlending });
     const particles = new THREE.Points(particleGeo, particleMat);
     scene.add(particles);
 
