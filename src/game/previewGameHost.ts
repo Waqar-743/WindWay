@@ -1,12 +1,13 @@
 import type {} from './mobileBridge';
 
-const commands = new Set(['pause', 'resume', 'restart', 'recover', 'camera', 'calibrate', 'menu']);
-const messages = new Set(['ready', 'state', 'save', 'finished', 'exit', 'calibrate', 'error']);
+const commands = new Set(['pause', 'resume', 'restart', 'recover', 'camera', 'calibrate', 'menu', 'nextLevel']);
+const messages = new Set(['ready', 'state', 'save', 'finished', 'exit', 'calibrate', 'error', 'level', 'haptic']);
 
 type PreviewCommand =
   | { source: 'windway-app'; type: 'configure'; config: Record<string, unknown> }
   | { source: 'windway-app'; type: 'start'; resume?: unknown }
-  | { source: 'windway-app'; type: 'command'; command: string };
+  | { source: 'windway-app'; type: 'command'; command: string }
+  | { source: 'windway-app'; type: 'steer'; value: number };
 
 /** Only the containing app can control this explicitly requested game frame. */
 export function isTrustedPreviewCommand(
@@ -20,10 +21,11 @@ export function isTrustedPreviewCommand(
   if (value.source !== 'windway-app') return false;
   if (value.type === 'configure') return !!value.config && typeof value.config === 'object' && !Array.isArray(value.config);
   if (value.type === 'start') return true;
+  if (value.type === 'steer') return typeof value.value === 'number' && Number.isFinite(value.value);
   return value.type === 'command' && typeof value.command === 'string' && commands.has(value.command);
 }
 
-/** Browser counterpart of the Android channel, restricted to a same-origin
+/** Browser & Android host counterpart of the native channel, restricted to a same-origin
  * child frame. Loading the frame alone never starts or resumes a drive. */
 export function installPreviewGameHost(target: Window = window): () => void {
   const query = new URLSearchParams(target.location.search);
@@ -51,6 +53,7 @@ export function installPreviewGameHost(target: Window = window): () => void {
     const message = event.data;
     if (message.type === 'configure') api.configure(message.config);
     else if (message.type === 'start') api.start({ resume: message.resume });
+    else if (message.type === 'steer') api.steer(message.value);
     else api.command(message.command);
   };
   target.WindwayNative = channel;

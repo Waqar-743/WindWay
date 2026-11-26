@@ -112,7 +112,7 @@ function Valley() {
 function SnowMapPage() {
   const map = mapById('snow'), summit = CHECKPOINTS[CHECKPOINTS.length - 1].point.y;
   const profile = CHECKPOINTS.map(({ point }, i) => `${i ? 'L' : 'M'}${(i / (CHECKPOINTS.length - 1) * 260).toFixed(1)},${(82 - (point.y - START.point.y) / (summit - START.point.y) * 68).toFixed(1)}`).join(' ');
-  return <main className="sheet-page valley-page snow-map-page"><div className="map-page-top"><BackButton /><MapSelector /></div><div className="valley-layout"><div className="map-art-column"><div className="valley-art"><Art name="snowy-mountain" className="map-mountain" /><TrackMap /><Art name="snowy-tree" className="map-pine" /><Art name="snowman" className="map-goat" /><span className="map-tag">THE MOUNTAIN DOES NOT DO SHORTCUTS.</span></div><div className="snow-elevation"><p className="ww-eyebrow">BASE CAMP → SUMMIT / +{Math.round(summit - START.point.y)} M</p><svg viewBox="0 0 270 96" role="img" aria-label="The checkpoint elevation profile rises from base camp to the summit"><path d={`${profile}L260 92H0Z`} fill="#d9e8ef" /><path d={profile} fill="none" stroke="#527485" strokeWidth="3" /><circle cx="260" cy="14" r="5" fill="#d47762" /></svg></div><div className="snow-kit-row">{['snowman','arctic-fox','snowy-tree','ice-warning'].map((name) => <Art key={name} name={name} alt={name.replace(/-/g, ' ')} />)}</div></div>
+  return <main className="sheet-page valley-page snow-map-page"><div className="map-page-top"><BackButton /><MapSelector /></div><div className="valley-layout"><div className="map-art-column"><div className="valley-art"><Art name="snowy-mountain" className="map-mountain" /><TrackMap /><Art name="snowy-tree" className="map-pine" /><Art name="snowman" className="map-goat" /><span className="map-tag">THE MOUNTAIN DOES NOT DO SHORTCUTS.</span></div><div className="snow-elevation"><p className="ww-eyebrow">BASE CAMP → SUMMIT / +{Math.round(summit - START.point.y)} M</p><svg viewBox="0 0 270 96" role="img" aria-label="The checkpoint elevation profile rises from base camp to the summit"><path d={`${profile}L260 92H0Z`} fill="#302923" /><path d={profile} fill="none" stroke="#f2a93b" strokeWidth="3" /><circle cx="260" cy="14" r="5" fill="#e36d2b" /></svg></div><div className="snow-kit-row">{['snowman','arctic-fox','snowy-tree','ice-warning'].map((name) => <Art key={name} name={name} alt={name.replace(/-/g, ' ')} />)}</div></div>
     <div className="valley-copy"><PageTitle eyebrow="MAP 03 / THE HARD WAY UP">Frostbite<br /><em>Ascent.</em></PageTitle><p>{map.description}</p><div className="track-facts"><div><strong>{(TRACK_LENGTH / 1000).toFixed(2)}<small>km</small></strong><span>ONE-WAY ROUTE</span></div><div><strong>+{Math.round(summit - START.point.y)}<small>m</small></strong><span>SUMMIT GAIN</span></div><div><strong>{CHECKPOINTS.length - 1}</strong><span>GATES TO THE TOP</span></div></div><ul className="valley-features"><li><Art name="ice-warning" /><span><strong>Brake before the blue</strong>{SNOW_ICE_ZONES.length} marked ice zones reduce grip and braking. Ease off early and steer gently; the slide is real.</span></li><li><Art name="slalom-gate" /><span><strong>Weave. Do not ram.</strong>{SNOW_HURDLES.length} solid snow-block obstacles alternate across the narrow road. Find the passing lane.</span></li><li><Art name="summit-flag" /><span><strong>It only ends at the top</strong>No laps and no downhill shortcut. Earn every gate in order, then cross the checkered summit line.</span></li></ul><div className="map-race-kit"><Art name="mountain-hut" /><Art name="checkpoint" /><Art name="summit-trophy" /><span>Your last earned gate is your recovery point.<br />Your climb time keeps running.</span></div><StartButton>Meet me at base camp</StartButton></div></div></main>;
 }
 
@@ -155,6 +155,9 @@ function HowTo() {
 function PauseMenu() {
   const dialog = useRef<HTMLElement>(null);
   const native = isNativeGame();
+  const map = mapById(useGame((state) => state.selectedMap));
+  const selectedLevel = useGame((state) => state.selectedLevel);
+  const levelInfo = LEVELS[selectedLevel] ?? LEVELS[0];
   return <div className="modal-scrim"><section ref={dialog} className="pause-card" role="dialog" aria-modal="true" aria-labelledby="pause-title" onKeyDown={(event) => {
     if (event.key !== 'Tab') return;
     const buttons = dialog.current?.querySelectorAll<HTMLButtonElement>('button');
@@ -163,10 +166,10 @@ function PauseMenu() {
     if (event.shiftKey && document.activeElement === first) { event.preventDefault(); last.focus(); }
     else if (!event.shiftKey && document.activeElement === last) { event.preventDefault(); first.focus(); }
   }}>{native ? <>
-    <span className="mobile-menu-kicker">WINDWAY / PIT STOP</span><h1 id="pause-title">Drive paused</h1><p>Your car is parked. Your clock is stopped.</p>
+    <span className="mobile-menu-kicker">{map.name.toUpperCase()} · LEVEL {selectedLevel} ({levelInfo.name.toUpperCase()})</span><h1 id="pause-title">Drive paused</h1><p>Your car is parked and your race clock is stopped.</p>
     <button className="ww-button ww-primary" autoFocus onClick={() => window.WindwayMobile?.command('resume')}><MobileIcon name="play" />Resume drive</button>
-    <div className="pause-options"><button onClick={() => window.WindwayMobile?.command('restart')}><MobileIcon name="recover" />Restart</button><button onClick={() => window.WindwayMobile?.command('menu')}><MobileIcon name="stop" />Stop drive</button></div>
-    <small className="mobile-menu-note">Stop saves your last checkpoint.</small>
+    <div className="pause-options"><button onClick={() => window.WindwayMobile?.command('restart')}><MobileIcon name="recover" />Restart</button><button onClick={() => window.WindwayMobile?.command('camera')}><MobileIcon name="camera" />Camera</button><button onClick={() => window.WindwayMobile?.command('menu')}><MobileIcon name="stop" />Stop &amp; save</button></div>
+    <small className="mobile-menu-note">Stop saves your latest earned gate so Continue resumes here.</small>
   </> : <><Art name="wild-haired-driver" className="pause-character" /><p className="ww-eyebrow">A VERY WELL-DESERVED PIT STOP</p><h1 id="pause-title">Take a<br /><em>breather.</em></h1><p>Your car and your clock are right where you left them.</p><button className="ww-button ww-primary" autoFocus onClick={() => { void gameAudio.unlock(); useGame.getState().resume(); }}>Back to the madness <span>→</span></button><div className="pause-options"><button onClick={() => { void gameAudio.unlock(); useGame.getState().startRace(); }}>Restart run</button><button onClick={() => useGame.getState().navigate('settings')}>Settings</button><button onClick={() => useGame.getState().navigate('howto')}>How to play</button><button onClick={() => useGame.getState().navigate('garage')}>Return to garage</button></div></>}
   </section></div>;
 }
@@ -178,7 +181,7 @@ function Results() {
   const grade = evaluateRunGrade(result.time, result.resets, result.mapId, result.level ?? 0);
   const nextLevel = LEVELS.find((lvl) => lvl.id === (result.level ?? 0) + 1);
   return <main className="results-page"><section className="results-card">
-    {!reducedMotion && <div className="confetti" aria-hidden="true">{Array.from({ length: 24 }, (_, i) => <i key={i} style={{ '--i': i, '--color': [map.theme.accent, map.theme.leaf, map.theme.paper, map.theme.water][i % 4] } as CSSProperties} />)}</div>}
+    {!reducedMotion && <div className="confetti" aria-hidden="true">{Array.from({ length: 24 }, (_, i) => <i key={i} style={{ '--i': i, '--color': ['#f2a93b', '#e36d2b', '#f5efe6', '#d9a438'][i % 4] } as CSSProperties} />)}</div>}
     {grade.tier === 'PLATINUM' || grade.tier === 'GOLD'
       ? <img src={`${import.meta.env.BASE_URL}branding/medal-gold.svg`} alt={`${grade.tier} medal`} className="results-trophy results-medal" draggable={false} />
       : <Art name="winner-trophy" className="results-trophy" />}
@@ -187,7 +190,7 @@ function Results() {
       <span className={`result-grade result-grade--${grade.tier.toLowerCase()}`}>{grade.headline}</span>
     </div>
     <h1 data-page-title tabIndex={-1}>{snow ? <>You took<br />the <em>high road.</em></> : <>Well, that<br />was <em>wild.</em></>}</h1>
-    <p>{car.name} · {map.name} · {snow ? 'summit climb' : `${result.laps} ${result.laps === 1 ? 'lap' : 'laps'}`}</p>
+    <p>{car.name} · {map.name} · {snow ? 'summit climb' : `${result.laps} ${result.laps === 1 ? 'lap' : 'laps'}`} · Level {result.level ?? 0}</p>
     <strong className="result-time">{formatTime(result.time)}</strong>
     <div className="result-details">
       <div><span>PREVIOUS {snow ? 'SUMMIT' : jungle ? 'JUNGLE' : 'ALPINE'} BEST</span><strong>{result.previousBest ? formatTime(result.previousBest) : 'Your very first finish'}</strong></div>
@@ -195,7 +198,13 @@ function Results() {
       {typeof result.topSpeed === 'number' && result.topSpeed > 0 && <div><span>PEAK SPEED</span><strong>{Math.round(result.topSpeed)} km/h</strong></div>}
       {typeof result.driftTime === 'number' && result.driftTime > 0.2 && <div><span>DRIFT TIME</span><strong>{result.driftTime.toFixed(1)} s</strong></div>}
     </div>
-    {isNativeGame() ? <><button className="ww-button ww-primary" onClick={() => window.WindwayMobile?.command('restart')}><MobileIcon name="play" />Drive again</button><button className="back-link" onClick={() => window.WindwayMobile?.command('menu')}>Back to garage</button></> : <>
+    {isNativeGame() ? <>
+      {nextLevel
+        ? <button className="ww-button ww-primary" onClick={() => window.WindwayMobile?.command('nextLevel')}><MobileIcon name="play" />Advance to Level {nextLevel.id} · {nextLevel.name}</button>
+        : <button className="ww-button ww-primary" onClick={() => window.WindwayMobile?.command('restart')}><MobileIcon name="play" />Drive again</button>}
+      {nextLevel && <button className="ww-button result-replay" onClick={() => window.WindwayMobile?.command('restart')}>Replay Level {result.level ?? 0}</button>}
+      <button className="back-link" onClick={() => window.WindwayMobile?.command('menu')}>Back to lobby</button>
+    </> : <>
       {nextLevel ? <button className="ww-button ww-primary" onClick={() => { void gameAudio.unlock(); const g = useGame.getState(); g.selectLevel(nextLevel.id); g.startRace(); }}>Advance to Level {nextLevel.id} · {nextLevel.name} <span aria-hidden="true">↗</span></button> : <StartButton>One more for the road</StartButton>}
       {nextLevel && <StartButton className="result-replay">Replay Level {result.level ?? 0}</StartButton>}
       <button className="back-link" onClick={() => useGame.getState().navigate('garage')}>Try a different attitude →</button>
